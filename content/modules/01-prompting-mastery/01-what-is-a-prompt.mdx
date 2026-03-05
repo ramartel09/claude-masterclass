@@ -1,0 +1,64 @@
+export const metadata = {
+  title: "What Is a Prompt?",
+  module: "prompting-mastery",
+  order: 1,
+  estimatedMinutes: 12,
+  challengeTitle: "Your First Structured Prompt",
+}
+
+## Learn
+
+Most people treat Claude like a search engine. They type a fragment of a thought, hit enter, and hope something useful comes back. Sometimes it does. More often, they get a generic response that answers the question they technically asked — not the question they meant.
+
+The reason is simple: Claude is not a search engine. It's a language model that responds to specifications. And the quality of what it produces is a direct function of the quality of what you give it.
+
+A prompt is a specification, not a query. When you search Google for "email writing tips," you're asking a retrieval system to surface documents. When you prompt Claude with "write me an email," you're asking a generative system to produce something new — but you've given it almost no information about what "good" looks like for your specific situation. Claude has to guess, and its guesses are driven by what a typical person asking a typical version of that question might want. Not what you want.
+
+**The gap between what you typed and what you meant is where quality is lost.**
+
+Consider the same task approached two ways.
+
+*The vague version:*
+> "Write me an email to reschedule a meeting."
+
+Claude produces something serviceable — a polite one-paragraph email, probably starting with "I hope this message finds you well." It works in the same way that a generic business letter works: not offensive, not useful.
+
+*The specified version:*
+> "Write a short, direct email to my colleague Marcus rescheduling our Thursday 2pm product review meeting to the following Monday at the same time. Tone should be professional but not stiff — we work together closely. Reason: I have a client conflict that came up this morning. Keep it under 4 sentences. No fluff opener like 'I hope this finds you well'."
+
+Same task. Radically different result. The second prompt gave Claude everything it needs: who, what, when, tone, reason, length, and a specific constraint (no filler opener). Claude doesn't have to guess on any of those dimensions.
+
+**Claude has no memory between conversations.** This is not a bug — it's a design feature for privacy — but it has a practical implication: every time you start a new conversation, you start from zero. Claude knows nothing about you, your role, your preferences, or your context. This is why prompting well matters every single time. You can't rely on Claude "remembering" that you like concise answers, or that you work in marketing, or that you prefer bullet points over prose. You have to tell it.
+
+Within a single conversation, Claude does remember. Everything you've said in the current chat is in its context window — you'll learn exactly what that means in Lesson 4. But the moment you close the chat and open a new one, you're a stranger again.
+
+**What makes a prompt a specification?**
+
+Think about how you'd brief a talented contractor. A bad brief says "build me a website." A good brief says: here's the product, here's the audience, here's what it must do, here are the constraints (budget, timeline, tech stack), and here's what success looks like. The contractor still has creative latitude — but within a defined space. They can produce something excellent because the spec is tight enough to aim at.
+
+Prompting Claude is exactly this. You are briefing a contractor who is brilliant, eager, and completely reliant on your instructions for context. They will not guess at your intent — or rather, they will guess, and their guesses are calibrated to the average request, not to yours.
+
+A well-specified prompt answers these questions before Claude has to guess at them:
+- **Who should Claude be?** (An expert copywriter? A skeptical reviewer? A patient teacher?)
+- **What context does Claude need?** (Who's the audience? What's the background situation?)
+- **What is the actual task?** (Not "write something" — what, specifically, is the deliverable?)
+- **What are the constraints?** (Length, tone, format, things to avoid)
+- **How should the output be structured?** (List? Paragraph? Table? Code? JSON?)
+
+You don't always need all five. A simple factual question doesn't need a persona assignment. But for any task involving judgment, creativity, or multiple acceptable interpretations, the more clearly you answer these questions, the better Claude performs.
+
+**The prompt is the interface.** There's no other lever you have. You can't adjust Claude's settings mid-run, you can't click a "be more specific" button, you can't wave at it. The text you send is the totality of your communication. Investing thirty extra seconds in writing a tighter prompt produces compounding returns — better first drafts, less revision, less frustration.
+
+That investment is what this module is about. By the end, you'll have developed the instinct to write prompts that work — not by following a formula, but by understanding what Claude needs to do its job well.
+
+## Try It
+
+**Task:** Write a structured prompt for a task you actually need help with right now. Apply the specification mindset — give Claude role, context, task, constraints, and desired format.
+
+**Starter prompt:**
+> I need you to help me [describe your task in one sentence]. Here's the context you need: [relevant background]. The output should be [format/length/structure]. Constraints: [anything to avoid or require]. Tone should be [professional/casual/direct/etc.].
+
+**What to expect:**
+- Claude's response should directly address the specific task you described, not a generic version of it
+- The output format should match what you asked for — if you asked for bullet points, you should get bullet points
+- If Claude asks a clarifying question before answering, that's a good sign your context was somewhat ambiguous — answer the question and note what you could have specified upfront

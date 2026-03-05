@@ -1,0 +1,48 @@
+export const metadata = {
+  title: "Capstone: Design Your Own Agent",
+  module: "ai-agents-automation",
+  type: "capstone",
+  estimatedHours: 3,
+  skills: ["agent-loop", "system-prompts", "tools", "evaluation", "failure-modes"],
+}
+
+## The Project
+
+Design, document, and test a complete agent specification for a personal automation task. This is not a fully-built product — it's a fully-specified agent design. The output is a document (an agent spec) and a live test of that spec using Claude Code. You'll know you've succeeded when you can hand the spec to another person and they could configure the same agent.
+
+## What You'll Build
+
+- A written agent specification document (plain text, Markdown, or notes app) containing: goal statement, tool list, system prompt (2–3 paragraphs), stopping conditions, and failure handling rules
+- A test run of the spec using Claude Code in agentic mode — at least one complete run of the agent loop
+- A verification checklist used to evaluate the agent's output
+- A post-run notes section: what worked, what the agent got wrong, what you'd change in the spec
+
+## Skills You'll Use
+
+- Lesson 2 (Agent Loop): The spec must define the Think → Act → Observe → Repeat cycle explicitly
+- Lesson 3 (Tools): List exactly which tools the agent needs (file system, web, API, etc.)
+- Lesson 4 (Prompting Agents): The system prompt defines goal-state + constraints, not step-by-step instructions
+- Lesson 5 (Claude Code as Agent): The test run uses Claude Code in agentic mode
+- Lesson 6 (Evaluation): The verification checklist is completed after every test run
+- Lesson 8 (Failure Modes): The spec must address at least 2 failure modes with mitigation rules
+
+## Getting Started
+
+1. Choose a recurring task that takes more than 20 minutes when you do it manually — research, data collection, content drafting, file organization, etc.
+2. Map the agent loop for this task: what does the agent need to read? what does it do with that information? what does the output look like? when is it done?
+3. Write the system prompt using the goal-state + constraints format from Lesson 4. Run it in Claude Code and evaluate the output against your checklist.
+
+## Success Criteria
+
+- [ ] A written agent spec document exists covering all 5 components (goal, tools, system prompt, stopping conditions, failure handling)
+- [ ] The system prompt is goal-state + constraints format (not a step-by-step instruction list)
+- [ ] At least 2 failure modes are addressed in the spec with explicit mitigation rules
+- [ ] The agent was tested with Claude Code in at least one complete run
+- [ ] A verification checklist was used and at least one item was checked off
+- [ ] Post-run notes document at least one thing that didn't work and one proposed spec improvement
+
+## Stretch Goals
+
+- Run the agent three times and compare the outputs — note consistency and variability
+- Add a second agent that chains off the output of the first
+- Write the spec in a format that could be published as a template for others with the same task

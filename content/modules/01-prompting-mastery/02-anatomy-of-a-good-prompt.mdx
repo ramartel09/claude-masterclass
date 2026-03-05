@@ -1,0 +1,93 @@
+export const metadata = {
+  title: "The Anatomy of a Good Prompt",
+  module: "prompting-mastery",
+  order: 2,
+  estimatedMinutes: 13,
+  challengeTitle: "Build a 5-Part Prompt",
+}
+
+## Learn
+
+In the last lesson, we established that a prompt is a specification — and that the gap between what you typed and what you meant is where quality is lost. Now we're going to give you a concrete framework for closing that gap every time.
+
+A well-constructed prompt has five components. You don't always need all five — a simple factual question needs very few — but for any task requiring judgment, creativity, or nuanced output, each component you include reduces the space of possible wrong answers Claude might produce.
+
+The five components are: **Role**, **Context**, **Task**, **Constraints**, and **Output format**.
+
+---
+
+**1. Role — Who should Claude be?**
+
+Assigning Claude a role is one of the highest-leverage things you can do in a prompt. It activates a different mode of response. "You are an experienced copywriter specializing in SaaS landing pages" produces a different response than "You are a product manager reviewing a landing page draft." Both might be useful for different purposes — but neither is what you get when you don't specify a role at all.
+
+Role isn't about pretending Claude is a person. It's about calibrating its defaults. What vocabulary does it use? What level of technical depth does it assume? What does "helpful" mean in this context? Role answers all of these implicitly.
+
+A good role statement is: "You are a [specific expert type] with [relevant experience or focus]." Keep it one sentence. More than that and you're writing a persona, not a role.
+
+**2. Context — What does Claude need to know?**
+
+Context is the background information Claude needs to produce output that fits your actual situation. Without it, Claude writes for a generic version of your problem — which might be close enough, or might miss badly.
+
+Context includes things like: who the audience is, what the stakes are, what has already been tried, what constraints exist in the real world, and any relevant details that affect what "good" looks like.
+
+Good context is specific and brief. You don't need to write three paragraphs — you need the three sentences that would take longest to reconstruct if Claude got them wrong.
+
+**3. Task — What should Claude actually do?**
+
+This seems obvious, but it's the component most people muddy. The task should be a specific, single deliverable: "Write X," "Analyze Y and give me your top three concerns," "Rewrite Z with a more direct tone." Not "help me think about" or "give me some ideas around" — those are open-ended invitations that produce meandering responses.
+
+If you have multiple tasks, separate them into numbered steps or run them as sequential prompts. Claude performs better on one task at a time than on a multi-part mega-prompt.
+
+**4. Constraints — What should Claude avoid or require?**
+
+Constraints are the guardrails. They tell Claude what "good" looks like in terms of scope, length, format, and exclusions. Without constraints, Claude defaults to its own judgment — which is often generous, verbose, and generic.
+
+Common constraint types:
+- Length: "No more than 200 words," "Keep it under 3 bullet points"
+- Tone: "No corporate jargon," "Be direct, not diplomatic"
+- Inclusions/exclusions: "Don't include pricing," "Must cite at least one data point"
+- Audience: "Assume the reader has no technical background"
+
+Constraints save you editing time. It's faster to write "be concise" upfront than to edit out three paragraphs after the fact.
+
+**5. Output format — How should Claude structure the response?**
+
+The default output format is prose paragraphs. If that's not what you want, you have to ask. Claude is happy to return JSON, Markdown tables, bullet lists, numbered steps, code blocks, or any combination — but only if you tell it to.
+
+Specifying output format is especially important when you plan to use Claude's output as an input to something else. If you need JSON to feed into an app, say so. If you need a table you can paste into a spreadsheet, say so.
+
+---
+
+**The components in practice**
+
+Here's the same task — "help me with a performance review" — built component by component.
+
+| Component | Example |
+|-----------|---------|
+| Role | You are an experienced HR professional who writes performance reviews that are direct, fair, and actionable. |
+| Context | I'm writing a performance review for a junior designer who did strong creative work but missed several deadlines this quarter. This is my first time writing reviews at this company. |
+| Task | Write a 3-paragraph performance review that acknowledges strengths, addresses the deadline issue directly, and ends with two specific improvement goals. |
+| Constraints | Don't soften the deadline feedback with excessive praise. Keep each paragraph under 100 words. Avoid HR clichés like "opportunity for growth." |
+| Output format | Return three labeled paragraphs: Strengths, Areas for Improvement, Goals. |
+
+The resulting prompt isn't long — it's maybe 120 words. But it gives Claude everything it needs. The response writes itself from here.
+
+**You don't always need all five.** If someone asks "What is the capital of France?" there's no role, context, constraint, or output format needed. The framework scales to the complexity of the task. Simple tasks, simple prompts. Complex tasks with multiple acceptable interpretations — use all five.
+
+The next two lessons will go deeper on two of the hardest components to get right: specificity (lesson 3) and context (lesson 4). For now, practice building the five-part structure until it becomes instinct.
+
+## Try It
+
+**Task:** Choose a real task from your work or personal life and construct a 5-part prompt using all five components: role, context, task, constraints, and output format.
+
+**Starter prompt:**
+> Role: You are [specific expert type with focus].
+> Context: [Relevant background — who is the audience, what's the situation, what has already happened].
+> Task: [Single, specific deliverable — write X, analyze Y, create Z].
+> Constraints: [What to avoid, length limits, tone requirements].
+> Output format: [How to structure the response — paragraphs, bullets, table, JSON, etc.].
+
+**What to expect:**
+- Claude should respond with output that exactly matches the structure you specified in "Output format" — if you asked for a table, you should see a table
+- The content should feel calibrated to your specific situation, not generic — if it feels generic, check whether your Context was specific enough
+- If the response is too long or too short, notice which constraint you would add next time to control for that

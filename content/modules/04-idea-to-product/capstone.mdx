@@ -1,0 +1,60 @@
+export const metadata = {
+  title: "Capstone: GTA Hospital Wait Time Tracker",
+  module: "idea-to-product",
+  type: "capstone",
+  estimatedHours: 8,
+  skills: ["claude-code", "gsd-workflow", "product-thinking", "data-sourcing", "deployment"],
+}
+
+## The Project
+
+The GTA Hospital Wait Time Tracker is a real, deployed web app showing current emergency department wait times at Greater Toronto Area hospitals. When someone in the GTA needs urgent care, they can open this app, see which hospitals have shorter waits, and make an informed decision about where to go. This is the proof-of-mastery project — every skill from every module is used to build it. It's built the same way this masterclass was built: Claude Code + GSD workflow + zero manual coding.
+
+## What You'll Build
+
+- A live web app at a Vercel URL showing ER wait time data for GTA hospitals
+- Data sourced from Ontario's public health aggregate data (verify source availability before Phase 4 begins — see Phase 4, Plan 04-01)
+- A clean table or card layout showing: hospital name, location (borough/area), estimated wait time, and last updated timestamp
+- Mobile-responsive design (readable on a phone while you're deciding where to go)
+- A GitHub repo with a clean commit history built via the GSD workflow
+- A link from this capstone page to the live deployed tracker (added in Phase 4, Plan 04-03)
+
+## The Problem Being Solved
+
+GTA emergency departments have dramatically different wait times — 1 hour at one hospital, 6 hours at another, at the same moment. This information exists but is buried in provincial health system pages that are hard to navigate on a phone in an emergency. The tracker surfaces it in a single, fast-loading, mobile-first view. Real value, real user, real problem. This is exactly the kind of tool the masterclass teaches you to build.
+
+## Skills You'll Use
+
+- Module 1 (Prompting): Scoping the project, writing the REQUIREMENTS.md, prompting for data structure decisions
+- Module 2 (Claude Code & GSD): Running the full GSD workflow — discuss → plan → build → verify → ship
+- Module 3 (Agents): Claude Code operates as an agent for the build — reading files, writing code, running commands
+- Module 4 (Idea-to-Product): The entire pipeline — triage, requirements, roadmap, scaffold, build, ship
+
+## Phase 4 Build Plan
+
+This capstone is built in Phase 4 of the masterclass, which has three plans:
+
+1. **Plan 04-01**: Verify the Ontario hospital wait time data source — confirm public availability and PHIPA compliance before writing any code. If the original data source isn't available, identify the best alternative (representative data, scraped public pages, or static demo data with a clear disclaimer).
+2. **Plan 04-02**: Build the tracker using Claude Code + GSD workflow, starting from the verified data source.
+3. **Plan 04-03**: Deploy to Vercel, add the live link to this capstone page, and write the final retrospective.
+
+## Getting Started
+
+1. Read Phase 4, Plan 04-01 — do not skip the data source verification step. Building a tracker without a data source is building a shell. The data is what makes it real.
+2. Once data source is confirmed, write the REQUIREMENTS.md for the tracker using the format from Module 4, Lesson 3. Keep it tight: the MVP shows current wait times for 5–10 GTA hospitals and nothing else.
+3. Start Claude Code, run /gsd:discuss-phase with the REQUIREMENTS.md, and follow the GSD workflow through to deployment.
+
+## Success Criteria
+
+- [ ] A live Vercel URL exists for the tracker and loads without errors
+- [ ] The tracker shows ER wait time data for at least 5 GTA hospitals
+- [ ] The data displayed is current or clearly timestamped (not static fake data without a disclaimer)
+- [ ] The layout is readable on a mobile device (test on a real phone)
+- [ ] The capstone brief page (this page) has been updated with the live tracker URL
+- [ ] A one-paragraph retrospective is written reflecting on how the masterclass skills enabled this build
+
+## Stretch Goals
+
+- Add sorting by wait time (shortest first) so the best option is always at the top
+- Add a "last updated" indicator with auto-refresh every 15 minutes
+- Add a map view showing hospital locations alongside wait times

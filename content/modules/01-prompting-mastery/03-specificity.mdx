@@ -1,0 +1,67 @@
+export const metadata = {
+  title: "Specificity: Why Vague Prompts Produce Vague Results",
+  module: "prompting-mastery",
+  order: 3,
+  estimatedMinutes: 11,
+  challengeTitle: "Rewrite a Vague Prompt",
+}
+
+## Learn
+
+There's a law of prompting that sounds harsh but is absolutely true: **when you're vague, you're asking Claude to make decisions for you.** And Claude's decisions are calibrated to the average request, not to your specific needs.
+
+Vagueness isn't laziness — it often comes from uncertainty. You're not sure exactly what you want, so you hedge. You write "something like" or "in the ballpark of" or "help me think about." This feels natural, but it transfers every ambiguous decision to Claude. And Claude will fill in those blanks — just not necessarily the way you would.
+
+**The specificity spectrum**
+
+Every prompt lives somewhere on a spectrum from too vague to too restrictive.
+
+*Too vague:* "Write a blog post about productivity." Claude has to guess the audience, length, angle, tone, format, and call to action. The result is competent but generic — the kind of post you'd see on any productivity blog.
+
+*Just right:* "Write a 600-word blog post for founders of early-stage B2B startups about how to batch email into two daily 30-minute windows instead of checking continuously. Tone should be direct and no-nonsense, like Paul Graham's essays. End with a specific action they can take today. No motivational filler."
+
+*Too restrictive:* "Write a blog post. Use exactly 587 words. The first sentence must start with 'Founders.' Include exactly three examples, each with a specific number. The second paragraph must reference a historical figure. No passive voice anywhere." Over-constraining leaves Claude no room to operate. The result is stilted and mechanical — you've essentially written the post yourself by proxy.
+
+The goal is to give Claude a tight target without micromanaging the execution. The right amount of specificity eliminates the decisions you care about while leaving room for Claude to bring judgment to the ones you don't.
+
+**The measurement question**
+
+Here's a heuristic for calibrating your prompts: *Could any competent person follow these instructions and produce what I want?*
+
+If the answer is no — if a talented writer given your prompt would produce something you wouldn't want — your prompt is too vague. If the answer is yes — if any competent professional would land in roughly the same place — you have enough specificity.
+
+This question is useful because it shifts the frame from "have I said enough?" to "is there any ambiguity left that would produce a wrong answer?" You're looking for gaps, not word count.
+
+**Domain-specific examples**
+
+The failure modes of vague prompting look different depending on what you're asking for.
+
+*Writing tasks:* Vague tone instructions produce the worst results here. "Professional" means formal to some people and direct to others. "Casual" might mean playful or might mean relaxed. Always specify what you mean: "professional but not stiff," "casual like you're texting a smart friend," "direct — cut the diplomatic softening."
+
+*Analysis tasks:* "Analyze this" is almost content-free as an instruction. Analyze for what? Analyze against what standard? For what purpose? Contrast it with: "Review this product roadmap and give me three concerns about timeline feasibility, ranked by severity, with your reasoning for each." That's analyzable.
+
+*Coding tasks:* "Make a script to process this data" will get you something. "Write a Python script that reads a CSV file of customer emails, deduplicates by email address (case-insensitive), filters out any row where the email doesn't contain an @ sign, and outputs the clean list to a new CSV file named output.csv" will get you exactly what you need.
+
+*Editing tasks:* "Make this better" is impossible to execute well — better how? Better in what direction? Better for whom? "Tighten this paragraph to under 60 words without losing the core argument" is specific and actionable.
+
+**Why vagueness feels safer**
+
+Ironically, people are often vague because they think they're giving Claude more flexibility to produce something good. In practice, it does the opposite. Vague prompts produce output that covers the middle of the distribution — the most-expected response to the most-generic version of your request. Specific prompts let Claude apply its capabilities to your actual situation.
+
+Being specific isn't about controlling every word. It's about eliminating the decisions that, if made differently, would produce something you'd discard. Specificity is precision — and precision produces results you can actually use.
+
+## Try It
+
+**Task:** Find a vague prompt you've used before (or write one now), identify the decisions it forces Claude to make on your behalf, and rewrite it to be specific.
+
+**Starter prompt:**
+> Here's a vague prompt I want to improve: "[paste your vague prompt here]"
+>
+> First, list the 3–5 decisions this prompt leaves ambiguous — decisions Claude would have to make on my behalf that could go either way.
+>
+> Then, rewrite the prompt with those decisions made explicitly. Keep the rewritten version under 100 words.
+
+**What to expect:**
+- Claude should identify specific ambiguities you may not have noticed — audience, tone, format, length, angle, level of depth
+- The rewritten prompt should feel meaningfully narrower — it should be clear that only certain kinds of responses would satisfy it
+- If Claude's rewrite still feels generic, ask it to make the constraints even tighter
