@@ -1,0 +1,79 @@
+export const metadata = {
+  title: "Context Windows and Memory",
+  module: "prompting-mastery",
+  order: 4,
+  estimatedMinutes: 14,
+  challengeTitle: "Front-Load a Research Session",
+}
+
+## Learn
+
+To use Claude well, you need a mental model of how it processes information. The key concept is the **context window** — the bounded space of text Claude can see and reason about at any given moment.
+
+Think of the context window as a piece of paper. Everything written on that paper is what Claude knows right now. If something isn't written on the paper, Claude doesn't know it. Your name, your preferences, your past conversations, your role at your company — none of it is on the paper unless you put it there yourself.
+
+When you have a conversation with Claude, the context window contains the entire conversation so far: every message you've sent and every response Claude has given. Claude reads the whole thing before generating each new response. This means early context shapes everything that comes after. What you put at the beginning of the conversation has more structural influence than what you add later.
+
+**What a context window is — and why it has limits**
+
+Context windows are measured in tokens — chunks of text roughly corresponding to three-quarters of a word. Claude's context window can hold a large amount of text: the equivalent of a long book. For most everyday tasks, you'll never hit the limit. But for long research sessions, complex projects, or multi-document analysis, the limit becomes relevant.
+
+When a conversation gets very long, something gradual happens: Claude's attention becomes spread thin across more context, and the oldest parts of the conversation receive less effective weight in the response. This isn't Claude "forgetting" — the text is still there — but very long contexts can produce responses that seem to drift from earlier instructions or miss details established at the start.
+
+The practical upshot: **keep important context near the top, and start fresh conversations when topics change.**
+
+**Front-loading: the most important context habit**
+
+Front-loading means giving Claude everything it needs to know before you ask it to do anything. Most people do the opposite — they ask first, then add context when the response disappoints them. This is like giving a chef the ingredients after they've already started cooking.
+
+A well-front-loaded conversation opener looks like this:
+
+> I'm the marketing director at a 20-person B2B software company. We sell project management tools to architecture firms. I'm going to be asking you to help me write case study content for our top three customers. Our tone is professional but human — we write like we're a colleague, not a vendor. We don't use industry jargon like "leverage" or "synergy." We keep paragraphs short (max 3 sentences). Please confirm you've understood these constraints before I give you the first case study to work on.
+
+That single opener — before any actual task — establishes role, audience, tone, vocabulary constraints, and formatting preferences. Everything Claude produces from this point forward is calibrated to this context. You won't have to repeat these details with each request.
+
+**The "confirm understanding" technique**
+
+Notice the last sentence in the example above: "Please confirm you've understood these constraints before I give you the first case study to work on." This is a useful technique for long sessions. You ask Claude to confirm your context before proceeding. If Claude's confirmation shows a misunderstanding — if it mischaracterizes your tone preference, for instance — you catch it before it propagates through ten responses.
+
+This is especially valuable when your context is complex or contains unusual constraints. The cost is one round-trip (you send context, Claude confirms, then work begins). The benefit is catching misalignments before they waste your time.
+
+**When to start fresh vs. when to continue**
+
+Two signs you should start a new conversation:
+
+1. **The topic has fundamentally changed.** If you've been working on marketing copy and now want help with a technical architecture decision, the context from the marketing session is mostly noise for the new task. Start fresh with a clean context opener.
+
+2. **The conversation is very long and responses are drifting.** If Claude's responses start ignoring constraints you established early on, or seem inconsistent with earlier discussion, the context is getting unwieldy. Summarize what's been decided, start a new conversation, and front-load the summary.
+
+Two signs you should continue in the current conversation:
+
+1. **The tasks are sequential and build on each other.** If you're drafting, revising, and then finalizing a single document, staying in the same conversation means Claude can reference earlier drafts without you re-pasting them.
+
+2. **You've established complex context that would be expensive to re-establish.** If your initial context setup took several paragraphs, staying in the conversation is more efficient than repeating it.
+
+**System prompts: persistent context for repeated tasks**
+
+If you use Claude for the same type of task repeatedly — say, weekly writing projects with the same tone and format requirements — you can set a system prompt that persists across sessions. System prompts are available through the Claude API and in some interfaces. They function as invisible first messages that establish context before every conversation.
+
+Claude Code's `CLAUDE.md` file serves the same purpose: it's read at the start of every session and provides persistent project context without repetition. You'll learn more about this in Module 2. The principle is the same — persistent context is front-loading at scale.
+
+## Try It
+
+**Task:** Craft a front-loaded context-setting opener for a research or writing session you want to run with Claude. Include role, purpose, constraints, and a request for confirmation before work begins.
+
+**Starter prompt:**
+> I'm going to be running a research session with you on [topic]. Here's what you need to know before we start:
+>
+> My background and why I'm researching this: [1–2 sentences]
+> What I'll be asking you to produce: [specific output types — summaries, analysis, drafts, etc.]
+> Tone and style constraints: [how you want responses to read]
+> Format preferences: [paragraphs, bullet points, tables, etc.]
+> Things I don't want: [anything to avoid]
+>
+> Please confirm you've understood these constraints, then I'll give you the first task.
+
+**What to expect:**
+- Claude should provide a brief confirmation that reflects your actual constraints — not just "Got it!" but a summary of what it understood
+- If the confirmation has errors or misunderstandings, correct them now, before any task begins
+- Once confirmed, subsequent tasks in this session should automatically match your stated preferences without reminding Claude each time
