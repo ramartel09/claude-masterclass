@@ -1,0 +1,109 @@
+export const metadata = {
+  title: "Debugging with Claude Code",
+  module: "claude-code-gsd",
+  order: 8,
+  estimatedMinutes: 13,
+  challengeTitle: "Debug With Claude",
+}
+
+## Learn
+
+Things break. Code that worked yesterday stops working. Features you didn't touch start behaving strangely. A new feature runs but produces wrong results. This is normal — it's true for professional developers and it's true for people using Claude Code. The difference is knowing how to describe the problem in a way that gets it fixed efficiently.
+
+Debugging with Claude Code is not about understanding code. It's about giving Claude Code the right information to understand the code. Your job is to collect and communicate evidence; Claude Code's job is to diagnose and fix.
+
+**The three types of errors**
+
+Understanding which type of error you're facing determines what information to collect.
+
+*Build errors (compile-time):* These prevent the app from starting at all. They appear in the terminal when you run `npm run dev` or `npm run build`. The terminal shows an error message with a file name and line number. You see a red error page in the browser instead of your app.
+
+These are the easiest to debug because the error message tells you exactly where the problem is. The entire error message, including the file path and line number, is what you give Claude Code.
+
+*Runtime errors (crash during use):* The app starts and displays correctly, but crashes or shows an error when you do something. These appear in two places: your browser's developer console (F12 → Console tab in Chrome), and sometimes as a visible error message in the app.
+
+For runtime errors, you need: the exact error message from the console (copy it in full — don't paraphrase), the sequence of actions that triggered the error, and any relevant context (what data was in the app at the time).
+
+*Logic errors (works but wrong output):* The app runs without crashing, but the behavior is wrong. The list doesn't sort correctly. The calculation produces the wrong number. The filter shows items it shouldn't.
+
+Logic errors require the most care to communicate because there's no error message to share. You need to describe expected behavior vs. actual behavior with a specific, reproducible example.
+
+**Always share the full error — never summarize**
+
+The most common debugging mistake is summarizing the error. "It says something about a type mismatch" is not an error message. The actual error might be:
+
+```
+TypeError: Cannot read properties of undefined (reading 'map')
+    at ItemList (components/ItemList.tsx:42:18)
+```
+
+That specific error tells Claude Code exactly what happened (tried to call .map() on something that was undefined), where it happened (line 42 of ItemList.tsx), and what function was involved (ItemList). The summary "it says something about a type mismatch" conveys none of this.
+
+The rule: paste the complete error. All of it. Including the stack trace if there is one. Claude Code can ignore the parts it doesn't need; it can't reconstruct the parts you omit.
+
+**For build errors: paste the terminal output**
+
+Copy everything from the first red line to the end of the error block. If the terminal shows 30 lines of error output, paste all 30. Claude Code will focus on the most relevant part.
+
+**For runtime errors: use the browser console**
+
+Open developer tools (F12 in Chrome, same in Edge, Cmd+Option+I on Mac). Click the Console tab. Reproduce the error. Copy the red error message, including the full stack trace that appears when you expand it by clicking on it.
+
+**Describing logic errors: expected vs. actual + reproduction**
+
+For logic errors, structure your report as:
+
+1. **The exact steps to reproduce the problem** — what you click, what you type, in what sequence
+2. **What I expected** — what should have happened
+3. **What actually happened** — what did happen (be specific — not "it was wrong" but "it showed 3 items instead of 2")
+
+Example:
+> When I add three books, mark the second one done, and then click "Show incomplete only," I expect to see two books (the first and third). Instead, I see all three books. The "Show incomplete only" filter doesn't seem to affect the display.
+
+That's enough information for Claude Code to find the bug.
+
+**The isolation strategy**
+
+For complex bugs in large projects, Claude Code can sometimes get confused by having too much context. The isolation strategy: ask Claude Code to focus on one specific file or function.
+
+"The bug is in the ItemList component. I've narrowed it down to the filter function. Can you look at just that function and tell me why it might show all items when the 'incomplete only' filter is active?"
+
+Narrowing the scope helps Claude Code reason more precisely about a specific piece of logic rather than trying to trace through the entire application.
+
+**When to give up and start fresh**
+
+Some bugs genuinely aren't worth fixing — the code is too tangled, the same fix keeps breaking something else, or the feature was built in a way that makes the right behavior hard to achieve. When you've made three fix attempts on the same issue without resolution, ask Claude Code a different question:
+
+"Given that this bug has proven hard to fix, would it be simpler to delete this component and rebuild it from scratch with a cleaner approach? What would that look like?"
+
+Sometimes starting fresh is two times faster than debugging a bad implementation. Claude Code is fast at creating; spend that speed if debugging is taking too long.
+
+## Try It
+
+**Task:** Introduce a deliberate error into a project and then work with Claude Code to fix it using the proper debugging format: full error message, exact reproduction steps, expected vs. actual behavior.
+
+**Starter prompt:**
+> (After introducing a deliberate error — or finding a real one):
+>
+> I have a bug to report. Here's everything you need:
+>
+> Error type: [build error / runtime error / logic error]
+>
+> Full error message (if applicable):
+> [paste the complete error from terminal or browser console]
+>
+> Steps to reproduce:
+> 1. [first step]
+> 2. [second step]
+> 3. [what happens]
+>
+> What I expected: [the correct behavior]
+> What actually happened: [the wrong behavior]
+>
+> Please diagnose the cause and fix it.
+
+**What to expect:**
+- Claude Code should explain what the bug is before fixing it — if it jumps straight to a fix without explanation, ask: "Before you fix it, tell me what was causing the bug"
+- The explanation should be in plain English — not code comments, but a description you can understand
+- After the fix, run the reproduction steps again to confirm the bug is gone
+- If a new bug appears after the fix, report it with the same format — don't assume it's related to the original bug

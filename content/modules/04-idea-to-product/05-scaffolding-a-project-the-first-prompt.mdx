@@ -1,0 +1,109 @@
+export const metadata = {
+  title: "Scaffolding a Project: The First Prompt",
+  module: "idea-to-product",
+  order: 5,
+  estimatedMinutes: 13,
+  challengeTitle: "Write Your Scaffold Prompt",
+}
+
+## Learn
+
+The first prompt you give Claude Code on a new project is the highest-stakes prompt in the entire build. It establishes the foundation — the file structure, the tech stack, the patterns — that every subsequent session builds on. Wrong decisions made here compound through every later phase.
+
+This is why the scaffold prompt deserves more care than any other prompt in the project.
+
+**What to specify in a scaffold prompt**
+
+*Tech stack:* Name your stack explicitly. Not "a modern web app" — "Next.js 16 with TypeScript, Tailwind CSS v4, and shadcn/ui." Claude Code will make reasonable decisions if you leave stack unspecified, but they might not be the decisions you want, and changing them after scaffolding is expensive.
+
+*Project structure:* Describe the key directories and what they contain. Claude Code will create a reasonable default structure, but if you have preferences — content in `content/`, components in `components/ui/`, pages in `app/` — specify them.
+
+*Key constraints:* Things Claude Code should not do. No database. No external authentication service. No paid APIs. These constraints prevent Claude Code from solving problems the "obvious" way when the obvious way is wrong for your project.
+
+*What to build NOW vs. what not to build yet:* Scaffold prompts should produce structure, not features. A scaffold is the skeleton — the folder structure, the base layout, the route definitions, the dev server configuration — not the features that will live inside it. Explicitly state what to defer: "Don't build any interactive features yet — just the scaffold and shell."
+
+*Verification step:* Ask Claude Code to confirm the scaffold runs correctly before declaring the scaffold done. "After scaffolding, run `npm run dev` and confirm the dev server starts without errors" catches configuration mistakes immediately.
+
+**The scaffold and verify discipline**
+
+Never start building features on an unverified scaffold. The sequence is: scaffold, verify the scaffold works, then start building Phase 1 features.
+
+Verification means:
+- The project runs locally (`npm run dev` starts without errors)
+- The homepage renders without errors
+- The basic route structure works (if you visit `/modules`, does it load? Even as an empty page?)
+- No TypeScript errors in the base files
+
+If the scaffold doesn't verify, fix it before moving on. Building features on a broken scaffold is building on sand.
+
+**Example: hospital tracker scaffold prompt**
+
+```
+Create the scaffold for a Next.js 16 web app called "GTA Hospital Wait Times".
+
+Tech stack:
+- Next.js 16 with TypeScript (strict mode)
+- Tailwind CSS v4
+- shadcn/ui for UI components (init with defaults)
+- No database, no auth, no external APIs for now (we'll add data in a later session)
+
+Project structure:
+- app/ for all pages (App Router)
+- components/ for reusable UI components (shadcn/ui components go in components/ui/)
+- lib/ for utility functions
+- data/ for static JSON data we'll create later
+
+What to build:
+- The project scaffold and file structure
+- A root layout with a simple dark-mode header showing "GTA Hospital Wait Times"
+- A home page that says "Hospital wait times will be shown here" as a placeholder
+- Install and configure shadcn/ui
+
+What NOT to build yet:
+- No actual hospital data
+- No hospital list or wait time display logic
+- No filtering or sorting features
+
+After creating the scaffold, run `npm run dev` and confirm the dev server starts and the home page renders without errors.
+
+Constraints:
+- Dark mode first (background: zinc-950, text: zinc-100)
+- No lorem ipsum — use real placeholder text that describes what will go here
+```
+
+**What a good scaffold looks like**
+
+After running this prompt, you should have:
+- A running Next.js project with no errors
+- A visible home page with real placeholder text (not Lorem ipsum)
+- shadcn/ui installed and configured
+- A clean file structure with the directories specified
+- A CLAUDE.md capturing the decisions made (create this yourself after the scaffold, or ask Claude Code to create it)
+
+You should NOT have: any actual feature code, any hardcoded data arrays, any complex business logic. Those come in Phase 1 execution, not in the scaffold.
+
+**After the scaffold: write CLAUDE.md immediately**
+
+The first thing to do after verifying the scaffold works is write CLAUDE.md. At this moment, you have perfect context: the stack is decided, the structure is established, the constraints are clear. Write CLAUDE.md while this context is fresh. Every Claude Code session after this point should start by reading CLAUDE.md — so establish it before the second session.
+
+## Try It
+
+**Task:** Write the first scaffold prompt you would give Claude Code for your project. Include tech stack, project structure, what to build now, what to defer, and a verification step.
+
+**Starter prompt:**
+> Help me write the scaffold prompt for my project: [describe your project idea briefly].
+>
+> Based on my project, help me write a scaffold prompt that specifies:
+> 1. Tech stack (I'm thinking: [mention any stack preferences you have — or ask Claude what to recommend for your type of project])
+> 2. The key directories in the project structure
+> 3. What to build in the scaffold (structure only, no feature code)
+> 4. What NOT to build yet (explicitly defer features)
+> 5. A verification step Claude Code should run at the end
+>
+> Write the scaffold prompt as something I can send directly to Claude Code.
+
+**What to expect:**
+- The scaffold prompt Claude writes should be specific enough that Claude Code could execute it without asking clarifying questions
+- The "what NOT to build yet" section should explicitly name features you'll build in later phases — making them clearly deferred prevents Claude Code from "helpfully" building them now
+- The verification step should be a runnable command — not "make sure it looks good" but "run `npm run dev` and confirm the homepage renders at localhost:3000"
+- Save this prompt — this is the first Claude Code message for your actual project build

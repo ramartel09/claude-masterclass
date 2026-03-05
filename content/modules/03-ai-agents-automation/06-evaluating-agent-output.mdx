@@ -1,0 +1,94 @@
+export const metadata = {
+  title: "Evaluating Agent Output: Trust But Verify",
+  module: "ai-agents-automation",
+  order: 6,
+  estimatedMinutes: 12,
+  challengeTitle: "Build an Acceptance Checklist",
+}
+
+## Learn
+
+The most dangerous failure mode with AI agents isn't catastrophic error — it's confident, plausible-looking wrong output. An agent that produces something obviously broken is easy to catch and fix. An agent that produces something that looks right but isn't is much harder to catch, and much more likely to be used without correction.
+
+Verification is not optional. It's the part of the agent workflow that makes the rest of the workflow trustworthy.
+
+**Why agents require verification more than conversations**
+
+When you use Claude conversationally, you're reading the output and making an implicit judgment: does this make sense? You're in the loop by default.
+
+When an agent runs autonomously, you're not in the loop during execution. The agent makes dozens of decisions without you seeing them. The output you're presented with is the cumulative result of those decisions — and any errors in the decision chain are baked into the result before you see it.
+
+This is why the output of an agent can fail in ways that conversational output rarely does. The agent may have made correct decisions on steps 1 through 8, then a bad decision on step 9 that invalidates everything after it — and you're looking at the final product with no visibility into step 9.
+
+**Common agent failure modes in output**
+
+*Plausible-but-wrong data:* An agent that researches and extracts information may extract confidently stated facts that are incorrect. The output looks authoritative — proper formatting, clear writing — but the underlying facts are wrong. This is hallucination at the agent level.
+
+*Incomplete execution:* The agent reached a stopping condition or error before completing the full task, but reported completion anyway. The output covers some items but not all, and the agent didn't clearly flag what was skipped.
+
+*Silent dependency failures:* Code that compiles and runs but doesn't behave correctly because a dependency wasn't configured right, a file wasn't found as expected, or an API call returned unexpected data. The agent's success report is true at the code level but false at the behavior level.
+
+*Format drift:* The output mostly conforms to the specified format but deviates in ways that break downstream processing. A JSON field that should be a string contains an object; a date that should be ISO 8601 format is human-readable text.
+
+**The acceptance-test mindset**
+
+The solution is to define "done" before the agent runs, not after. An acceptance checklist is a list of observable criteria that the output must satisfy. You write it before the agent runs; you check each item after.
+
+A good acceptance checklist is:
+- *Specific:* "The output file contains exactly 10 entries" not "the output is complete"
+- *Verifiable:* Each item can be checked without judgment — it either is or isn't
+- *Comprehensive:* Covers the core behavior, key edge cases, and format requirements
+
+For a data extraction agent, an acceptance checklist might be:
+
+```
+□ Output file exists at /data/results.csv
+□ File contains header row with columns: name, email, date, amount
+□ File contains at least 50 data rows
+□ All email fields contain @ sign
+□ All date fields are in YYYY-MM-DD format
+□ Amount fields are numeric (no currency symbols or commas)
+□ No duplicate entries (no two rows with identical email + date)
+□ No rows where name is empty
+```
+
+Each item is checkable in minutes. The entire checklist can be reviewed before the output is used for anything.
+
+**How to verify code output without reading it**
+
+For code agents, the equivalent of the acceptance checklist is behavioral verification:
+
+1. **Run it.** Does it start without errors?
+2. **Complete the core flow.** Does the main feature work from end to end?
+3. **Test the edges.** What happens with empty input? With unusually long input? With special characters?
+4. **Test error conditions.** What happens when something goes wrong? Does the app handle it gracefully or crash?
+5. **Verify persistence.** If data should be saved, does it survive a refresh?
+6. **Check on different devices/browsers.** Does it work on your phone? In a different browser?
+
+None of these checks require reading code. They all require using the software.
+
+**Reading Claude Code's self-reports skeptically**
+
+When Claude Code says "Done!" or "The feature is implemented and working," read this as: "I completed the implementation steps and the code builds without errors." It does not mean "I have verified that the feature behaves correctly as a user would experience it."
+
+Claude Code checks its work at the code level — does it compile, do the tests pass? It cannot check its work at the product level — does it do what you wanted? That verification is your job.
+
+This isn't a criticism of Claude Code — it's a limitation shared by all agents. Agents verify their processes; humans verify their products.
+
+## Try It
+
+**Task:** Define an acceptance checklist for an agent task before running it, run the agent, and then evaluate each checklist item after completion.
+
+**Starter prompt:**
+> I'm going to run an agent task and I want to define my acceptance checklist before starting. The task is: [describe what the agent will do — produce a report, build a feature, process files, etc.]
+>
+> Help me write an acceptance checklist for this task. The checklist should have 6–8 specific, verifiable items that I can check after the agent completes. For each item, tell me how I would check it (what to look for, click, or verify).
+>
+> Format as:
+> □ [Item description] — Check by: [how to verify]
+
+**What to expect:**
+- Claude should produce a checklist with items that are specific and checkable — not "output is correct" but "output file exists at [path] and contains at least N entries"
+- Each "Check by" instruction should be something you can do without reading code — run it, click it, count it, open it in a viewer
+- After running your agent task, go through each checklist item methodically — resist the urge to skip items because the output "looks right"
+- Any failed checklist item is a bug to report back to the agent

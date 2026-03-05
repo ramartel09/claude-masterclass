@@ -1,0 +1,96 @@
+export const metadata = {
+  title: "Launching and Sharing",
+  module: "idea-to-product",
+  order: 9,
+  estimatedMinutes: 11,
+  challengeTitle: "Ship and Share",
+}
+
+## Learn
+
+Shipping is the goal. Not a "production-ready" version, not a polished version, not a version with all the features you eventually want — the current version, deployed, accessible to the people who need it.
+
+The hardest part of personal project development is not building — it's resisting the urge to keep building before sharing. Every week you wait to share is a week without real feedback. And real feedback from a real person using the app is worth more than all the internal iteration in the world.
+
+**Deploying to Vercel: one command**
+
+If your project is a Next.js app (the standard for this course), deploying to Vercel is:
+
+```
+vercel
+```
+
+The first time: Vercel asks for your project name, the framework (Next.js, auto-detected), and the directory to deploy from. After you answer these once, they're saved. Subsequent deployments are a single command with no prompts.
+
+What this produces: a URL at `[project-name].vercel.app` that anyone with the URL can visit. It's on the public internet. It loads on any device. It's real.
+
+After the first deployment, connect your GitHub repository in the Vercel dashboard. Once connected, every `git push` to your main branch triggers an automatic deployment. You never have to run `vercel` manually again — pushing code is enough.
+
+**What "launched" means for a personal project**
+
+The bar for personal project launch is lower than commercial product launch, and it should be. You're not launching to a paying audience with SLA commitments and investor expectations. You're sharing something you built with people who might find it useful.
+
+"Launched" for a personal project means:
+- There's a URL someone else can visit
+- The core feature works without errors
+- The app doesn't show placeholder text or "Coming soon" on the main screen
+- You've tested it on a device other than your laptop
+
+That's it. Everything else — polished design, comprehensive features, mobile optimization, performance tuning — is v2. Sharing something imperfect is better than shipping nothing while waiting for perfection.
+
+**Getting real feedback: one person, watching them use it**
+
+The most valuable feedback session is watching one person use your product without you guiding them. Not a survey, not a review — sitting with someone (or sharing the URL and asking them to share their screen) while they use it for the first time.
+
+What you're watching for: where do they hesitate? What do they click on that doesn't do what they expected? What did they expect to find that wasn't there? What did they ignore that you thought was important?
+
+You won't get this from asking "what do you think?" You get this from watching. The places where they hesitate are confusing UI. The clicks that don't work are feature requests. The features they ignore are features you may have over-prioritized.
+
+**The "does it solve the problem?" test**
+
+After someone has used your product for 5 minutes, ask one question: "If this was the app you used next time [problem scenario occurs], would it help you make a better decision / save you time / solve the problem?"
+
+This question cuts through "it's nice" and "it looks good" to the actual value question. The answer should be a direct yes or no, possibly with caveats: "Yes, but only if the data is current" or "Not quite — I'd still need to know [X] before deciding."
+
+These qualifications are your Phase 2 roadmap. They tell you exactly what to add next, in priority order, from a real user.
+
+**Iterating based on feedback without scope creep**
+
+After your first feedback session, you'll have a list of things to improve. Apply the same triage filter you applied to the original idea: is this feedback addressing the core problem, for the core user, in a proportional scope?
+
+Feedback that improves the core experience: prioritize it.
+Feedback that expands the scope significantly: log it for v2.
+Feedback that contradicts your problem definition: reconsider whether your user definition is right.
+
+The discipline is to not implement every piece of feedback immediately. Collect feedback across several uses, identify the patterns (multiple people mentioning the same issue is signal), and address patterns rather than individual requests.
+
+**After launch: what to do next**
+
+Once deployed:
+
+*Monitor Vercel analytics:* Vercel's free tier includes basic analytics — visitor counts, pages visited, load times. This tells you whether anyone is using it and what pages they visit most.
+
+*Fix bugs that real usage surfaces:* Using an app on real devices with real data reveals bugs that testing never would. Fix the ones that affect the core experience first.
+
+*Plan v2:* Based on your feedback sessions and analytics, identify the highest-value thing to add or improve. Run it through the triage filter. If it passes, add it to the roadmap.
+
+*Keep shipping:* The habits that produced v1 produce v2. Commit frequently, use GSD to structure builds, verify before deploying, get feedback, iterate. The cycle compounds over time.
+
+## Try It
+
+**Task:** Deploy your project's current state to Vercel and share the URL with one person. Note what you observe when they use it.
+
+**Starter prompt:**
+> Help me prepare my project for its first deployment to Vercel. Before deploying:
+>
+> 1. Check my project for anything that would prevent a successful deployment: undefined values, missing environment variables, placeholder text on the main screen, obvious errors
+> 2. List any issues that need to be fixed before deploying
+> 3. After fixing any issues, walk me through the deployment command (`vercel`) and what to expect at each prompt
+>
+> After I've deployed, remind me: what are the three things I should check on the live URL before sharing it with someone?
+
+**What to expect:**
+- Claude Code should scan for common deployment blockers: hardcoded localhost URLs, missing env vars, TypeScript errors that only surface in production builds
+- The pre-deployment checklist should be short (3–5 items) and specific to your project
+- After deployment, the three verification checks should cover: does the page load?, does the core feature work?, is there any placeholder content visible to a visitor?
+- Once verified, share the URL immediately — the longer you wait, the more tempting it is to keep polishing

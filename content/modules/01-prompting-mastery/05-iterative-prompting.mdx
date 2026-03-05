@@ -1,0 +1,86 @@
+export const metadata = {
+  title: "Iterative Prompting: Treat It Like a Conversation",
+  module: "prompting-mastery",
+  order: 5,
+  estimatedMinutes: 12,
+  challengeTitle: "The 3-Refinement Loop",
+}
+
+## Learn
+
+There is a persistent myth about prompting: that a great prompt produces a perfect result on the first try. This myth is responsible for a lot of frustration. People write a prompt, get a response that's close but not quite right, and feel like they've failed — as if a better prompter would have gotten it perfect without iteration.
+
+The reality is different. Professional Claude users iterate. They treat the first response as a draft, not a final answer. They expect to refine, redirect, and reshape. The goal of the first prompt isn't perfection — it's a good starting point to work from.
+
+**Why iteration is better than one-shot perfection**
+
+Getting a first draft quickly and then refining it is almost always faster than trying to specify everything perfectly upfront. The reason is that many requirements are only visible in response to output. You often don't know your tone preference until you see an example of the tone you don't want. You can't always specify the exact right structure until you see an imperfect structure and think "that section should be shorter."
+
+Iteration makes the feedback loop concrete. Instead of trying to articulate your preferences in the abstract, you can respond to real output: "this is almost right, but [specific thing]." That's easier to communicate and easier for Claude to act on.
+
+**Refinement techniques**
+
+The most effective refinements are specific and directional. They tell Claude what to change, how to change it, and approximately how much.
+
+*Scope refinements:*
+- "This is too long. Cut the middle section entirely."
+- "Expand the third point with a concrete example."
+- "Remove the introduction — start directly with the first recommendation."
+
+*Tone refinements:*
+- "Make this more direct. The current version hedges too much."
+- "The tone is slightly too formal. Rewrite this as if you're talking to a smart colleague, not writing a report."
+- "Good structure, but the language is generic. Make it sound like a real person wrote it."
+
+*Format refinements:*
+- "Convert this to bullet points."
+- "Break this into two shorter sections instead of one long one."
+- "Add a summary at the top."
+
+*Content refinements:*
+- "This misses the key point about X. Add a section addressing that."
+- "The example in the second paragraph doesn't fit — replace it with something from [domain]."
+- "Your point about Y is right but the reasoning is weak. Strengthen it."
+
+Notice that all of these are specific. "Make it better" is not a refinement — it's another vague prompt. "The middle paragraph loses momentum — tighten it" is a refinement Claude can act on.
+
+**The "show me / fix this" loop**
+
+One of the most productive patterns in iterative prompting is the show me / fix this loop. It works in three steps:
+
+1. Ask Claude to produce or attempt something
+2. Identify specifically what's wrong or missing
+3. Ask Claude to fix just that thing — or produce an alternative
+
+This loop is particularly useful for writing tasks. The key is resisting the urge to ask Claude to rewrite everything when something is partially wrong. "Keep everything except the third paragraph — rewrite that to be more concrete" produces better results than "rewrite the whole thing to be more concrete." Claude has already done good work in paragraphs one and two — preserve it.
+
+**When to continue vs. when to start fresh**
+
+Iteration within a conversation is powerful, but it has limits. Two situations call for starting a new conversation:
+
+*Topic change:* If you've been refining a piece of marketing copy and now want to switch to writing code, start fresh. The marketing context will be noise for a coding task.
+
+*Context drift:* After many rounds of iteration, Claude's responses can start to feel inconsistent — as if it's lost track of earlier instructions or constraints. This is the context window under pressure. When this happens, start a new conversation and front-load with a summary of where you landed: "Here's the current draft after several revisions... here's what we decided about tone... please help me polish the conclusion."
+
+*Bad foundation:* Sometimes the first response is not a good starting point — it's so off-track that refining it would take longer than starting over. This is rare with well-specified initial prompts. But when it happens, starting over with a clearer initial prompt is faster than trying to rescue a bad draft through iteration.
+
+**The cost of over-iteration**
+
+Iteration is efficient, but it's not free. Each round-trip takes time. The goal is to iterate on things that actually matter and stop when the output is good enough — not perfect, but fit for purpose. Many people iterate until the output is interesting to them rather than until it's useful for its intended purpose. Know when to stop.
+
+## Try It
+
+**Task:** Start a task with Claude, get a first response, and then apply exactly three refinements to improve the result. Track what each refinement changed.
+
+**Starter prompt:**
+> I need help with [describe your task]. Here's the context: [relevant background]. Please give me your first attempt.
+>
+> (After receiving the response, send three follow-up messages — each a specific refinement):
+> - Refinement 1: "Good start. [Specific change 1 — e.g., 'Shorten the first section,' 'Change the tone to be more direct,' 'Add an example for point 2']"
+> - Refinement 2: "[Specific change 2]"
+> - Refinement 3: "[Specific change 3]"
+
+**What to expect:**
+- Each refinement should produce a meaningfully different result that moves toward what you want — if a refinement doesn't change things, it was probably too vague
+- By the third refinement, the output should be substantially closer to ideal than the first draft
+- Notice which refinements produced the biggest improvement — that tells you what Claude needed most from your initial prompt

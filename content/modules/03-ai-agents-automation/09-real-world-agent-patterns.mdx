@@ -1,0 +1,122 @@
+export const metadata = {
+  title: "Real-World Agent Patterns",
+  module: "ai-agents-automation",
+  order: 9,
+  estimatedMinutes: 14,
+  challengeTitle: "Adapt the Research Agent",
+}
+
+## Learn
+
+Theory is only useful when it translates to practice. This lesson presents three high-value agent archetypes — patterns that solve real, recurring problems and that you can adapt to your specific needs. Each archetype is a starting point, not a prescription.
+
+**Archetype 1: The Research Assistant**
+
+*The problem it solves:* Information gathering is time-consuming, repetitive, and prone to confirmation bias. You search for sources, read them, extract relevant information, evaluate their credibility, and synthesize findings. A research agent does all of this faster and more systematically than manual research.
+
+*What it does:*
+1. Takes a research question and a set of sub-questions to answer
+2. Executes web searches for each sub-question
+3. Reads the most relevant results
+4. Extracts and records key information with source URLs
+5. Identifies contradictions or gaps across sources
+6. Synthesizes findings into a structured report
+
+*Tools it needs:* Web search (read), file write (save report), optionally web read (full page access for deeper research)
+
+*System prompt sketch:*
+```
+You are a research agent. Your goal is to answer the following research question: [question].
+
+For each of these sub-questions, search for at least 3 sources and extract relevant information:
+[list of sub-questions]
+
+For every factual claim, record the source URL and the specific passage that supports it.
+
+If sources contradict each other, note the contradiction explicitly rather than resolving it arbitrarily.
+
+After researching all sub-questions, produce a structured report in Markdown with:
+- An executive summary (3–5 sentences)
+- A section for each sub-question with findings and sources
+- A "Contradictions and Uncertainty" section for anything that wasn't clear across sources
+
+Stop after searching for all sub-questions, even if some produce limited results.
+```
+
+*Verification checklist:*
+- [ ] Report covers all specified sub-questions
+- [ ] Each factual claim has a source URL
+- [ ] Contradictions section is present and non-empty (if sources varied)
+- [ ] Summary accurately reflects the findings (not just the most recent)
+
+*Adaptations:* Change the sub-questions to fit your research area. Change the output format to match how you'll use the findings (JSON for downstream processing, Markdown for reading). Add domain-specific credibility criteria: "Prefer peer-reviewed sources for medical claims" or "For pricing research, prefer official product pages over third-party aggregators."
+
+---
+
+**Archetype 2: The Content Pipeline**
+
+*The problem it solves:* Content creation at any scale is a multi-stage process: ideation, drafting, reviewing against criteria, revising, formatting, publishing. Each stage requires different capabilities, and they're usually done manually and sequentially. A content pipeline agent can automate the middle stages — draft, review, revise, format — based on a human-provided brief.
+
+*What it does:*
+1. Receives a content brief: topic, audience, format, key points, tone guidelines
+2. Produces a first draft
+3. Reviews the draft against the brief criteria (completeness, tone, length)
+4. Identifies gaps or off-brief elements
+5. Revises to address the review findings
+6. Formats to the specified output format
+7. Saves the final output
+
+*Tools it needs:* File read (to read brief if file-based), file write (to save draft and final), optionally web retrieval (for factual accuracy checks)
+
+*Key design decision:* The quality of the content pipeline output is directly proportional to the quality of the brief. A vague brief produces a generic draft. A specific brief with clear tone guidelines, key points, and examples of what "good" looks like produces output you can actually use.
+
+*Adaptations:* Add a review step against a style guide (saved as a file the agent can read). Add multiple revision rounds for longer or more complex content. Build in a word-count gate: "If the draft is over [N] words, cut it before final formatting."
+
+---
+
+**Archetype 3: The Data Extractor**
+
+*The problem it solves:* Data exists in forms that aren't directly usable — PDFs, HTML pages, poorly formatted spreadsheets, text documents with embedded tables. Extracting that data into a structured, usable format is tedious and error-prone manually. A data extractor agent reads source documents and transforms them into structured output.
+
+*What it does:*
+1. Reads source documents (files, web pages, or a mix)
+2. Identifies relevant data fields to extract based on a schema
+3. Extracts each field, handling variation in source format
+4. Validates that extracted data matches expected types and formats
+5. Writes structured output (JSON, CSV, or another specified format)
+6. Logs any records it couldn't extract successfully
+
+*Tools it needs:* File read (for document sources), web retrieval (for web-based sources), file write (for structured output and error log)
+
+*Key design decision:* The schema is everything. Define exactly what fields to extract, what type each field should be, what to do when a field is missing (use null? skip the record? flag it?), and what to do when the format is unexpected. The more explicit the schema, the more reliable the extraction.
+
+*Adaptations:* Scope the source documents to the types you're working with (text files, web pages, PDFs). Add a confidence scoring step: "For each extracted record, rate your confidence in the extraction on a scale of 1–3. Records with confidence 1 go to an error log for manual review." Add validation rules specific to your data domain.
+
+**The meta-skill: pattern recognition**
+
+When you encounter a recurring multi-step task — anything you do more than a few times and that follows a consistent structure — ask: "Which of these patterns does this resemble?"
+
+Research assistant: whenever the task is "gather information on X and produce a report"
+Content pipeline: whenever the task is "produce content that meets these criteria and save it"
+Data extractor: whenever the task is "read these sources and give me structured data"
+
+The patterns are templates. They're not plug-and-play — every application requires adapting the system prompt, the tool list, the output format, and the stopping conditions. But starting from a known-good pattern is faster and more reliable than designing from scratch.
+
+## Try It
+
+**Task:** Adapt the research assistant pattern to a specific research task you need done in the next week. Write the adapted system prompt with your specific research question, sub-questions, and output format.
+
+**Starter prompt:**
+> I want to adapt the research assistant agent pattern to a specific task. Here's my research need:
+>
+> Overall question: [What you want to research]
+> Sub-questions: [3–5 specific questions that together would answer the overall question]
+> Output format I need: [How I'll use the research — reading, feeding into a document, sharing with someone, etc.]
+> Source preferences: [Any guidance on preferred source types — recent sources only? specific domains? academic vs. commercial?]
+>
+> Adapt the research assistant system prompt to my specific task. Include: research question, sub-questions, evidence-tracking requirements, output format, and stopping conditions.
+
+**What to expect:**
+- The adapted prompt should use your specific questions, not the generic template language
+- The evidence tracking and output format should match what you actually need, not a default
+- After Claude adapts the prompt, read it and ask: "If this agent ran with these instructions, would the output be directly useful to me?" If not, identify what's missing and ask Claude to add it

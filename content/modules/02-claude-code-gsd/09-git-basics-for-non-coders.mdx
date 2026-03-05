@@ -1,0 +1,132 @@
+export const metadata = {
+  title: "Git Basics for Non-Coders",
+  module: "claude-code-gsd",
+  order: 9,
+  estimatedMinutes: 14,
+  challengeTitle: "Your First Git Commit",
+}
+
+## Learn
+
+Git is the safety net that makes Claude Code safe to use for real projects. Without it, a bad Claude Code session can permanently overwrite working code. With it, you can always roll back to the last good version. Git is not optional for Claude Code projects — it's required for responsible use.
+
+The good news: you only need five commands to use git effectively as a non-developer. Everything else is advanced functionality you'll learn if and when you need it.
+
+**What git is**
+
+Git is a version control system — a sophisticated save system for code. Every time you commit in git, you create a snapshot of your project at that moment. Those snapshots are stored permanently and can be restored at any time. This is fundamentally different from regular file saving, where saving overwrites the previous version.
+
+Think of git commits as numbered save states in a video game. If something goes wrong in the next session, you can reload a previous save state. The game didn't delete your progress — it preserved it.
+
+**The five commands you need**
+
+*`git init`* — Initializes git in a directory. You run this once per project, in the project's root folder. After this, git starts tracking changes.
+
+```
+git init
+```
+
+*`git add .`* — Stages all changed files for the next commit. The `.` means "all files in this directory and below." You run this before every commit to tell git what changes to include.
+
+```
+git add .
+```
+
+*`git commit -m "message"`* — Saves a snapshot with a description. The message in quotes describes what you changed. Good commit messages are short and specific: "Add delete button to ItemList" not "stuff."
+
+```
+git commit -m "Add item list with localStorage persistence"
+```
+
+*`git log`* — Shows the history of commits. Each commit has a hash (a long identifier), your message, and a timestamp. This is how you see what changed and when.
+
+```
+git log
+```
+
+*`git push`* — Sends your commits to GitHub. You do this after committing to back up your work in the cloud and make it accessible from other devices.
+
+```
+git push
+```
+
+**GitHub: the cloud backup for your code**
+
+Git runs locally on your computer. GitHub is the online home for your git repository — think of it as Google Drive for code.
+
+To push to GitHub:
+1. Create an account at [github.com](https://github.com) if you don't have one
+2. Create a new repository (click the + in the top right of GitHub)
+3. Follow the instructions GitHub shows you after creating the repo — it gives you the exact commands to run to connect your local project to GitHub
+
+Once connected, `git push` sends your commits to GitHub. A bad Claude Code session can destroy local files, but it can't reach GitHub — your last commit is always safe there.
+
+**The non-coder's git workflow**
+
+The simplest effective git workflow for Claude Code projects:
+
+1. **Before each Claude Code session:** Run `git add .` and `git commit -m "Before session: [what you're about to work on]"`. This creates a rollback point you can return to if the session goes wrong.
+
+2. **After each successful Claude Code build:** Run `git add .` and `git commit -m "[What Claude Code built]"`. This saves the good state.
+
+3. **After verifying a milestone works:** Run `git push`. This backs up to GitHub.
+
+The key principle: **commit before every Claude Code session, not just after**. If Claude Code breaks something during the session, you need a commit from before the session to roll back to. The "after" commit saves the good work; the "before" commit is the safety net.
+
+**Understanding branches at the level you need**
+
+You'll hear "branches" mentioned in git discussions. Here's the minimum you need to know:
+
+Your main work lives on the `main` branch (sometimes called `master` in older projects). This is production — the code that's deployed to your live URL.
+
+When Claude Code or GitHub workflows create branches automatically (for example, Vercel creates a preview branch for every pull request), you don't need to manage them. Just know that the `main` branch is the one you commit to and that deploying from `main` updates your live site.
+
+**How Claude Code uses git in the GSD workflow**
+
+When you use `/gsd:execute-phase`, Claude Code makes commits automatically at each milestone checkpoint. This means each phase of your build is automatically saved as a distinct commit. The commit messages describe what each phase accomplished.
+
+This is one of the benefits of using the GSD workflow rather than free-form Claude Code sessions: your git history becomes a useful record of what was built and when, not just a blob of "Claude Code changes."
+
+**Rolling back if something goes wrong**
+
+If Claude Code produces a bad result and you want to return to the last good commit:
+
+```
+git log
+```
+
+Find the commit hash of the last good state (a long hexadecimal string like `a3f2c19`). Then:
+
+```
+git checkout a3f2c19 .
+```
+
+This restores all files to the state they were in at that commit. You can then recommit and continue from the good state.
+
+If you're not comfortable running git commands directly, just describe the situation to Claude Code: "My last good commit was [hash]. Claude Code just made changes that broke the app. Please restore the project to the state at that commit."
+
+## Try It
+
+**Task:** Initialize a git repository for a Claude Code project you've been working on, make your first commit with all existing files, and push it to a new GitHub repository.
+
+**Starter prompt:**
+> (Run these commands in your project directory):
+>
+> First, check if git is already initialized:
+> git status
+>
+> If you see "not a git repository," initialize it:
+> git init
+>
+> Then stage all files and make your first commit:
+> git add .
+> git commit -m "Initial commit: [brief description of what the project is]"
+>
+> (Then create a new repo on github.com and follow their instructions to push)
+
+**What to expect:**
+- `git status` after initialization should show your files as "Untracked files" in red
+- After `git add .`, running `git status` again should show the same files in green under "Changes to be committed"
+- After `git commit`, `git log` should show your first commit with your message and a timestamp
+- After pushing to GitHub, visiting your repository on github.com should show all your project files
+- If any of these steps produce an error, paste the full error message to Claude Code with the command that produced it

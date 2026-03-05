@@ -1,0 +1,74 @@
+export const metadata = {
+  title: "What Is an AI Agent?",
+  module: "ai-agents-automation",
+  order: 1,
+  estimatedMinutes: 12,
+  challengeTitle: "Agent vs. Not Agent",
+}
+
+## Learn
+
+You've been using Claude as a conversational AI — you ask, it answers, the exchange is complete. AI agents are something fundamentally different: they plan and act, not just respond.
+
+The difference is autonomy over a sequence of steps. A conversational AI answers a question. An agent takes a goal, breaks it into a series of actions, executes those actions using tools, checks the results, and continues until the goal is achieved. The agent doesn't answer your question — it accomplishes your task.
+
+**The core distinction: reactive vs. proactive**
+
+When you ask Claude.ai "how do I organize my email?" it gives you advice. When you direct a Claude Code agent to "organize the files in this directory by project and date," it reads the directory, decides on a structure, creates folders, moves files, and confirms completion. The first is reactive — it responds to your question. The second is proactive — it takes a sequence of real-world actions to produce a real-world result.
+
+This is the most important distinction in understanding agents. Conversational AI processes inputs and produces outputs. Agents process inputs, take actions, observe consequences, and take further actions until a goal is achieved.
+
+**The components of an agent**
+
+Every agent — whether it's Claude Code running in your terminal, a research agent scanning the web, or a customer service bot handling tickets — has four components working in a loop.
+
+*Perception:* The agent reads its inputs. These might be a file it was asked to process, a web page it retrieved, an error message from a previous action, or user instructions. Perception is how the agent understands the current state of the world.
+
+*Reasoning:* The agent plans its next action based on what it perceives and what its goal is. This is where the language model does its work — interpreting the situation and deciding what to do next. Good agent design makes the reasoning step explicit: agents that think through their approach before acting produce more reliable results than those that act reflexively.
+
+*Action:* The agent executes something in the real world — writes a file, calls an API, runs a command, searches the web, sends an email. Actions are what distinguish agents from conversational AI. Actions have consequences; responses do not.
+
+*Memory:* The agent retains information across steps. In simple agents, this is just the context window — everything that's happened in the current session. In more sophisticated agents, memory includes summaries of past sessions, a database of past results, or structured state that persists between runs.
+
+These four components run in a loop — perceive, reason, act, observe the result of the action, update the plan, act again — until the goal is achieved or the agent determines it cannot proceed.
+
+**When agents are appropriate**
+
+Agents are the right tool when a task requires multiple sequential steps that depend on intermediate results. The key indicator: "If I had to do this myself, would I need to see the result of step 1 before I could do step 2?" If yes, that's an agent task.
+
+Research workflows are the clearest example. To research a topic and produce a structured report, you might: search for relevant sources, read each one, extract key information, compare across sources, identify contradictions, synthesize findings, and write the report. Each step depends on the results of the previous step. An agent can execute this entire workflow; a single conversational prompt cannot.
+
+Other strong agent candidates:
+- Processing a folder of files (each file's handling may depend on what's in it)
+- Multi-step data transformation (read, validate, transform, output — each step may fail and require different handling)
+- Content production pipelines (draft, review against criteria, revise, format, save)
+
+**When agents are overkill**
+
+Agents introduce complexity and, when things go wrong, multiple potential failure points. For tasks that can be accomplished in a single well-specified prompt, an agent is the wrong tool.
+
+One-shot tasks — single document summaries, direct questions with factual answers, simple code generation — are better served by a well-structured prompt. Agents shine on multi-step, stateful work. They're overengineered for anything that can be accomplished in one exchange.
+
+**Why understanding agents matters even if you're not building one**
+
+The agent you're most likely to interact with is Claude Code. When you give Claude Code a multi-step task — "build a feature, run the tests, fix any failures, commit the result" — you're directing an agent. Understanding what agents are helps you design tasks at the right level of abstraction, set appropriate verification checkpoints, and recognize when an agent is doing something unexpected before it's too late to course-correct.
+
+Agents are only as reliable as the instructions they receive. The prompting skills from Module 1 apply directly here — they just operate at a larger scale. Module 3 teaches you to apply those skills to the unique context of agentic AI.
+
+## Try It
+
+**Task:** Write a plain-English description of one task that would genuinely benefit from an agent, and one task that wouldn't. Then explain why each falls where it does.
+
+**Starter prompt:**
+> I'm learning about AI agents. I'm going to describe two tasks. For each one, tell me whether it's a good fit for an agent or better suited to a single conversational prompt, and explain why.
+>
+> Task 1: [Describe a multi-step task you have — something that requires seeing intermediate results before deciding next steps]
+>
+> Task 2: [Describe a single-response task — a question you need answered, a piece of writing you need generated, a piece of code for a specific function]
+>
+> For each, explain: (1) whether an agent or a prompt is more appropriate, and (2) what specifically makes it fall in that category.
+
+**What to expect:**
+- Claude should identify the agent task correctly based on the sequential, state-dependent nature of its steps
+- The explanation for the prompt task should name the specific property that makes it non-agentic (it can be accomplished in one pass, the result doesn't depend on intermediate findings)
+- If you're not sure which of your tasks is which, describe both and let Claude sort them — this is itself a useful exercise

@@ -1,0 +1,80 @@
+export const metadata = {
+  title: "The Non-Coder's Product Playbook",
+  module: "idea-to-product",
+  order: 1,
+  estimatedMinutes: 12,
+  challengeTitle: "Define Your Problem Statement",
+}
+
+## Learn
+
+Here's the mindset shift that makes everything in this module possible: you are not learning to code. You are learning to manage a development team — a team that happens to consist entirely of Claude.
+
+Your role is product manager, domain expert, and quality director. Claude's role is the entire development team: architecture, implementation, testing, and deployment. This division of labor is not a limitation — it's the model. And it's a fundamentally better arrangement than most alternatives for the kinds of products most people want to build.
+
+**What you bring that Claude doesn't**
+
+Claude can write code, debug errors, design interfaces, and scaffold applications. It cannot do the four things that determine whether a product is worth building:
+
+*Judgment:* You know what "good" looks like for your use case. Claude knows what "correct" looks like. These are not the same. A product can be technically correct and unusable. Your taste and judgment are the quality gate Claude doesn't have.
+
+*Domain knowledge:* You understand your problem space in a way Claude can only approximate. You know what your users actually struggle with, what workarounds they currently use, what they've tried that didn't work. This knowledge is irreplaceable in defining what to build.
+
+*User empathy:* You know who the user is — often, it's you, or someone whose problems you understand firsthand. "What would make this better?" is a question you can answer from lived experience. Claude can only infer.
+
+*Decision authority:* When there are two ways to build something, Claude will ask or make a reasonable choice. You make the final call. The product reflects your decisions, which means it reflects your priorities.
+
+**The old world vs. the new world**
+
+The old world of software development: you have an idea. You describe it to a developer. You wait weeks or months. You spend money — probably thousands of dollars for even a simple tool. You get something that may or may not be what you meant. You iterate slowly because each change requires a developer.
+
+The new world: you have an idea. You describe it to Claude Code. In an afternoon, you have a working prototype. In a weekend, you can have a deployed tool. When you want a change, you describe it in plain English and Claude Code makes it. The iteration cycle is measured in minutes, not weeks.
+
+This is not hype — the masterclass you're currently reading was built this way. The platform, the lesson routing, the entire infrastructure, was scaffolded by Claude Code from a plain-English description. The lesson content was written by Claude Code from a curriculum plan. The deployment was done by running a single command.
+
+**The hospital tracker as the running example**
+
+Throughout this module, we'll return to one example: a GTA (Greater Toronto Area) hospital wait time tracker. This is a real product idea: a web app that shows current estimated wait times at major GTA emergency rooms, helping people make informed decisions about where to go when they need urgent care.
+
+This example is useful because it's:
+- A real problem (anyone who has waited 5 hours in an ER has experienced it)
+- A realistic scope for a solo builder (data from public sources, a single-page app)
+- A good test of the full pipeline (idea → requirements → roadmap → scaffold → design → launch)
+
+We'll trace the hospital tracker through each lesson. By the end of the module, you'll have seen a complete product idea go through every stage of the pipeline, from problem definition to launch strategy. This isn't a toy example — the skills used are identical to what you'd use for any product you want to build.
+
+**Starting the pipeline**
+
+Every product starts with a problem statement. Not a feature list, not a name, not a tech stack — a problem statement. The problem statement defines what's broken in the world that this product fixes, for whom, and why it matters.
+
+Good problem statements:
+- Focus on the pain, not the solution ("People don't know how long ER waits will be" not "We need a wait time app")
+- Name a specific user ("GTA residents who need emergency care" not "people")
+- Make the stakes clear ("wasted hours in a crowded waiting room" not "an inconvenience")
+
+The hospital tracker problem statement: "GTA residents who need emergency care have no reliable way to compare current wait times across hospitals before deciding where to go, resulting in wasted hours in overcrowded waiting rooms and suboptimal care matching."
+
+That's the foundation everything else is built on. When you're three months into building a product and feature creep is threatening to derail you, you come back to the problem statement and ask: does this feature serve this problem, for this user?
+
+## Try It
+
+**Task:** Write a one-paragraph problem statement for a product idea you've had, using the format: "I want to build X for Y who struggles with Z."
+
+**Starter prompt:**
+> I'm starting to define a product idea. Help me write a strong problem statement.
+>
+> Here's my rough idea: [Describe your idea in a few sentences — what you're thinking of building, who you think would use it, what problem you think it solves]
+>
+> Write a one-paragraph problem statement for this idea using this structure:
+> - Who the user is (specific, not "everyone")
+> - What problem they currently experience
+> - What the consequence of that problem is (wasted time? bad decisions? unnecessary cost?)
+> - One sentence on what the product does about it
+>
+> If my idea is unclear, ask me 1–2 clarifying questions before writing the statement.
+
+**What to expect:**
+- Claude should either write a problem statement or ask a targeted clarifying question — if it asks more than two questions, tell it to make its best assumption and proceed
+- The problem statement should focus on the user's pain, not the product's features
+- The user description should be specific enough that you could find a real person who fits it
+- Read the statement and ask yourself: "If someone read this and built a product that solves exactly this problem for exactly this user, would it be what I had in mind?" If not, identify what's off and ask Claude to revise

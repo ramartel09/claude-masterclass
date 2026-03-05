@@ -1,0 +1,106 @@
+export const metadata = {
+  title: "Design Without a Designer",
+  module: "idea-to-product",
+  order: 6,
+  estimatedMinutes: 13,
+  challengeTitle: "Describe Your UI",
+}
+
+## Learn
+
+You don't need design skills to build something that looks professional. This is not encouraging mediocrity — it's acknowledging that modern tools have raised the floor dramatically. Tailwind CSS + shadcn/ui + a few design principles produces results that would have required a professional designer a decade ago.
+
+The key is knowing how to communicate what you want to Claude Code. Design instruction is a skill, and this lesson teaches it.
+
+**Why dark mode first**
+
+For personal tools — the things most people build when learning to ship products — dark mode is almost always the better default. Dark backgrounds with light text:
+- Look more polished on modern screens (especially Mac/Windows with dark system UI)
+- Reduce eye strain for extended use
+- Are easier to achieve consistently with Tailwind's dark palette (zinc-900/zinc-950 backgrounds, zinc-100 text)
+- Make accent colors pop more dramatically (indigo, blue, emerald stand out against dark backgrounds)
+
+Unless you have a specific reason for a light theme (a document-heavy tool, a public-facing marketing site), start dark. It's faster to build something that looks great in dark mode than to make a light theme feel polished.
+
+**The shadcn/ui vocabulary**
+
+shadcn/ui gives you a vocabulary of components that Claude Code knows how to use. When you can name the component you want, Claude Code builds it correctly without you needing to specify every detail.
+
+Key components to know:
+
+| Component | What it is | When to use |
+|-----------|------------|-------------|
+| `Card` | Bordered, padded container | To group related information |
+| `Button` | Clickable action element | Primary actions, secondary actions, destructive actions |
+| `Badge` | Small status label | Status indicators, categories, counts |
+| `Input` | Text entry field | Forms, search, any user text input |
+| `Select` | Dropdown selector | Choosing from a limited set of options |
+| `Table` | Rows and columns | Structured data, comparisons, lists with multiple attributes |
+| `Tabs` | Tabbed navigation | Multiple views of related content |
+| `Dialog` | Modal overlay | Confirmations, detailed views, forms |
+| `Separator` | Visual dividing line | Section breaks |
+
+When you describe a UI using these names, Claude Code knows exactly what to build. "A Card with a Badge in the top-right corner, a bold title, and a description" is more precise and actionable than "a box that shows information about the hospital."
+
+**How to describe UI to Claude Code**
+
+UI description follows the same specificity principle as all prompting: the more specific you are, the closer the first result will be to what you want.
+
+*Describe layout in terms of structure:*
+- "A two-column layout: 30% for the sidebar (hospital list), 70% for the detail view"
+- "A full-width header, followed by a grid of Cards with 3 columns on desktop, 1 column on mobile"
+- "A fixed bottom navigation bar with three tabs"
+
+*Describe components with their contents:*
+- "Each hospital shows as a Card with: hospital name (h3, white text), a Badge showing the wait category (green for less than 1 hour, yellow for 1–2 hours, red for more than 2 hours), and the exact wait time as a large number (3xl, bold)"
+- "A Button labeled 'Update Wait Time' — primary style (indigo background), full width, below the wait time display"
+
+*Describe spacing and hierarchy with Tailwind language:*
+Claude Code understands Tailwind class descriptions. "More padding around the card" or "tighter spacing between list items" works. You can also be specific: "16px gap between cards" maps to `gap-4` in Tailwind.
+
+*Describe what to leave to Claude:*
+Not every visual detail needs specification. "Hover states and transitions" and "exact pixel values" and "animation timing" are all reasonable things to leave to Claude Code's judgment. Focus your specification on: layout structure, component choices, the data each component shows, and accent color.
+
+**The constraint library approach**
+
+The most effective design workflow for non-designers is: choose your accent color, choose your component library (shadcn/ui), describe the layout and component hierarchy, and let Claude Code fill in the details within those constraints.
+
+This works because shadcn/ui components are well-designed by default — they have appropriate spacing, sizing, and interaction states. When you use them and specify the right layout and contents, you get something that looks good without specifying every detail.
+
+For the hospital tracker: dark zinc background, indigo accent color, shadcn/ui Cards for each hospital, Badge components for wait status color-coding, and a clean header. That's enough specification to get a professional-looking result.
+
+**What to specify vs. what to leave to Claude**
+
+| Specify | Leave to Claude |
+|---------|----------------|
+| Layout structure (columns, grid, sidebar) | Exact pixel dimensions |
+| Accent color | Secondary color relationships |
+| Which components to use | Internal component styling |
+| What data each component shows | Hover animations |
+| Dark vs. light mode | Typography weight beyond "bold/regular" |
+| Responsive breakpoint behavior | Specific icon choices |
+
+## Try It
+
+**Task:** Describe the UI of your product's main screen to Claude in plain English and ask it to build it with shadcn/ui and Tailwind.
+
+**Starter prompt:**
+> Build the main screen UI for my [product type] app. Here's the design specification:
+>
+> Layout: [Describe the overall layout — header, main content area, sidebar if any, navigation]
+>
+> Components to use: [List the shadcn/ui components you want — Card, Button, Badge, Table, etc. — and what they display]
+>
+> Color scheme: Dark mode. Background: zinc-950. Text: zinc-100. Accent: [indigo/blue/emerald/etc.].
+>
+> Key data to show: [What the main screen needs to display — what information does a user see?]
+>
+> Responsive behavior: [How it should look on mobile vs. desktop]
+>
+> Use placeholder/hardcoded data for now — we'll wire up real data in a later session.
+
+**What to expect:**
+- Claude Code should produce a working UI page with shadcn/ui components, not a wireframe or description
+- The result should run without errors and show your specified layout with hardcoded placeholder data
+- Dark mode should be applied correctly: dark backgrounds, light text, visible accent color
+- If the layout is off (wrong column ratio, wrong component placement), describe the specific discrepancy and ask Claude Code to fix just that element

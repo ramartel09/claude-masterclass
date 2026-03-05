@@ -1,0 +1,100 @@
+export const metadata = {
+  title: "Testing Without Writing Tests",
+  module: "idea-to-product",
+  order: 7,
+  estimatedMinutes: 12,
+  challengeTitle: "Write Your Acceptance Checklist",
+}
+
+## Learn
+
+Testing is how you know the product you built is actually the product you wanted. For personal projects and solo builds, testing doesn't require writing test code — it requires thinking systematically about what "working correctly" means, then verifying that the product meets those criteria.
+
+The acceptance-test-first discipline applied to products: before Claude Code builds a feature, write in plain English what you'll check to know it works. Then check it.
+
+**Acceptance-test-first for features**
+
+The pattern is:
+1. Define the acceptance criteria for a feature before Claude Code builds it
+2. Claude Code builds the feature
+3. You verify each criterion by using the app
+
+The key word is "before." Writing acceptance criteria before building keeps you honest. It's easy to retroactively decide that whatever Claude Code built is acceptable — especially if it looks good. Pre-written criteria are more objective: either the item appears in the list after adding it, or it doesn't.
+
+For the hospital tracker, the acceptance criteria for "display hospital wait times":
+```
+□ Home page loads within 3 seconds
+□ Six major GTA hospitals are displayed (list their names)
+□ Each hospital shows: name, current wait time in hours/minutes, and last-updated timestamp
+□ Wait times are color-coded: green (<1 hour), yellow (1-2 hours), red (>2 hours)
+□ The display is readable on my phone (test at iPhone-sized viewport)
+□ No hospital shows "undefined" or "null" as the wait time
+□ If a hospital's data is unavailable, it shows a "Data unavailable" state, not an error
+```
+
+Each criterion is specific and testable. You either see the six hospitals or you don't. You either see color coding or you don't. There's no judgment required — it's binary.
+
+**Vercel preview deploys: a real device test URL for every change**
+
+One of Vercel's most valuable features for personal projects is preview deploys. When your project is connected to GitHub, every pull request (and often every push to a non-main branch) automatically gets a preview deploy URL — a unique, real URL that shows exactly what that version of the app looks like.
+
+This means you can test your app on real devices without any special setup. Claude Code makes a change, pushes to a branch, Vercel deploys the preview URL, and you can open it on your phone, tablet, and laptop simultaneously. This catches responsive design issues that you'd never catch just running `npm run dev` on your laptop.
+
+For personal projects, this workflow is:
+- Claude Code builds a feature
+- You push to a branch (or Claude Code does as part of the GSD workflow)
+- Vercel generates a preview URL automatically
+- You test on your actual devices
+
+This is significantly more reliable than checking "it looks fine on my laptop" and shipping it.
+
+**Manual testing on real devices**
+
+There's no substitute for using your app on the device you'll actually use it on. The things that don't work on real devices:
+
+- Tap targets that are too small (works fine with mouse, impossible with thumbs)
+- Text that's readable on a large monitor but too small on a phone
+- Hover states that are central to the UX (no hover on mobile)
+- Scroll behavior that works in a browser window but feels wrong in a mobile browser
+- Form inputs that trigger the wrong keyboard type on mobile
+
+The testing protocol: for every feature, test it on at least two device sizes (laptop and phone). Write down anything that looks or feels wrong. Describe it specifically to Claude Code.
+
+**The GSD checkpoint pattern for human-verify tasks**
+
+In GSD execution plans, human-verify checkpoints are the formal version of acceptance testing. Claude Code builds a milestone, stops, presents what it built, and waits for verification before continuing.
+
+The verification at each checkpoint should use a pre-written acceptance checklist — not ad-hoc checking, but systematic verification against defined criteria. This is especially important for checkpoints that gate further build work: if you verify incorrectly (accept something that doesn't actually work), the next phase builds on a broken foundation.
+
+**When automated tests add value**
+
+For personal projects in Phase 1, manual acceptance testing is usually sufficient. Automated tests (unit tests, integration tests, end-to-end tests) add value when:
+- The project is large enough that manual testing is time-consuming
+- You're making changes frequently and need to verify nothing broke
+- The project has complex logic (calculations, data transformations) where edge cases matter
+
+For simple personal tools, the time to write good automated tests often exceeds the time spent manually testing. For complex or frequently-changing products, automated tests pay for themselves quickly.
+
+When you do want automated tests, ask Claude Code to write them — don't write them yourself. Describe the behaviors you want tested: "Write tests that verify: the wait time display renders for each hospital, the color coding is applied correctly based on wait time values, and the 'Data unavailable' state renders when data is missing."
+
+## Try It
+
+**Task:** Write an acceptance checklist for your product's core feature — the primary thing a user can do. Aim for 5–7 specific, verifiable items.
+
+**Starter prompt:**
+> I want to write an acceptance checklist for the core feature of my product. The feature is: [describe the core feature — what the user does and what they see]
+>
+> Help me write an acceptance checklist with 5–7 items. Each item should:
+> - Be specific enough to test without ambiguity (either it passes or it fails)
+> - Be testable by using the app (not by reading code)
+> - Cover the core behavior, the edge cases, and the error states
+>
+> Format as a checkbox list I can actually use when testing: □ [specific criterion]
+>
+> After writing the checklist, tell me: which item is most likely to fail on the first Claude Code build, and what would that failure look like?
+
+**What to expect:**
+- Criteria should be binary — pass or fail — not subjective ("looks good" is not a criterion)
+- Edge cases and error states should be represented: what happens with empty input? with the maximum amount of data? when something is unavailable?
+- The "most likely to fail" prediction is useful — it tells you where to look first when running your verification
+- Save this checklist — use it verbatim when Claude Code has built the feature and you're doing your first verification pass

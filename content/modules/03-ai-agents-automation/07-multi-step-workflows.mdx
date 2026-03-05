@@ -1,0 +1,101 @@
+export const metadata = {
+  title: "Multi-Step Workflows: Chaining Tasks",
+  module: "ai-agents-automation",
+  order: 7,
+  estimatedMinutes: 13,
+  challengeTitle: "Design a 3-Step Workflow",
+}
+
+## Learn
+
+A multi-step workflow is a series of tasks where the output of one step becomes the input for the next. This is the fundamental pattern of all automation — whether you're building a manufacturing pipeline, a data processing system, or an AI workflow. Understanding how to design, connect, and manage these steps is how you go from individual agent tasks to automated processes.
+
+**The passing-outputs-as-inputs principle**
+
+Every step in a workflow produces output. That output has two possible fates: it's the final product, or it's the input to the next step. When it's an input, the format of the output must match the format the next step expects.
+
+This seems obvious, but format mismatches are the most common source of workflow failures. If step 1 produces a comma-separated list and step 2 expects a JSON array, the workflow breaks at the handoff. The fix is to specify output formats explicitly at each step, with the consuming step's requirements in mind.
+
+Format specification at handoffs:
+- Be explicit: "Return the results as a JSON array of objects, each with keys: title (string), url (string), date (ISO 8601 string)"
+- Be consistent: Use the same format for the same type of data across all steps
+- Be minimal: Include only the fields the next step needs — extra fields add noise
+
+**Workflow design: map before you build**
+
+Before running any workflow, map it on paper (or in a document). For each step, define:
+- **Input:** What does this step receive? What format is it in?
+- **Process:** What transformation or work does this step do?
+- **Output:** What does this step produce? What format should it be in?
+- **Handoff:** How does the output get to the next step? (File, in-memory, copy-paste, API call?)
+
+A workflow that isn't mapped is a workflow that isn't designed — it's just a sequence of actions that happen to run in order. Mapped workflows are debuggable: when something breaks, you can identify which step's output doesn't match the next step's expected input.
+
+**When to use a single long agent run vs. chained sequential steps**
+
+*Single long agent run:* Best when the workflow is highly coherent (each step depends heavily on context from previous steps), when the entire workflow can be completed in one context window, and when no human verification is needed at intermediate steps.
+
+Claude Code building a feature from a plan is a single long agent run — the context from "what the codebase looks like" to "what tests I just ran" to "what I should fix next" is all held in one session.
+
+*Chained sequential steps:* Better when: steps are modular enough to verify independently, when intermediate outputs need human review, when the full workflow would exceed a single context window, or when different steps need different specialized capabilities.
+
+A content production workflow might chain: research agent (produces summary) → outline agent (produces structure from summary) → writing agent (produces draft from outline) → editing agent (produces final from draft). Each step is verifiable independently and produces a meaningful artifact.
+
+**Real-world example: research → summarize → format → save**
+
+This four-step workflow produces a structured reference document from a research query.
+
+*Step 1: Research*
+Input: Topic + specific questions to answer
+Process: Web search + information extraction
+Output: Raw findings, each with source URL, as JSON
+
+*Step 2: Synthesize*
+Input: Raw findings JSON from Step 1
+Process: Identify key themes, reconcile conflicts across sources, rank by relevance
+Output: Structured synthesis with sections: Key Findings, Conflicting Information, Confidence Level
+
+*Step 3: Format*
+Input: Structured synthesis from Step 2
+Process: Convert to readable Markdown with proper headings, citations, and callouts
+Output: Formatted Markdown document
+
+*Step 4: Save*
+Input: Formatted Markdown from Step 3
+Process: Write to file in specified location with filename based on topic + date
+Output: File at /research/[topic]-[YYYY-MM-DD].md
+
+Each step's output is an intermediate deliverable you could review independently. If Step 2 is wrong, you fix it and rerun Step 3 and 4 without re-running Step 1. This is the debuggability advantage of chained steps.
+
+**Tools for lightweight workflow automation**
+
+You don't need code or a dedicated automation platform to chain AI steps. Three lightweight approaches:
+
+*File-based handoffs:* Step 1 saves to a file. Step 2 reads from that file. You can review the file between steps. This is the simplest and most debuggable approach.
+
+*Copy-paste handoffs:* Step 1 produces output in Claude. You copy it and paste it into Step 2's prompt. More manual but requires no tooling. Good for workflows you're running for the first time.
+
+*In-context handoffs:* For shorter outputs, the output of Step 1 is included directly in Step 2's prompt. This keeps the workflow in one Claude session but limits how much data can be passed.
+
+For most personal workflows, file-based or in-context handoffs are sufficient. Code-based automation is worth adding only when the workflow runs frequently enough that manual handoffs are a meaningful time cost.
+
+## Try It
+
+**Task:** Map a 3-step workflow you'd like to automate, specifying the input and output format at each step and the handoff mechanism between steps.
+
+**Starter prompt:**
+> I want to design a 3-step workflow for this overall goal: [describe what you want to automate at a high level — e.g., "turn my meeting notes into structured action items and add them to my task list"]
+>
+> Help me design this as a 3-step workflow. For each step:
+> - Name: [short name for this step]
+> - Input: [what this step receives, with format]
+> - Process: [what this step does]
+> - Output: [what this step produces, with exact format specification]
+> - Handoff: [how the output gets to the next step — file, copy-paste, in-context]
+>
+> After designing the workflow, identify the most likely failure point (where the output format of one step might not match the expected input of the next) and suggest how to prevent it.
+
+**What to expect:**
+- Claude should produce a specific workflow map with concrete format specifications at each step — not just "produces a summary" but "produces a JSON object with keys: title (string), items (array of strings), owner (string)"
+- The failure point identification should name a specific mismatch risk, not just "format could be wrong"
+- Before running this workflow for real, review the handoff formats and ask: "If Step 1 produced output that exactly matched this format, would Step 2 be able to use it without modification?"

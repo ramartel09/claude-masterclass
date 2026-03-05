@@ -1,0 +1,94 @@
+export const metadata = {
+  title: "The Agent Loop: Think → Act → Observe → Repeat",
+  module: "ai-agents-automation",
+  order: 2,
+  estimatedMinutes: 12,
+  challengeTitle: "Map an Agent Loop",
+}
+
+## Learn
+
+Every AI agent runs the same fundamental process, regardless of what it's doing or what tools it has access to. This process is called the agent loop: **Think → Act → Observe → Repeat**. Understanding this loop is the foundation of being able to design, direct, and debug agent workflows.
+
+**Think**
+
+In the Think step, the agent reasons about the current state and decides what to do next. It looks at: what the goal is, what has already been done, what it perceives right now, and what tools are available. From all of this, it forms a plan for the next action.
+
+The Think step is often the least visible part of the loop — it happens inside the model before any output is produced. You can make it visible by prompting agents to "think step by step" or to "explain your reasoning before acting." This is especially useful when debugging: if an agent makes a wrong decision, the visible reasoning tells you where the logic went wrong.
+
+Good agent design includes explicit thinking. Agents that reason before acting are more reliable than agents that react without reflection. When you're writing instructions for an agent, build in reasoning prompts: "Before taking any action, explain what you're about to do and why."
+
+**Act**
+
+In the Act step, the agent executes something. Actions are the agent's interface with the real world — they're how agents do things, not just say things. What actions an agent can take depends entirely on what tools it has been given access to.
+
+Common action types:
+- File operations (read, write, create, delete, move)
+- Shell command execution (run scripts, install packages, start servers)
+- Web requests (fetch a page, call an API, submit a form)
+- Search (retrieve information from a database or the web)
+- Communicate (send an email, post to a webhook, write to a log)
+
+The scope of what an agent can affect is determined by its tool access. An agent with only read access can't write files. An agent with no internet access can't retrieve current data. Designing an agent means deciding which tools to grant — and being deliberate about this is part of responsible agent design.
+
+**Observe**
+
+After acting, the agent reads the result of its action. This is the Observe step. The observation becomes input to the next Think step. Observations can be:
+
+- Success confirmations ("file created successfully")
+- Error messages ("permission denied: cannot write to /etc/")
+- Output data (the content of a file that was read, the response from an API call)
+- State changes (the list of files in a directory after creating a new one)
+
+The agent's ability to act intelligently depends on the quality of its observations. Agents fail when they can't observe the consequences of their actions clearly — when error messages are obscure, when success and failure look similar, or when the result of an action is ambiguous.
+
+**Repeat — and stopping conditions**
+
+The loop repeats: think about the observation, decide the next action, act, observe. This continues until either the goal is achieved or a stopping condition is met.
+
+Stopping conditions are as important as the goal itself. Without them, agents can get stuck in loops — repeating the same action when it fails, rather than recognizing failure and stopping. Good stopping conditions include:
+
+- *Goal achieved:* The agent has produced the specified output and confirms completion
+- *Step limit reached:* After N steps, stop (prevents infinite loops)
+- *Error state:* If a critical action fails, stop and report (rather than continuing with bad state)
+- *Human checkpoint:* At defined milestones, pause and wait for human verification before continuing
+
+Stopping conditions are defined in the agent's instructions. If you don't specify them, the agent invents its own — which may not align with what you want. In the GSD workflow, human-verify checkpoints are explicit stopping conditions built into the plan.
+
+**Claude Code's agent loop in practice**
+
+When you give Claude Code a task like "build a contact form, test that it validates inputs, and commit the result," it runs the agent loop multiple times:
+
+1. Think: "I need to create a contact form component"
+2. Act: Creates the component file
+3. Observe: File created successfully
+4. Think: "Now I need to test input validation"
+5. Act: Writes tests or tests manually
+6. Observe: Tests pass (or fail — if they fail, the loop continues: think about the failure, act to fix it, observe the result)
+7. Think: "Goal achieved — I should commit"
+8. Act: Runs git add + git commit
+9. Observe: Commit successful
+10. Think: Task complete → Stop
+
+Understanding this loop helps you know when to intervene. If an agent is in a repair loop (repeatedly trying to fix the same failure), the right intervention is not to wait — it's to interrupt, provide more information, and redirect.
+
+## Try It
+
+**Task:** Describe the specific agent loop you would want Claude Code to follow for a multi-step task you have. Map out each Think → Act → Observe cycle explicitly.
+
+**Starter prompt:**
+> I want to design the agent loop for the following task: [describe a multi-step task you want to automate]
+>
+> Help me map out the loop step by step:
+> - What should the agent Think at each stage?
+> - What Action should it take?
+> - What should it Observe to know whether to continue or stop?
+> - What stopping conditions should apply?
+>
+> Show this as a numbered loop: Step 1 (Think: / Act: / Observe:), Step 2, etc. Include stopping conditions at the end.
+
+**What to expect:**
+- Claude should produce a specific, numbered loop with explicit Think/Act/Observe entries — not a vague description of the process
+- Each Observe entry should describe what success and failure look like at that step
+- The stopping conditions should cover at least: success, failure of a critical step, and a step limit
+- If the loop Claude maps out has more than 10 steps, consider whether the task is too large for a single agent run — ask Claude to identify natural checkpoints where human review would be appropriate

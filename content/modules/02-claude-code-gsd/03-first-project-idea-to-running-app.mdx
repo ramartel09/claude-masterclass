@@ -1,0 +1,102 @@
+export const metadata = {
+  title: "Your First Project: From Idea to Running App",
+  module: "claude-code-gsd",
+  order: 3,
+  estimatedMinutes: 14,
+  challengeTitle: "Your First App",
+}
+
+## Learn
+
+The first time you watch Claude Code build a real app from a plain-English description, something shifts. You realize that the barrier between "I have an idea" and "I have a working product" is lower than it's ever been. This lesson walks you through what that looks like end to end.
+
+**Choosing a good first project**
+
+For your first Claude Code project, pick something small and concrete. The goal is to see the full cycle — describe, build, run, verify — in a single session. Good first projects are:
+
+- A personal list app (books to read, tasks to do, places to visit)
+- A simple link bookmarker
+- A habit tracker with a minimal UI
+- A note-taking app with local storage
+
+Bad first projects are anything that requires external services, user authentication, payment processing, or real-time data. Save those for after you understand the basic cycle.
+
+**How to describe what you want**
+
+When you give Claude Code your initial description, you're writing a product brief. Three things matter:
+
+*What it does:* The core functionality in concrete terms. "Users can add items to a list, mark them done, and delete them." Not "a list app" — that's too vague.
+
+*What it looks like:* Enough visual description to get the UI right. "Clean, dark-mode UI with a white input field at the top, a list below, and each item has a checkbox and a delete button."
+
+*What it's built with:* The tech stack, if you have a preference. For a first project, "Build this as a static HTML/CSS/JavaScript page that works without a server" is the simplest option — no framework, no build step, just files you can open in a browser.
+
+**The scaffold → run → verify loop**
+
+Building with Claude Code follows a rhythm:
+
+1. **Scaffold:** Give Claude Code your project description. It creates the initial file structure and writes the foundational code.
+
+2. **Run:** Open the app (or run the dev server, depending on the project). Look at what Claude Code built.
+
+3. **Verify:** Does it do what you described? Not "is it perfect" — does the core functionality work? Does the UI match your description? Are there obvious errors?
+
+4. **Iterate:** Tell Claude Code specifically what needs to change. Not "make it better" — "the delete button doesn't work," "the input field doesn't clear after adding an item," "the background color should be darker."
+
+For a static HTML project, "run" means double-clicking the index.html file to open it in a browser. For a Next.js project, it means running `npm run dev` and visiting `localhost:3000`. The verification step is always the same: use the app as a user would and check that it works.
+
+**Reading the files Claude creates**
+
+You don't need to understand every line of code Claude Code writes. But you should know what files exist and what each one does at a high level. Ask Claude Code to explain its project structure if you're unsure.
+
+For a simple HTML project, you'll typically see:
+- `index.html` — the page structure
+- `style.css` — the visual design (or inline styles in the HTML)
+- `script.js` — the interactive behavior (or a `<script>` block in the HTML)
+
+For a Next.js project, the structure is more complex. At this stage, the key folders are:
+- `app/` — the pages of the app (each file is a page)
+- `components/` — reusable UI pieces
+- `public/` — images and other static files
+
+You don't need to read these files in detail. You need to know they exist, roughly what role they play, and where to look if something specific needs changing.
+
+**Deploying to Vercel**
+
+Once your app runs locally, deploying it is one command:
+
+```
+npx vercel
+```
+
+Vercel will ask a few questions the first time (what framework is this? what's the project name?). After you answer them, your app is live at a public URL — typically `your-project-name.vercel.app`. Share that URL with anyone on any device.
+
+Vercel is free for personal projects (Hobby plan). No credit card required for deployment.
+
+For future deployments (after you've made changes), you can either run `vercel` again or connect Vercel to your GitHub repository. With a GitHub connection, every `git push` to your main branch automatically triggers a new deployment. You'll set this up in Lesson 9 when you learn git.
+
+**What you're actually learning here**
+
+The scaffold/run/verify loop is the foundational pattern for all Claude Code work. It doesn't matter if you're building a one-page HTML file or a multi-module enterprise application — the cycle is always the same: describe, build, run, check, refine. Everything else in this module is refinement of this pattern.
+
+## Try It
+
+**Task:** Give Claude Code a plain-English description of a simple app and let it build the scaffold. Run it locally and verify the core functionality works.
+
+**Starter prompt:**
+> Build me a simple personal reading list app as a single HTML file. Here's what it should do:
+>
+> - A text input at the top where I can type a book title and click "Add" (or press Enter) to add it to the list
+> - Each book in the list shows the title, a "Done" button that marks it as completed (strikethrough text and greyed out), and a "Remove" button that deletes it
+> - The list should persist in the browser (use localStorage so my books are still there if I refresh the page)
+> - Dark mode UI — black background, white text, indigo accent color for buttons
+>
+> Build this as a single index.html file that I can open directly in a browser.
+
+**What to expect:**
+- Claude Code will create `index.html` with HTML, CSS, and JavaScript all in one file
+- Opening the file in a browser should show the input field and an empty list
+- Adding a title and clicking Add should show it in the list
+- The Done and Remove buttons should work
+- Refreshing the browser should show your saved books still in the list
+- If any of these behaviors don't work, describe the specific failure to Claude Code in the next message

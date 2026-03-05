@@ -1,0 +1,88 @@
+export const metadata = {
+  title: "Claude Code as an Agent",
+  module: "ai-agents-automation",
+  order: 5,
+  estimatedMinutes: 13,
+  challengeTitle: "Supervise a Claude Code Run",
+}
+
+## Learn
+
+Claude Code is an agent. Everything you've learned in this module — the agent loop, tools and actions, system prompt design, verification — applies directly to Claude Code, which is the most sophisticated agent most people will use.
+
+Understanding Claude Code through the agent lens changes how you use it. You stop seeing it as a "smart autocomplete" and start seeing it as an autonomous worker executing a plan. That shift in perspective produces better instructions and more effective supervision.
+
+**Claude Code in agentic mode**
+
+When you use Claude Code for simple, single-step tasks ("create a button component"), it's operating close to conversational AI — single action, single result. When you use it for complex multi-file projects ("build out the authentication system based on the plan"), it's in full agent mode — multi-step, sequential, with decisions at each step.
+
+In agent mode, Claude Code:
+- Reads multiple files to understand the existing codebase
+- Plans a sequence of changes before making any
+- Makes changes incrementally, verifying as it goes
+- Runs build processes or tests to confirm its work
+- Commits completed milestones to git
+
+The GSD workflow is an agent harness — it structures Claude Code's agent behavior into predictable phases (discuss, plan, build, verify) with human checkpoints between them. Each `/gsd:execute-phase` call runs Claude Code in agent mode for one phase of the plan.
+
+**When to supervise vs. when to let it run**
+
+Not all agent tasks require the same level of supervision. The right level depends on how well-specified the task is and how consequential the actions are.
+
+*High supervision (run one step at a time):* New features in complex codebases, tasks touching security-sensitive code, any task that modifies configuration or dependencies, first attempts at something Claude Code hasn't done in your project before. In these cases, review each action before approving it.
+
+*Medium supervision (review per milestone):* Well-specified feature work in a codebase Claude Code knows well, bug fixes with clear expected behavior, writing tests for existing code. Approve actions freely but review the result at each milestone before continuing.
+
+*Low supervision (let it run):* Mechanical tasks with clear specifications (format this file, rename these variables, generate boilerplate for X), tasks that are fully reversible (git gives you a rollback point), tasks where you've watched Claude Code succeed on similar work before. Approve actions and review only the final result.
+
+The key variable is reversibility. Claude Code's actions are generally reversible if you've committed to git before the session. If you haven't committed, every action is potentially permanent. **Always commit before a low-supervision run.**
+
+**How to set up checkpoints in GSD plans**
+
+In GSD execution plans, `checkpoint:human-verify` tasks are explicit stopping points. Claude Code reaches the checkpoint, presents what it built, and waits for you to verify before continuing.
+
+These are especially important for:
+- Visual changes (does the UI look right? you can't tell from code)
+- Core behavior changes (does the feature work as expected? test it before approving continuation)
+- Milestones that earlier work depends on (if the foundation is wrong, catch it before building on it)
+
+When you're reviewing a GSD plan before execution, ask: "Where would a bad decision early on cause the most downstream damage?" Put human-verify checkpoints there.
+
+**Reading Claude Code's output as it works**
+
+When Claude Code is executing, it narrates what it's doing. This narration is real information — read it, don't skim it.
+
+What to look for:
+- Files being read: Is Claude Code reading the right files for this task?
+- Files being created or modified: Are these the files that should change? Are there unexpected files in the list?
+- Commands being proposed: Before approving, do you understand what each command does?
+- Plan departures: Is Claude Code doing something that wasn't in the plan? This happens when the plan was underspecified or when Claude Code encounters an unexpected state.
+
+**How to intervene mid-run**
+
+You can interrupt Claude Code at any point during a session. Three types of intervention are useful:
+
+*Course correction:* "Stop. Before you continue, I want to clarify [X]. The correct approach is [Y], not what you were doing." Claude Code will incorporate the correction and continue.
+
+*Scope limit:* "Stop. That change is outside the scope of this task. Revert that specific file to its previous state and don't modify it again in this session." This is useful when Claude Code starts working on something adjacent to the task without being asked.
+
+*Full restart:* "Stop. Discard all changes from this session — don't commit anything. I need to rethink the approach." This is the nuclear option, but with git it's safe. Restart, refine the plan, begin again.
+
+The important thing about intervention is that it's always available. You don't have to let Claude Code finish a bad run. The moment you see something wrong, you can intervene. Claude Code is fast to restart; there's no cost to stopping early.
+
+## Try It
+
+**Task:** Run Claude Code on a multi-step task — something that requires at least 3–4 sequential actions — and practice intervening at one step to redirect it.
+
+**Starter prompt:**
+> I'm going to give you a multi-step task. Execute it one step at a time. After each step, wait for my approval before moving to the next step. If I say "continue," proceed. If I give you a correction or redirection, incorporate it before proceeding.
+>
+> The task: [describe a multi-step task — for example, "Create a new React component for a user profile card. It should display a name, avatar placeholder, and three stats. After creating the component, add it to the main page. After adding it, run the app and confirm it renders without errors."]
+>
+> Begin with step 1 and wait for my approval.
+
+**What to expect:**
+- Claude Code should execute step 1, describe what it did, and wait before proceeding
+- You should be able to say "continue" to proceed or give a correction before continuing
+- Practice deliberately redirecting at one step — for example, after Claude Code creates the component, say "The stats section should be a table, not three separate divs. Modify the component before we continue."
+- Observe how Claude Code incorporates the redirection and proceeds with the corrected approach

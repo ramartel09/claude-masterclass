@@ -1,0 +1,84 @@
+export const metadata = {
+  title: "From Idea to Requirements",
+  module: "idea-to-product",
+  order: 3,
+  estimatedMinutes: 13,
+  challengeTitle: "Write REQUIREMENTS.md",
+}
+
+## Learn
+
+The gap between "I want to build X" and a buildable specification is where most non-technical product ideas stall. A description of what you want is not a specification. A specification tells Claude Code exactly what to build, what counts as correct, and — critically — what not to build.
+
+The tool that bridges this gap is `REQUIREMENTS.md`.
+
+**What REQUIREMENTS.md is**
+
+REQUIREMENTS.md is a document you create before any code is written. It lives in your project's root directory and serves as the source of truth for what the product does. When Claude Code is building and encounters an ambiguous decision — should this feature work this way or that way? — it references REQUIREMENTS.md. When you're evaluating Claude Code's output, you reference REQUIREMENTS.md. When scope creep threatens to expand the project beyond what you planned, you reference REQUIREMENTS.md.
+
+It's not a technical document. It's written in plain English, in terms of what users can do, not what code should do.
+
+**The three-section structure**
+
+*Section 1: Active requirements (must-haves)*
+These are the things the product must do for v1 to be worth using. They're written as "User can [action]" statements. Each requirement is a testable behavior: you can determine whether the product satisfies it by using it.
+
+Examples:
+- User can view current estimated wait time for each hospital
+- User can filter the list to show only hospitals within 10km of their location
+- User can see when wait time data was last updated
+- User can share a link to the current wait times
+
+*Section 2: Out of scope (won't-build in v1)*
+This section is as important as the active requirements. It explicitly defines what you're NOT building. Scope creep is the number-one reason personal projects stall and fail — you add one feature, then another, and suddenly a weekend project is a six-month project.
+
+Out-of-scope items come from two sources: features that would add complexity beyond the proportional effort, and features that would be nice-to-have but aren't required for the core value to exist.
+
+Examples of out-of-scope for the hospital tracker:
+- User accounts or saved preferences — v2
+- Historical wait time data or trend graphs — v2
+- Push notifications when wait times change — v2
+- Native mobile app — v2, or never (web app is sufficient)
+- Real-time updates (auto-refresh) — v1 uses manual refresh
+
+*Section 3: v2 (future — explicitly deferred)*
+This section is optional but valuable. It captures the features you thought of during requirements writing that you deliberately decided to defer. It prevents them from becoming scope creep while preserving the ideas for future consideration.
+
+**Why "user can" format matters**
+
+Requirements written as user behaviors are testable. "The system will display hospital wait times" is ambiguous — how? What format? From where? "User can see the current estimated wait time for each of the 6 major GTA hospitals on the home page" is specific and testable. You can either see it or you can't.
+
+This format also keeps focus on value. The product exists to enable users to do things. Every requirement should answer: what can the user do with this? If a requirement is about what the system does internally rather than what the user can do, it's probably not a user requirement — it's an implementation detail.
+
+**The out-of-scope list is half the product**
+
+The most experienced product people will tell you: knowing what you're NOT building is just as important as knowing what you are building. Every feature you add is a feature you have to build, test, maintain, and keep consistent with everything else. The out-of-scope list is the boundary that makes the product achievable.
+
+When you're writing requirements, every time you think "but it would be cool if..." — write it down. Then decide: is this core to the v1 value? If yes, active requirement. If no, out of scope. The instinct to add features is natural; the discipline to scope is the skill.
+
+**The masterclass as a living example**
+
+The REQUIREMENTS.md for this masterclass project is in the project's repository. It defines: what modules exist, what lesson count is required, what platform features are in v1 (none — content only), and what's explicitly deferred to later phases (interactive features, user accounts, payment, everything else). You're using a product whose requirements were written before its first line of code. That document is what made it possible to build in phases without drifting.
+
+## Try It
+
+**Task:** Write a REQUIREMENTS.md for your project idea with at least 5 active requirements and 3 explicitly out-of-scope items.
+
+**Starter prompt:**
+> I'm writing REQUIREMENTS.md for my project: [describe your product idea in 2–3 sentences].
+>
+> Help me write a complete REQUIREMENTS.md with three sections:
+>
+> **Active requirements (must-have for v1):** Write at least 5 requirements in "User can [action]" format. Each should be specific enough that I can test whether it's satisfied by using the app.
+>
+> **Out of scope (won't build in v1):** List at least 3 features I should explicitly NOT build in v1 — either because they're not core to the value or because they would significantly increase scope. For each, briefly note why it's being deferred.
+>
+> **v2 (future — explicitly deferred):** List any good ideas that came up during requirements writing that I'm saving for later.
+>
+> After writing the requirements, ask me: "Is there anything on this list that the product couldn't be useful without? If so, it's a must-have, not a nice-to-have."
+
+**What to expect:**
+- Requirements should be in "User can" format — testable behaviors, not system capabilities
+- The out-of-scope section should include things that were genuinely tempting but correctly excluded — not just obviously wrong features
+- Claude may ask you a clarifying question before writing requirements — answer it; requirements that are ambiguous after one clarifying question will be even more ambiguous when Claude Code is building
+- Read each active requirement and ask: "Could Claude Code build this without asking me any questions?" If the answer is no, the requirement is underspecified — add more detail

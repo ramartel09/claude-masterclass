@@ -1,0 +1,99 @@
+export const metadata = {
+  title: "CLAUDE.md: Teaching Claude Your Preferences",
+  module: "claude-code-gsd",
+  order: 7,
+  estimatedMinutes: 13,
+  challengeTitle: "Write Your CLAUDE.md",
+}
+
+## Learn
+
+Every time you start a new Claude Code session without a CLAUDE.md file, Claude Code starts blank. It doesn't know your preferred tech stack. It doesn't know your file naming conventions. It doesn't know that you've already decided to use TypeScript over JavaScript, or that this project should never add a database, or that components go in `components/ui/` not `components/`. You have to re-establish all of this context in every session.
+
+CLAUDE.md fixes this. It's a plain-text file at the root of your project that Claude Code reads at the beginning of every session. Its contents become Claude Code's standing context for as long as you're working on that project. You write it once; it works forever.
+
+**What CLAUDE.md is for**
+
+Think of CLAUDE.md as the briefing document you'd give to a new developer joining your project. It tells them everything they need to know to work on this codebase without going off-script: what it is, how it's built, what decisions have already been made, and what to never do.
+
+Good CLAUDE.md content:
+
+*Tech stack and versions:* "This is a Next.js 16 project with TypeScript, Tailwind CSS v4, and shadcn/ui. No other UI libraries should be added. React version is 19."
+
+*Key architecture decisions:* "All data is stored in localStorage. There is no backend, no database, and no API calls to our own servers. Phase 2 may add a server component but for now, assume everything runs client-side."
+
+*Conventions and naming patterns:* "Components use PascalCase. Files use kebab-case. CSS is done exclusively with Tailwind utility classes — no custom CSS files. All components go in `components/ui/`. No barrel files (index.ts re-exports)."
+
+*Hard constraints — things Claude should never do:* "Do not install new packages without asking first. Do not add Prisma, Supabase, or any database ORM. Do not change the folder structure. Do not use `any` in TypeScript."
+
+*Context about the project:* "This is a personal learning platform, not a commercial product. The target user is a single person (the owner). Performance and scalability are not concerns for v1."
+
+**What NOT to put in CLAUDE.md**
+
+*Task-specific instructions:* CLAUDE.md is for standing context, not session goals. "Today I want you to build the dashboard page" does not belong in CLAUDE.md. That goes in your Claude Code prompt.
+
+*Secret keys and passwords:* Never put API keys, database passwords, or credentials in CLAUDE.md. CLAUDE.md gets committed to git — your secrets should not.
+
+*Outdated information:* CLAUDE.md is most powerful when it's accurate. If you change your tech stack, update CLAUDE.md. If you add a library you previously said to never add, update CLAUDE.md. An outdated CLAUDE.md gives Claude Code conflicting signals.
+
+**A complete CLAUDE.md example for a Next.js project**
+
+```markdown
+# CLAUDE.md — Claude Masterclass Platform
+
+## Project Overview
+A personal learning platform that delivers lesson content from MDX files.
+Phase 1: Content + scaffold. Phase 2: Interactive features.
+
+## Tech Stack
+- Next.js 16 + TypeScript (strict mode)
+- Tailwind CSS v4 — utility classes only, no custom CSS files
+- shadcn/ui for UI components
+- @next/mdx for MDX lesson rendering
+- globby for file enumeration
+- No database — all persistence is localStorage
+
+## Conventions
+- Components: PascalCase, in `components/`
+- UI components (from shadcn/ui): in `components/ui/`
+- Files: kebab-case
+- Imports: use `@/` path alias for everything in `src/`
+- No default exports except page files — use named exports
+
+## Constraints (Never Do Without Asking)
+- Do not add Supabase, Prisma, MongoDB, or any database
+- Do not add new npm packages without asking first
+- Do not change the content/modules/ directory structure
+- Do not use `any` in TypeScript
+
+## Current Phase
+Phase 1 — scaffold and content. Do not build interactive UI features (notes, progress tracking, quizzes). Those are Phase 2.
+```
+
+**How to create and iterate on your CLAUDE.md**
+
+Start with what you know: your tech stack, any decisions you've already made, and any hard constraints. Don't try to make it comprehensive on the first pass. A good CLAUDE.md grows over time.
+
+After each Claude Code session, ask yourself: "Did Claude Code do anything I had to tell it not to do?" If yes, add a constraint to CLAUDE.md. "Did Claude Code ask a question whose answer should have been obvious?" If yes, add the answer to CLAUDE.md.
+
+CLAUDE.md is a living document. The most useful CLAUDE.md files are the ones that have been refined through real project experience — they're full of "don't do X" constraints that come from X actually happening.
+
+## Try It
+
+**Task:** Write a CLAUDE.md for a project you're planning or currently working on. Include at minimum: stack, key architecture decisions, naming conventions, and three hard constraints.
+
+**Starter prompt:**
+> Help me write a CLAUDE.md for my project. Here's what I know about it:
+>
+> Project type: [e.g., personal web app, Chrome extension, automation script]
+> Tech stack: [what you're using or what Claude Code has been using]
+> Key decisions already made: [architecture choices, library choices, scope limits]
+> Things I never want Claude Code to do without asking: [your hard constraints]
+> Conventions I care about: [naming, file organization, code style preferences]
+>
+> Write a CLAUDE.md I can put in my project root. Keep it concise — focused on what Claude Code actually needs to know to stay on track.
+
+**What to expect:**
+- The CLAUDE.md Claude Code writes should have clear sections with actual constraints, not generic advice
+- Every line should be something Claude Code could act on or reference — not vague principles like "write clean code"
+- After Claude Code produces a draft, read through it and ask: "If a new developer read this, would they know exactly how to work on this project?" Fill any gaps before finalizing

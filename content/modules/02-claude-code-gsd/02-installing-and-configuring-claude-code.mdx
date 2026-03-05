@@ -1,0 +1,115 @@
+export const metadata = {
+  title: "Installing and Configuring Claude Code",
+  module: "claude-code-gsd",
+  order: 2,
+  estimatedMinutes: 15,
+  challengeTitle: "Get Claude Code Running",
+}
+
+## Learn
+
+Before you can use Claude Code, you need three things: Node.js installed on your computer, an Anthropic account with API access, and the Claude Code CLI installed. This lesson walks you through all three.
+
+**Prerequisites: Node.js**
+
+Claude Code is built on Node.js, so it requires Node.js to be installed on your machine. Node.js 20 or later is required.
+
+To check if you already have it:
+```
+node --version
+```
+
+If you see a version number like `v24.14.0`, you're good. If you get "command not found" or a version below 20, go to [nodejs.org](https://nodejs.org) and download the LTS version (the one labeled "Recommended for most users"). Run the installer and come back.
+
+**Step 1: Install Claude Code**
+
+With Node.js installed, open your terminal (Terminal on Mac, PowerShell or Command Prompt on Windows) and run:
+
+```
+npm install -g @anthropic-ai/claude-code
+```
+
+The `-g` flag installs it globally — available from any directory on your computer, not just the current one. This installation usually takes 30–60 seconds.
+
+To verify it worked:
+```
+claude --version
+```
+
+You should see a version number. If you get an error about permissions on Mac, try:
+```
+sudo npm install -g @anthropic-ai/claude-code
+```
+
+**Step 2: Authenticate with your Anthropic API key**
+
+Claude Code requires an Anthropic API key to run. If you have an Anthropic account, you can get your API key at [console.anthropic.com](https://console.anthropic.com) under API Keys.
+
+Note: Claude Code usage is billed through the API, separate from your Claude.ai subscription. The Claude.ai subscription and the API are different billing systems. API pricing is usage-based (pay per token processed).
+
+To authenticate, simply run:
+```
+claude
+```
+
+The first time you run it, Claude Code will detect that you're not authenticated and prompt you to enter your API key. Paste your key and press Enter. Claude Code saves this securely so you only need to do it once.
+
+**Step 3: Tour the Claude Code interface**
+
+Once authenticated, you're in an interactive Claude Code session. Here's what you're looking at:
+
+The **input prompt** is where you type your instructions. Press Enter to send. Claude Code processes your instruction and may ask permission before taking action.
+
+**Permission prompts** appear when Claude Code wants to do something with side effects — create a file, run a command, install a package. You'll see something like "May I run `npm install react`?" with options to approve or deny. Always read these before approving — you want to know what's happening to your machine.
+
+**/commands** are slash-commands that control Claude Code's behavior. Common ones:
+- `/help` — shows available commands
+- `/clear` — clears the conversation history
+- `/exit` or pressing Ctrl+C — exits Claude Code
+
+**The context indicator** shows how much of Claude Code's context window is used. As a session gets longer, this fills up. When it gets very full, consider starting a new session and front-loading context (like a CLAUDE.md file) to re-establish what Claude Code needs to know.
+
+**Configuration**
+
+Claude Code can be configured with the `claude config` command. The most useful setting for most users:
+
+```
+claude config set model claude-opus-4-5
+```
+
+This sets the default model. Different models offer different balances of speed, capability, and cost. If you're running Claude Code for everyday small tasks, a faster model is often better. For complex multi-file projects, the most capable model is worth the cost.
+
+**Troubleshooting common issues**
+
+*"claude: command not found" after install:* The global npm bin directory isn't in your PATH. On Mac, add `export PATH="$PATH:$(npm bin -g)"` to your `~/.zshrc` or `~/.bash_profile` and restart your terminal.
+
+*Authentication errors mid-session:* Your API key may have expired or been rotated. Run `claude auth` to re-authenticate.
+
+*Permission denied on install:* Common on Mac with certain Node.js configurations. Try installing Node.js via `nvm` (Node Version Manager) rather than the system package, which avoids permission issues.
+
+*"API quota exceeded":* Your Anthropic account has a spending limit. Check your usage at console.anthropic.com and raise the limit if needed.
+
+**What a successful setup looks like**
+
+You know Claude Code is working correctly when:
+1. `claude --version` returns a version number
+2. `claude` opens an interactive session without errors
+3. Claude Code responds to a simple instruction like "What files are in this directory?" by listing the files
+
+Don't move to the next lesson until all three work. The lessons that follow assume Claude Code is running on your machine.
+
+## Try It
+
+**Task:** Install Claude Code, authenticate with your API key, and confirm it's working by running it in a test directory and completing a simple task.
+
+**Starter prompt:**
+> (After successfully installing and authenticating, start Claude Code in an empty test directory and send this):
+>
+> What files are in the current directory? Then create a file called hello.txt with the text "Claude Code is working." Open it and confirm the content is correct.
+
+**What to expect:**
+- Claude Code should list the directory contents (probably empty if it's a new directory)
+- You should see Claude Code ask permission before creating hello.txt
+- After approving, Claude Code creates the file and confirms its content
+- If you open hello.txt in any text editor, you should see "Claude Code is working."
+- Any error in this flow means a setup issue — check the troubleshooting section above

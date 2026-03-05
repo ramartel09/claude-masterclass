@@ -1,0 +1,87 @@
+export const metadata = {
+  title: "Roadmapping with Claude",
+  module: "idea-to-product",
+  order: 4,
+  estimatedMinutes: 12,
+  challengeTitle: "Generate Your Roadmap",
+}
+
+## Learn
+
+A roadmap is a phased plan for building a product. Not everything at once — phases. Each phase delivers something independently useful, and each phase builds on the previous one. The roadmap is what separates a project that ships from a project that perpetually extends its "launch date."
+
+**The MVP mindset**
+
+MVP stands for Minimum Viable Product. The word "viable" is doing the heavy lifting. A minimum viable product is the smallest version of the product that delivers the core value — not the smallest version that could possibly be called the product, but the smallest version that actually solves the problem for the user.
+
+The hospital tracker MVP: show current wait times for GTA hospitals. That's it. No filtering by distance (that's useful, but the core value is seeing the wait times). No sharing links (nice, but you can describe the app to someone). No accounts or saved preferences (completely unnecessary for v1). Show the wait times — if the user can see that Hospital A has a 30-minute wait and Hospital B has a 3-hour wait, the core value exists.
+
+Everything else is v2 or v3 or never. The discipline is to draw the line at the smallest version that actually solves the problem, then ship that before adding anything else.
+
+**Why phased delivery works**
+
+Building in phases solves three problems:
+
+*Momentum:* Completing and shipping Phase 1 is real progress. It's motivating in a way that "still working on the full thing" is not. Real momentum beats imaginary completeness.
+
+*Course correction:* When you ship Phase 1 and use it, you learn things you couldn't have known without using it. Maybe you discover the feature you thought was nice-to-have is actually essential. Maybe you discover a feature you thought was essential isn't needed. Better to learn this at Phase 1 than after building four phases of the wrong thing.
+
+*Scope management:* A phase with defined scope is deliverable. A project without phases has infinite scope — there's always one more feature to add before it's "ready." Phases make "done" definable.
+
+**How to generate a roadmap with Claude**
+
+The roadmap generation process:
+1. Start with REQUIREMENTS.md
+2. Ask Claude to organize the active requirements into phases, where each phase delivers one independently verifiable capability
+3. Review the phases: does each one make sense as a standalone release? Is the first phase the actual MVP?
+4. Identify dependencies: which phases depend on which earlier phases?
+5. Sequence the phases by dependency and priority
+
+The key constraint Claude should apply: each phase should be independently deployable. Not "deployable after all the phases before it are done" — actually useful to a real user on its own.
+
+**The masterclass roadmap**
+
+Phase 1 (Foundation): A live URL with all lesson content. No interactive features — just the content, deployed. Anyone with the URL can read the lessons. This is independently useful: the content is the product.
+
+Phase 2 (Learning Loop): Progress tracking, the lesson viewer, navigation between modules and lessons. Builds on Phase 1 (requires the content and the URL).
+
+Phase 3 (Engagement): Notes, bookmarks, module completion indicators. Builds on Phase 2 (requires the lesson viewer and progress tracking).
+
+Phase 4 (Capstone): The GTA Hospital Wait Time Tracker — the final module's capstone project.
+
+Each phase delivers something real. Phase 1 is useful without Phase 2. Phase 2 makes Phase 1 better. This is the ideal structure.
+
+**Roadmaps change and that's OK**
+
+A roadmap is a commitment to today's best understanding of what needs to be built and in what order. It is not a contract. As you build Phase 1 and learn from it, the Phase 2 roadmap should update to reflect what you've learned.
+
+The GSD workflow accommodates this by keeping plans at the phase level, not the full-project level. The Phase 2 plan is written after Phase 1 is complete — informed by what was learned in Phase 1. This prevents the common failure mode of detailed planning for phases you'll learn is wrong before you reach them.
+
+**Scope discipline in roadmapping**
+
+When Claude generates a roadmap, it may propose more phases than you need or include more features per phase than the MVP principle would allow. Review each proposed phase with the question: "What's the minimum version of this phase that's independently deployable and delivers real value?"
+
+That question often shrinks phases significantly. A proposed "Authentication Phase" that includes user accounts, password reset, email verification, and social login might be scoped to just "user accounts with email + password" for v1, with everything else deferred.
+
+## Try It
+
+**Task:** Ask Claude to generate a 3-phase roadmap for your project from your REQUIREMENTS.md.
+
+**Starter prompt:**
+> I have a REQUIREMENTS.md for my project. Here it is:
+>
+> [Paste your REQUIREMENTS.md content]
+>
+> Generate a 3-phase roadmap from these requirements. Rules for the roadmap:
+> 1. Phase 1 must be the MVP — the smallest version that delivers the core value
+> 2. Each phase must be independently deployable (useful on its own, not just as a stepping stone)
+> 3. Features from the "out of scope" section of my REQUIREMENTS.md must not appear in any phase
+> 4. Each phase should have: a name, 1-sentence description, and a list of the specific requirements it delivers
+>
+> After generating the roadmap, tell me: "What is the absolute minimum Phase 1 would need in order to be worth deploying and sharing?"
+
+**What to expect:**
+- Phase 1 should feel surprisingly small — that's the MVP principle working correctly
+- If Phase 1 feels too thin, ask: "If this was all the product ever did, would it still solve the core problem?" If yes, that's the right scope
+- Out-of-scope items should not appear in any phase — if Claude includes them, ask it to remove them and explain why they're out of scope
+- The "minimum for Phase 1" question should produce an even smaller list than what Claude proposed — this is often the real MVP

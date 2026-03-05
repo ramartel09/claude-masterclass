@@ -1,0 +1,89 @@
+export const metadata = {
+  title: "Reading Output: Understanding What Claude Built",
+  module: "claude-code-gsd",
+  order: 5,
+  estimatedMinutes: 12,
+  challengeTitle: "Understand What Claude Built",
+}
+
+## Learn
+
+You don't need to understand every file Claude Code creates. You never did, and you never will, and that's not a problem. But you do need to be able to evaluate the output — to determine whether what Claude Code built is what you asked for, and to identify when something is wrong without knowing exactly how to fix it yourself.
+
+This is a skill distinct from coding. It's closer to product management: understanding what a system does without understanding how it does it, and communicating clearly when it doesn't do what it should.
+
+**Reading project structure**
+
+When Claude Code creates a project, it produces a directory structure. You can see this by asking Claude Code "what files did you create?" or by looking in your project folder. Here's how to read it without being a developer:
+
+*In a Next.js project (the standard for web apps):*
+- `app/` contains the pages of your app. Each folder inside `app/` corresponds to a URL. `app/page.tsx` is your homepage. `app/dashboard/page.tsx` is the `/dashboard` page.
+- `components/` contains reusable pieces of UI — the building blocks that appear on multiple pages (like a navigation bar, a card, a button).
+- `lib/` contains utility logic — functions that aren't UI but power things behind the scenes (like reading from localStorage, calculating values, formatting dates).
+- `public/` contains images and other static files.
+- `package.json` lists all the third-party code your project depends on.
+
+You don't need to read the code in these files. You need to know they exist and have a rough sense of what belongs where. If something on a specific page looks wrong, the code for that page is in the corresponding file in `app/`.
+
+*In a static HTML project:*
+Much simpler. Usually just `index.html`, possibly `style.css` and `script.js`. The entire app is in these files.
+
+**Red flags in Claude Code output**
+
+There are specific warning signs that indicate Claude Code did something problematic:
+
+*Placeholder text:* Strings like "TODO", "Coming soon", "Lorem ipsum", or "Replace this with..." mean Claude Code left something unfinished. This is always a bug. Ask Claude Code to replace the placeholder with real content.
+
+*TODO comments in code:* `// TODO: implement this` in a code file means Claude Code planned something but didn't implement it. This may be intentional (if you asked for a sketch) or unintentional. Ask Claude Code whether the TODO was meant to be left or whether it needs implementing.
+
+*Files that don't exist but are referenced:* If Claude Code's code imports from a file that doesn't exist in the project, the app will fail to build. Claude Code sometimes creates references before the files they reference — usually harmless if caught and fixed.
+
+*Hardcoded data instead of real functionality:* If you asked for a list that loads from storage and Claude Code builds a list that always shows the same three items, it hardcoded example data instead of implementing the storage. Run the actual flow (add an item, refresh) to catch this.
+
+**How to verify without reading code**
+
+The most reliable way to verify that an app works is to use it exactly as a real user would:
+
+1. Start from zero. Open the app fresh, as if you've never used it before.
+2. Complete the core flow. If it's a list app, add an item. If it's a form, fill it out and submit.
+3. Check persistence. Refresh the page. Are your items still there?
+4. Test edge cases. What happens if you submit an empty form? What if you add 20 items? What if you type special characters?
+5. Check error states. What does the app do when something goes wrong? Does it show a useful message or just break silently?
+
+You should be able to answer all of these questions without looking at any code. If a step fails — if adding an item doesn't work, if the page is blank, if clicking a button does nothing — you've found a bug. Describe it to Claude Code specifically.
+
+**Reading git diffs**
+
+Once you're using git to back up your project (Lesson 9), you'll have access to diffs — the record of exactly what changed between one version and the next. A diff shows lines added (marked with `+`) and lines removed (marked with `-`).
+
+You don't need to understand the code in a diff to use it. You need to see:
+- How many files changed?
+- Did Claude Code touch files you didn't expect?
+- Does the size of the change match the size of what you asked for?
+
+If you asked Claude Code to fix one small bug and the diff shows 15 files changed, something unexpected happened. Ask Claude Code to explain what it changed and why.
+
+**When to ask Claude Code to explain**
+
+Always ask. There's no penalty for asking Claude Code to explain what it built. Good explanations to request:
+
+- "Walk me through what each file you created does."
+- "Explain what happens when a user clicks the Submit button — what code runs?"
+- "Why did you use [library X] here instead of [library Y]?"
+
+Claude Code will give you a plain-English explanation. You can ask follow-up questions until you understand it well enough to make decisions. You don't need to understand the code itself — you need to understand the system well enough to evaluate whether it works and direct it when it doesn't.
+
+## Try It
+
+**Task:** Ask Claude Code to explain a file it created as if you're not a developer. Then identify one thing that could go wrong with the current implementation by actually using the app.
+
+**Starter prompt:**
+> (After Claude Code has built something for you, send this):
+>
+> Without using any technical jargon, explain to me what [specific file name] does. Pretend I've never written code and just want to understand what this file is responsible for and what would break if it were missing.
+
+**What to expect:**
+- Claude Code should give a plain-English explanation with no code snippets or technical syntax
+- The explanation should tell you what role the file plays in the app, not how the code works internally
+- If the explanation is confusing or uses jargon you don't understand, ask for it again: "Explain it even more simply — imagine you're explaining it to someone who uses apps but has never built one"
+- After the explanation, actually use the app and try to break it — submit an empty form, add too many items, use special characters — and report any failure you find

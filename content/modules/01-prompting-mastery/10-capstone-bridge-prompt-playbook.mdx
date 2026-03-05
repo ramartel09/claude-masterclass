@@ -1,0 +1,88 @@
+export const metadata = {
+  title: "Capstone Bridge: Your Personal Prompt Playbook",
+  module: "prompting-mastery",
+  order: 10,
+  estimatedMinutes: 15,
+  challengeTitle: "Start Your Prompt Playbook",
+}
+
+## Learn
+
+You've completed Module 1. In nine lessons, you've built a complete mental model for working with Claude — not as a search engine or a chatbot, but as a powerful collaborator that responds to precision.
+
+Here's what you now know that most Claude users don't.
+
+**The foundation.** A prompt is a specification. The quality of Claude's output is a direct function of the quality of your input. Claude has no memory between sessions and no context you haven't provided. Every conversation starts blank unless you fill it.
+
+**The structure.** A well-constructed prompt has five components: role (who Claude should be), context (what Claude needs to know), task (the specific deliverable), constraints (what to avoid or require), and output format (how the response should be structured). You don't always need all five — simple questions need few components — but complex tasks benefit from all of them.
+
+**The specificity principle.** Vague prompts transfer decision-making to Claude, whose defaults are calibrated to average requests. Specific prompts eliminate the decisions that would produce wrong answers while leaving room for Claude to bring judgment to the ones that don't matter.
+
+**The memory architecture.** Claude sees everything in the current conversation window. Front-loading important context shapes everything that follows. Long conversations drift; know when to start fresh. System prompts and CLAUDE.md provide persistent context for repeated tasks.
+
+**The iteration loop.** The first response is a draft, not a final answer. Professional Claude users iterate with specific, directional refinements. The goal is not one-shot perfection — it's a good starting point and efficient convergence.
+
+**Personas.** Assigning Claude a specific expert role activates a different mode of response — more domain-specific vocabulary, more opinionated conclusions, more calibrated judgment. Personas are high leverage and underused.
+
+**Structured output.** Prose is for reading; structure is for action. Ask for the format you'll actually use: tables, JSON, numbered lists, code blocks, labeled sections.
+
+**Chain-of-thought.** For complex multi-step problems and decisions, ask Claude to reason step by step. The intermediate steps are checkable; the reasoning chain surfaces errors before they compound.
+
+**Task-type patterns.** Creative, analytical, coding, and editing tasks each have different prompting patterns. Creative tasks need latitude with constraints. Analytical tasks need dimensions and structured output. Coding tasks need language, behavior, and edge cases. Editing tasks need the type of edit specified (polish, restructure, rewrite).
+
+---
+
+**The module capstone: Your Personal Prompt Playbook**
+
+The project for this module is a Prompt Playbook — a personal library of reusable prompt templates for your most common use cases.
+
+The concept is simple: instead of writing a new prompt from scratch every time you do a recurring task, you maintain a document of template prompts with fill-in slots. When you need to draft a client proposal, you pull the proposal template and fill in the specifics. When you need to analyze a document, you pull the analysis template and paste in the document.
+
+A template prompt looks like this:
+
+```
+Role: You are [ROLE: e.g., an experienced B2B copywriter focused on SaaS].
+Context: I'm writing [OUTPUT TYPE] for [AUDIENCE]. [RELEVANT BACKGROUND ABOUT THIS SITUATION].
+Task: Write [SPECIFIC DELIVERABLE — e.g., a 200-word executive summary].
+Constraints: [TONE: e.g., direct and confident, no hedging]. [LENGTH LIMIT]. [THINGS TO AVOID].
+Output format: [STRUCTURE — e.g., three labeled paragraphs: Problem, Solution, Why Us].
+```
+
+The brackets are fill-in slots — things you customize for each specific use. The rest of the template is your established pattern for that task type.
+
+**What makes a template reusable?**
+
+A template is reusable when it captures the parts that stay the same across multiple uses — role, tone preference, format constraints, things you always want to avoid — while leaving clear slots for the parts that vary — the specific subject, audience, context for this particular instance.
+
+A template that's too specific becomes a single-use prompt. A template that's too generic is just a reminder to write a good prompt. The sweet spot is: "given this template, I can produce a working prompt in 60 seconds by filling in the slots."
+
+**Starting small: your first two templates**
+
+This capstone challenge asks you to create your first two templates. Not ten — two. The constraint is intentional. Two templates you'll actually use beats ten templates you abandon. Pick the two recurring Claude tasks that currently eat the most time or produce the most inconsistent results. Write templates for those first.
+
+In Module 2, you'll start using Claude Code — and the prompting skills you've built here transfer directly. The `CLAUDE.md` file is, in effect, a system-prompt template for your projects. The iteration skills from Lesson 5 apply equally to refining code as to refining prose.
+
+**Preview of Module 2: Claude Code and GSD**
+
+In the next module, you'll step into Claude's most powerful interface: Claude Code, the command-line tool that can read and write files, run code, and build complete software projects from plain-English descriptions.
+
+Everything you've learned here applies there. You'll write prompts that specify role, context, task, constraints, and format — but now those prompts produce running software, not just text. You'll iterate using the same refinement patterns — but now the thing you're refining is an application, not a paragraph.
+
+The skills compound. Module 1 builds the foundation; Module 2 puts it to work.
+
+## Try It
+
+**Task:** Begin your Prompt Playbook by creating your first two reusable prompt templates for recurring tasks in your life or work.
+
+**Starter prompt:**
+> I want to create two reusable prompt templates for my most common Claude tasks. Help me build them.
+>
+> Task 1: [Describe the recurring task in one sentence — e.g., "I regularly ask Claude to help me write cold outreach emails"]
+> Task 2: [Describe the second recurring task]
+>
+> For each task, help me build a template with clear fill-in slots (shown in brackets) for the parts that vary, and fixed text for the parts that stay the same. Include all five prompt components where relevant: role, context, task, constraints, output format.
+
+**What to expect:**
+- Claude should produce two distinct templates, each with a clear structure and visible fill-in slots in [BRACKETS]
+- Each template should be self-contained — you should be able to use it immediately by filling in the brackets
+- If the template feels too short or too generic, ask Claude to add more constraints or a more specific role — the more opinionated the template, the more consistently useful it is

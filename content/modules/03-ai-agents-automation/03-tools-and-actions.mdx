@@ -1,0 +1,86 @@
+export const metadata = {
+  title: "Tools and Actions: What Agents Can Do",
+  module: "ai-agents-automation",
+  order: 3,
+  estimatedMinutes: 13,
+  challengeTitle: "Specify Agent Tools",
+}
+
+## Learn
+
+An agent's capabilities are bounded by its tools. A language model on its own can only produce text. Tools are what transform that text production into real-world action — reading files, running code, searching the web, calling APIs. Understanding what tool categories exist and what they enable is the foundation of agent design.
+
+**The major tool categories**
+
+*File system tools* allow an agent to read from and write to the file system. Read access lets an agent process documents, load configuration, inspect code. Write access lets it create files, modify existing ones, and delete or move them. File system access is the most fundamental capability for most practical agent tasks — it's how agents interact with documents, data, and code.
+
+Claude Code's primary tools are file system tools. It reads your existing code, writes new code, and modifies files as needed. File system tools with write access are powerful and should be scoped carefully: grant access to the project directory, not the entire machine.
+
+*Code execution tools* allow an agent to run code. This might mean running a shell script, executing a Python program, running a test suite, or starting a server. Code execution is what turns Claude Code from a sophisticated text editor into a developer — it can write code and run it, observe the result, and iterate.
+
+Code execution is the highest-risk tool category. A misconfigured command can delete files, install unwanted software, or consume significant resources. Claude Code handles this by requesting permission before running commands with side effects. That permission request is the checkpoint where you should read carefully.
+
+*Web retrieval tools* allow an agent to fetch information from the internet — retrieve a web page, search for current information, read documentation that wasn't in its training data. Web retrieval is essential for any agent that needs current information (news, prices, recent documentation) or that needs to research topics dynamically.
+
+*API call tools* allow an agent to interact with external services through their APIs. This includes calling a weather service to get current conditions, posting to a messaging platform, querying a database, or interacting with any other software system that exposes an API.
+
+*Search tools* allow an agent to query a structured store of information — a vector database for semantic search, a SQL database for structured data, a knowledge base, or a document collection. Search tools give agents access to information that wouldn't fit in their context window.
+
+**The permission model**
+
+Claude Code asks permission before taking actions that could have significant consequences — installing packages, deleting files, running shell commands. This is not a bug or an inconvenience; it's a designed safety feature.
+
+The permission model exists because tool-use is irreversible in ways that text generation is not. If Claude Code generates a bad paragraph, you ignore it. If it deletes a file without permission, the file is gone. The permission prompt is the moment where you, as the human, review what the agent is about to do and decide whether to allow it.
+
+When you see a permission prompt from Claude Code:
+- Read the command fully before approving
+- Ask yourself: "Do I understand what this command does, and am I comfortable with its consequences?"
+- When in doubt, don't approve — ask Claude Code to explain what the command does and why it needs to run it
+
+For well-understood, safe actions (creating a file, running your project's test suite), approve quickly. For unfamiliar commands, pause.
+
+**Thinking about tool access when designing an agent**
+
+The principle of least privilege applies to agents: give an agent exactly the tools it needs to accomplish its task, and no more. An agent designed to read and summarize documents shouldn't have write access to the filesystem. An agent designed to process local files doesn't need web retrieval.
+
+This isn't just about security — it's about focus. An agent with fewer tools makes simpler decisions. An agent with many tools can go off in unexpected directions, using powerful tools in ways you didn't anticipate.
+
+When you specify an agent's capabilities, think through each tool category:
+- Does it need to read files? Which files/directories?
+- Does it need to write files? Which files?
+- Does it need to execute code? What kind?
+- Does it need internet access? For what specific purpose?
+- Does it need to call external APIs? Which ones?
+
+Answering these questions explicitly before building an agent produces more reliable results than giving an agent broad access and hoping it uses it wisely.
+
+**Real examples: tools per agent type**
+
+| Agent Type | File Read | File Write | Code Execution | Web Retrieval | API Calls |
+|------------|-----------|------------|----------------|---------------|-----------|
+| Research agent | No | Yes (save reports) | No | Yes (search) | No |
+| Code builder | Yes | Yes | Yes (run tests) | Limited (docs) | No |
+| Data processor | Yes (read CSVs) | Yes (write outputs) | Yes (scripts) | No | No |
+| Content pipeline | Yes (read drafts) | Yes (save final) | No | Limited | Maybe (post) |
+
+The specificity of tool access — not just "yes" or "no" to each category, but which specific capabilities within each category — is what separates a well-designed agent from a powerful but unpredictable one.
+
+## Try It
+
+**Task:** For a task you want to automate, list exactly which tools an agent would need and explain what each tool enables. Then identify one tool category that the agent explicitly does NOT need.
+
+**Starter prompt:**
+> I want to design an agent to accomplish this task: [describe the task you want to automate — research, content creation, data processing, code building, etc.]
+>
+> Help me specify the tools this agent would need:
+> 1. For each tool category (file system, code execution, web retrieval, API calls, search), tell me whether the agent needs it and why or why not
+> 2. Where the agent needs a tool, specify the exact scope (e.g., "read access to /project/data/, no write access")
+> 3. Identify any tool category the agent should explicitly NOT have access to
+>
+> Present this as a tool specification table I could use to configure this agent.
+
+**What to expect:**
+- Claude should produce a specific table or list with clear yes/no/scoped entries for each tool category
+- The reasoning should be tied to what the task actually requires — not generic advice
+- The "explicitly not needed" tool category should be called out specifically — this is the least-privilege principle in action
+- If any tool category's scope seems broader than necessary, push back: ask Claude to narrow it to the minimum needed for the task

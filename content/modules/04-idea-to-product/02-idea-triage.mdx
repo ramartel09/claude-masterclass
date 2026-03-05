@@ -1,0 +1,89 @@
+export const metadata = {
+  title: "Idea Triage: Is This Worth Building?",
+  module: "idea-to-product",
+  order: 2,
+  estimatedMinutes: 12,
+  challengeTitle: "Triage Your Idea",
+}
+
+## Learn
+
+Most ideas are not worth building. This is not pessimism — it's the honest math of product development. Even with Claude Code accelerating execution dramatically, you're still investing time, energy, and attention. The discipline to kill a bad idea quickly is as valuable as the ability to execute a good one.
+
+The triage filter is a four-question framework for evaluating whether an idea is worth pursuing before committing to it.
+
+**Question 1: Is the problem real?**
+
+A real problem is one that someone actually experiences — not one that you imagine would be annoying, but one that is demonstrably annoying. The most reliable source of real problems is your own life: something you've experienced repeatedly, complained about, or worked around with an ugly manual process.
+
+The second-best source is someone else's direct experience — not "people probably struggle with X" but "I talked to someone who struggled with X and here's what they said."
+
+Ideas fail here when they're solutions in search of a problem — the technology is cool and the product seems clever, but there's no one actively frustrated by the problem it solves.
+
+The hospital tracker: the problem is clearly real. Anyone who has sat in an ER waiting room for four hours only to be told the next hospital has a 45-minute wait has experienced it directly. This isn't a hypothetical frustration.
+
+**Question 2: Is there a user?**
+
+A user is a specific, identifiable person (or a narrow enough category that you could find several specific people who fit). "Everyone" is not a user. "Young professionals in their 30s" is barely a user. "GTA residents who visit ER departments and would check wait times before choosing a hospital" is a user.
+
+The user question matters because everything downstream — what features to build, what the UI should feel like, what counts as "done" — depends on knowing who you're building for. A product for everyone is a product for no one.
+
+For personal tools (things you're building for yourself), you are the user. This is a completely valid category and often produces excellent products. The user is perfectly defined, perfectly accessible for testing, and will give you honest feedback.
+
+The hospital tracker: the user is GTA residents with access to a smartphone or laptop who need emergency care and want to make an informed choice about which hospital to go to. Specific enough to design against.
+
+**Question 3: Is there value?**
+
+Value is what the user gains from your product — specifically, what changes for them that matters. Value can be: time saved, money saved, decisions made better, anxiety reduced, frustration eliminated, or capability gained that they didn't have before.
+
+The value doesn't need to be revolutionary. A small, consistent improvement in daily life is real value. But there should be a clear answer to: "After using this product, what is better for the user than it was before?"
+
+If the answer is "it's kind of cool" or "they'd have one more tool," the value case is weak. "They can decide in 2 minutes which hospital to go to instead of driving to the wrong one" is clear value.
+
+The hospital tracker: save 2–4 hours of waiting by going to the shorter-wait hospital. Potentially get appropriate care faster. Reduce the anxiety of not knowing. These are real, material improvements.
+
+**Question 4: Is the effort proportional?**
+
+The last question is about scope. Given the value the product delivers and the audience it serves, is the effort required to build it proportional?
+
+With Claude Code, "effort" means: days, not months. A personal tool that takes a weekend to build is almost always worth building if it saves you time regularly. A product that requires months of building is only worth it if the value is substantial and the audience is large enough to justify the investment.
+
+This question also functions as a scope governor: if an idea would take too long, can it be scoped down to something proportional? The v1 might be 20% of the original idea but 80% of the value — and it can be built in 20% of the time.
+
+**Scoring the hospital tracker**
+
+| Question | Score |
+|----------|-------|
+| Is the problem real? | Yes — direct personal experience, clearly articulated pain |
+| Is there a user? | Yes — GTA residents facing ER decisions |
+| Is there value? | Yes — save hours of waiting, better care decisions |
+| Is effort proportional? | Yes — single-phase build, 2–4 Claude Code sessions |
+
+The hospital tracker passes the filter. That's why it's the capstone project — it's a real, buildable product with clear value.
+
+**The "kill it fast" mindset**
+
+The goal of the triage filter is to answer "should I build this?" as quickly as possible. A fast "no" is just as valuable as a fast "yes." If an idea fails on question 1 (no real problem), you don't need to evaluate questions 2–4. Kill it, move on, protect your time.
+
+The trap is spending three days thinking about an idea before applying the triage filter, because by then you've invested enough energy that killing it feels like loss. Apply the filter first. The investment in evaluation is cheap; the investment in building is expensive.
+
+## Try It
+
+**Task:** Run your project idea through the 4-question triage filter and score it honestly.
+
+**Starter prompt:**
+> I'm going to evaluate a product idea using a 4-question triage filter. Here's my idea: [describe your idea — problem it solves, who uses it, what it does, roughly how complex it is to build]
+>
+> Ask me the four triage questions, one at a time, and evaluate my answers:
+> 1. Is the problem real? (Have you or someone you know directly experienced this problem?)
+> 2. Is there a user? (Who specifically — can you describe one real person who would use this?)
+> 3. Is there value? (What specifically changes for the user after they use this product?)
+> 4. Is the effort proportional? (Given the value, is the time to build this justified?)
+>
+> After asking each question, tell me whether my answer passes, fails, or needs strengthening.
+
+**What to expect:**
+- Claude should ask each question and evaluate each answer specifically — not just accept "yes" but probe whether the yes is substantiated
+- A passing answer should satisfy a high standard: specific evidence of the problem, a named user type, measurable value, a realistic scope estimate
+- If an answer fails, Claude should say so directly and explain what a better answer would include
+- At the end, Claude should give an overall verdict: worth building, worth building at a smaller scope, or kill it

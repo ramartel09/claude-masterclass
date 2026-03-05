@@ -1,0 +1,80 @@
+export const metadata = {
+  title: "What Is Claude Code?",
+  module: "claude-code-gsd",
+  order: 1,
+  estimatedMinutes: 12,
+  challengeTitle: "Hello Claude Code",
+}
+
+## Learn
+
+Claude.ai is a chat interface. You type a message, Claude responds, and the result lives in a browser window. Claude Code is something fundamentally different: it's a command-line tool that runs in your terminal, reads and writes files on your computer, executes shell commands, and can build a complete software project from a description in plain English.
+
+The distinction matters more than it might seem at first. When you use Claude.ai, you're having a conversation — Claude can tell you how to write a function, but you still have to open a code editor and write it yourself. When you use Claude Code, Claude *does it*. It opens the file, writes the code, saves it, runs it, and reports back. You describe the outcome you want; Claude Code figures out what to do and does it.
+
+**What Claude Code actually does**
+
+Claude Code is a terminal application you install on your computer. When you run it, it starts an interactive session where you can describe software you want to build, changes you want to make, or problems you want to diagnose. Claude Code then:
+
+- Reads the files in your project directory to understand what already exists
+- Plans the changes or code it needs to write
+- Asks your permission before running any commands that could have side effects (like installing packages or deleting files)
+- Writes, modifies, or deletes files directly
+- Runs the application or tests to verify its work
+- Reports what it did and what it found
+
+This is what makes it an *agent* — it takes a sequence of autonomous actions to accomplish a goal, rather than answering a single question.
+
+**How it differs from Cursor, GitHub Copilot, and other AI coding tools**
+
+You may have heard of other AI coding tools. Here's the key distinction:
+
+*Copilot and Cursor* are designed to help people who write code write it faster. They autocomplete lines as you type, suggest functions based on what you're working on, and integrate into your editor workflow. They assume you're a developer — they're assisting your coding, not replacing it.
+
+*Claude Code* is designed for people who don't write code at all. You don't use an editor. You describe what you want in plain English in the terminal, and Claude Code writes all the code. Your role is to specify, verify, and direct — not to type any syntax.
+
+This is not a small distinction. A non-developer using Copilot is still blocked by their inability to write code — Copilot helps code you've started, not code you've never begun. Claude Code removes that block entirely. You can build a complete web application without writing a single line of code yourself.
+
+**The CLAUDE.md project context file**
+
+One of Claude Code's most powerful features is the `CLAUDE.md` file. This is a plain text file you create in your project's root directory that Claude Code reads at the start of every session. It's the persistent context you set once, and Claude Code absorbs it every time without you having to repeat it.
+
+A CLAUDE.md file typically contains:
+- The tech stack and why specific choices were made
+- Coding conventions and naming patterns
+- Things Claude should never do (introduce a database, change the folder structure, use a specific deprecated library)
+- Key architecture decisions already made
+
+This is how you teach Claude Code your preferences. Instead of repeating "use TypeScript, not JavaScript" or "don't add new dependencies without asking" in every session, you put them in CLAUDE.md and they become standing instructions. You'll build your first CLAUDE.md in Lesson 7.
+
+**What you'll be able to do by the end of this module**
+
+After completing Module 2, you'll know how to:
+- Install and configure Claude Code on your machine
+- Describe a software project in plain English and get a working result
+- Use the GSD methodology to structure multi-session projects
+- Read and verify the code Claude Code writes (without writing any yourself)
+- Give effective feedback to improve Claude Code's output
+- Debug problems by providing Claude Code the right error context
+- Back up your work with git so a bad Claude Code run can't destroy what's working
+
+**The first-win moment**
+
+The fastest way to understand Claude Code is to use it. You'll be surprised how quickly it builds something real. The Try It challenge for this lesson asks you to start Claude Code in a test directory and watch it build something in minutes — no prior coding experience required.
+
+## Try It
+
+**Task:** Start Claude Code in a test directory and ask it to create a simple "Hello Claude Code" HTML page that you can open in a browser.
+
+**Starter prompt:**
+> Create a simple HTML page called index.html. It should:
+> - Display "Hello Claude Code" as a large centered heading
+> - Have a dark background with white text
+> - Include a paragraph below the heading that says "This is my first Claude Code project."
+> - Be openable directly in a browser (no server required)
+
+**What to expect:**
+- Claude Code will ask permission before creating or modifying any files — approve each action
+- You should see Claude Code create the `index.html` file and confirm it's done
+- Opening the file in a browser should show exactly what you specified: dark background, centered heading, and the paragraph text
+- If something looks wrong, tell Claude Code specifically what's different from what you expected — that's the iteration loop in action

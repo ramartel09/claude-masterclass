@@ -1,0 +1,87 @@
+export const metadata = {
+  title: "Prompting Agents: Instructions vs. Conversations",
+  module: "ai-agents-automation",
+  order: 4,
+  estimatedMinutes: 13,
+  challengeTitle: "Write an Agent System Prompt",
+}
+
+## Learn
+
+The prompting skills you developed in Module 1 apply to agents — but with a critical difference. Conversational prompts are about producing a single good response. Agent instructions are about defining behavior across an entire autonomous run that might involve dozens of sequential decisions.
+
+When you prompt a conversational AI, you're writing for one exchange. When you write an agent system prompt, you're writing a contract that governs every decision the agent makes until it stops. That's a fundamentally different kind of writing.
+
+**Why conversational prompts fail for agents**
+
+A conversational prompt tells Claude what to do right now. An agent system prompt tells Claude what to do in every situation it might encounter. These are not the same thing.
+
+Consider the difference:
+
+*Conversational prompt:* "Research the top three competitors of Shopify and summarize their key features."
+
+*Agent system prompt:* "You are a competitive research agent. Your goal is to produce a structured competitive analysis report. You have access to web search. For each competitor you research, search for: their product overview, pricing, core feature differentiators, and customer reviews. If search results are ambiguous, run a follow-up search before drawing conclusions. Stop after analyzing 5 competitors. Produce a final report in the specified format. Do not draw conclusions about market share unless supported by specific data."
+
+The conversational prompt is a task. The agent system prompt is a set of decision rules for an entire workflow. It tells the agent: what the goal state is, how to approach each sub-task, how to handle uncertainty, when to stop, and what format to produce.
+
+**Key elements of an agent system prompt**
+
+*Goal statement:* What does "done" look like? Be concrete. "The task is complete when I have produced a structured JSON file containing data for at least 10 items meeting the specified criteria." Not "when you've done the research."
+
+*Available tools:* Remind the agent what tools it has access to and what each is for. Agents sometimes fail to use tools they have because no instruction made them aware they should. "You have access to web_search to retrieve current information and file_write to save your output."
+
+*Decision rules:* How should the agent handle common decision points? "If you find fewer than 5 valid results, search for related terms before concluding the search is exhausted." "If a file already exists, append to it rather than overwriting." "If an action fails, try once more with a modified approach, then stop and report the failure."
+
+*Stopping conditions:* When should the agent stop, regardless of whether the goal is achieved? "Stop after 20 search queries." "Stop if any file operation produces an error." "Stop after processing 100 items, even if more remain."
+
+*Output format:* What should the final output look like? Specify exactly: structure, fields, format (JSON, Markdown, CSV, etc.), file name, and any conventions for organizing the output.
+
+**Step-by-step instructions vs. goal-state + constraints**
+
+There are two approaches to agent instructions: step-by-step and goal-state.
+
+*Step-by-step:* "First, search for X. Then, for each result, open the link. Then, extract these fields. Then, save to a file." This is brittle — it breaks when any step doesn't produce the expected input for the next step. It doesn't handle failures or unexpected states.
+
+*Goal-state + constraints:* "Produce a file containing at minimum: [fields] for at minimum [N] items meeting [criteria]. You decide how to gather the information, but must use only web search, not other sources. Stop if [failure condition]." This is robust — the agent can adapt its approach to meet the goal within the constraints.
+
+For complex agents, goal-state + constraints consistently outperforms step-by-step. The agent has judgment; use it, but bound it.
+
+**Worked example: system prompt for a file-processing agent**
+
+```
+You are a document summarization agent. Your task is to process all .txt files in the /documents/inbox/ directory and produce summaries.
+
+For each file:
+1. Read the file contents
+2. Produce a summary of 3–5 sentences capturing the main topic, key conclusions, and any action items mentioned
+3. Save the summary to /documents/summaries/ with the same filename as the original (e.g., report.txt → summaries/report.txt)
+
+Decision rules:
+- If a file is shorter than 200 words, copy it directly rather than summarizing
+- If you cannot read a file (permission error, corrupted content), log "SKIPPED: [filename] — [reason]" to /documents/processing-log.txt and continue
+- Do not modify the original files in /documents/inbox/
+
+Stopping conditions:
+- Stop after processing all files in /documents/inbox/
+- Stop and report if the /documents/summaries/ directory does not exist and you cannot create it
+
+Output confirmation: When complete, write a one-paragraph completion report to /documents/processing-log.txt listing: files processed, files skipped, and any errors encountered.
+```
+
+This system prompt covers goal, tool use, decision rules for edge cases, stopping conditions, and output format. An agent running on this prompt will handle normal cases, edge cases, and failures predictably.
+
+## Try It
+
+**Task:** Write a system prompt for an agent that does a recurring task you have — daily research, document processing, content creation, or similar.
+
+**Starter prompt:**
+> Help me write a system prompt for an agent that will: [describe the task — what it should do, what information it processes, what it produces].
+>
+> The agent will have access to: [list the tools from your tool specification — web search, file read/write, etc.]
+>
+> Draft a complete agent system prompt for this task. Include: goal statement, tool reminder, decision rules for at least 3 edge cases I might encounter, stopping conditions, and output format specification.
+
+**What to expect:**
+- The system prompt Claude drafts should use goal-state language for the main objective and step-level detail only for critical sub-tasks or edge cases
+- The decision rules should be specific enough that you could answer "what would the agent do if X happened?" for at least three likely edge cases
+- If the system prompt reads like a conversational prompt (task-focused, single-response framing), ask Claude to revise it to cover decision rules and stopping conditions

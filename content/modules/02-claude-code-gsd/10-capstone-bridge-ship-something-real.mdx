@@ -1,0 +1,87 @@
+export const metadata = {
+  title: "Capstone Bridge: Ship Something Real",
+  module: "claude-code-gsd",
+  order: 10,
+  estimatedMinutes: 15,
+  challengeTitle: "Define Your Capstone",
+}
+
+## Learn
+
+You've completed Module 2. In nine lessons, you've gone from "I've heard of Claude Code" to having the complete toolkit for building real software without writing code.
+
+Here's what you can now do.
+
+**Install and run Claude Code.** You have the CLI on your machine, authenticated with an API key, and you know how to start a session in any project directory.
+
+**Describe software in plain English and get results.** You understand the scaffold → run → verify loop. You know how to describe what you want clearly enough that Claude Code builds the right thing.
+
+**Use the GSD workflow.** Discuss, plan, build, verify, ship. You know what each phase produces and how to move between them using /gsd slash commands. This structure prevents drift and scope creep across multi-session projects.
+
+**Read what Claude Code built.** You can navigate project structure without reading code, spot red flags (placeholder text, TODO comments, hardcoded data), and verify apps by using them as a user would.
+
+**Iterate effectively.** You know how to give specific, observable, reproducible feedback. You know the "show me / fix this" loop and when to use it vs. when to restart a component.
+
+**Write CLAUDE.md.** You can give Claude Code persistent project context: tech stack, architecture decisions, naming conventions, hard constraints. This eliminates repeated explanations and keeps Claude Code on-script session after session.
+
+**Debug with proper technique.** Build errors, runtime errors, logic errors — you know how to collect the right evidence for each and give Claude Code what it needs to fix things.
+
+**Use git as a safety net.** Commit before every session, commit after every successful build, push to GitHub after every milestone. You'll never lose good work to a bad Claude Code run again.
+
+---
+
+**The module capstone: Ship Something Real**
+
+The module project asks you to build and deploy a real, single-page web tool of your choosing using Claude Code + GSD, from blank repo to live Vercel URL.
+
+"Real" has a specific meaning here:
+- A tool you would actually use, for something you actually care about
+- Real content or data — not sample data or Lorem ipsum
+- Deployed to the internet at a live URL, not just running locally
+- Something another person could use if you shared the link
+
+This is not a tutorial project. The point is to apply everything you've learned to something that matters to you. The GSD workflow structures the build; your judgment drives the direction.
+
+**Choosing your capstone project**
+
+Good capstone candidates:
+- A personal dashboard that shows information you check regularly (weather, to-dos, a reading list, upcoming calendar items)
+- A simple tracker for something you care about (expenses, habits, workouts, book notes)
+- A calculator or tool for a calculation you do repeatedly (recipe scaler, currency converter, time zone planner)
+- A reference page for something you know well and want to share (your favorite coffee shops, local hikes, bookmarks for a topic you follow)
+
+Scope for the capstone: it should take 2–4 Claude Code sessions to build. If your idea seems like it would take 10 sessions, scope it down to the v1 that could be done in 4.
+
+**The deployment requirement**
+
+This capstone has a hard requirement: it must be deployed. A great app that only runs on your laptop is not done. Run `vercel` and get the URL. Share it with at least one person. Verify it loads on a phone.
+
+The reason for this requirement is that deployment is where real products live. Deploying early, before the app is perfect, is one of the most important habits in the GSD methodology. You'll discover real-device issues, you'll have a link to share for feedback, and you'll experience the momentum that comes from having something live.
+
+---
+
+**Preview of Module 3: AI Agents and Automation**
+
+In Module 3, you'll step into the next level of AI capability: agents. While Claude Code is itself an agent, Module 3 teaches you to think about and design multi-step automated workflows more broadly — what agents are, how they reason through tasks, how to direct them, and how to build workflows that chain multiple AI steps together.
+
+The skills from Modules 1 and 2 all apply: the prompting frameworks from Module 1 become the system prompt design skills for agents; the GSD methodology from Module 2 becomes the structure for directing complex agent workflows. Module 3 builds on the foundation, not past it.
+
+## Try It
+
+**Task:** Outline your capstone project idea with the specificity needed to start the GSD discuss phase. One sentence for the problem, one sentence for the solution, one sentence for the user.
+
+**Starter prompt:**
+> I'm defining my Module 2 capstone project. Help me sharpen this idea into a one-paragraph project brief I can use to start the GSD discuss phase.
+>
+> My rough idea: [Describe your idea in a few sentences — what you want to build, roughly what it should do, and who it's for (probably just you)]
+>
+> Please write a one-paragraph project brief with:
+> - One sentence: the problem it solves
+> - One sentence: what the tool does
+> - One sentence: who uses it (probably just you)
+> - Two sentences: what the v1 version includes and what's out of scope
+
+**What to expect:**
+- The brief Claude Code writes should feel achievable in 2–4 Claude Code sessions — if it sounds like months of work, tell Claude Code to scope it down
+- The "out of scope" sentence is as important as the rest — it prevents you from building too much in v1
+- Save this brief — it becomes the input to `/gsd:discuss-phase` when you start building

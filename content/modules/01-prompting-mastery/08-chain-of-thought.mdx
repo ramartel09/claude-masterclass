@@ -1,0 +1,85 @@
+export const metadata = {
+  title: "Chain-of-Thought: Making Claude Show Its Work",
+  module: "prompting-mastery",
+  order: 8,
+  estimatedMinutes: 11,
+  challengeTitle: "Step-by-Step Reasoning",
+}
+
+## Learn
+
+When you ask Claude a simple question, it answers. When you ask Claude a complex question, it also answers — but sometimes that answer is wrong, or underdeveloped, or misses a step in its own reasoning that would have revealed an error.
+
+**Chain-of-thought prompting** is a technique for making Claude think through a problem step by step before delivering its answer. The result is often more accurate, more transparent, and easier to check. It's one of the simplest techniques in this module and one of the highest-value.
+
+**Why reasoning out loud helps**
+
+Language models are next-token predictors. When they generate an answer directly, they're essentially guessing the most likely completion of the prompt — an answer that looks like what answers to this kind of question look like. For simple questions, this works fine. For complex problems requiring multi-step reasoning, the model can jump to a plausible-looking answer that's actually wrong, because looking plausible and being correct are different things.
+
+When you ask Claude to reason step by step, you force it to commit to intermediate conclusions before reaching a final answer. Each step either holds up under scrutiny or it doesn't — and errors in reasoning become visible before they compound into a wrong final answer.
+
+This is especially valuable because *you can check the steps even if you can't check the answer.* If Claude's final answer involves arithmetic you can't verify in your head, you can still verify the logic of each reasoning step. If one step is wrong, the rest of the chain is unreliable — and you know to ask Claude to redo that step.
+
+**How to trigger chain-of-thought reasoning**
+
+The simplest approach is to add explicit instructions to think step by step:
+
+- "Think through this step by step before giving your final answer."
+- "Walk me through your reasoning before reaching a conclusion."
+- "Before you answer, list the key considerations and how each one affects the decision."
+
+These phrases activate more deliberate reasoning without requiring you to restructure your prompt significantly.
+
+**Use cases where CoT helps most**
+
+*Multi-step problem solving:* Math, logic puzzles, data analysis, any task where the answer requires building on intermediate results. "What's the best pricing tier for a software product targeting SMBs in the US?" involves several intermediate reasoning steps — CoT makes each one visible.
+
+*Decision-making under uncertainty:* When you need to weigh multiple factors and the right answer isn't obvious. CoT forces Claude to explicitly consider each factor rather than rushing to a confident-sounding conclusion.
+
+*Code planning:* Before asking Claude to write complex code, ask it to plan the approach step by step first. Review the plan, catch any architectural issues, then ask it to implement. The plan-then-build pattern consistently produces better code than jumping straight to implementation.
+
+*Debugging:* "Walk me through your reasoning for why this function might be failing" is more useful than "why is this failing?" The step-by-step reasoning often surfaces the actual bug in a way that a direct answer would miss.
+
+**When NOT to use chain-of-thought**
+
+CoT adds length and processing. For tasks where this overhead doesn't pay off, it slows things down without improving quality.
+
+- **Simple factual questions:** "What year was the Eiffel Tower built?" CoT produces: "Let me think step by step. First, the Eiffel Tower is in Paris... the construction began... and so the answer is 1889." The step-by-step is just filler.
+
+- **Creative writing:** Stories, poems, and creative prose should emerge from creative synthesis, not explicit logical deduction. CoT can make creative output feel mechanical and over-explained.
+
+- **Quick lookups and summaries:** If you're asking Claude to summarize a document or define a term, the answer shouldn't require visible reasoning steps — it should just be the summary or definition.
+
+The heuristic: use CoT when the task has a correct answer that could be reached by wrong steps, or when you need to verify the reasoning, not just the conclusion.
+
+**Extended thinking**
+
+Some Claude models support extended thinking — a mode where Claude does an explicit internal reasoning pass before generating its response. This is an expanded version of chain-of-thought that happens at the model level, giving Claude more space to reason through problems before you see any output. For Claude 3.5+ and Claude 3.7+, extended thinking is available through the API with the appropriate parameters.
+
+For everyday use in Claude.ai, you activate thinking by prompting for it explicitly as described above. The effect is similar — more deliberate reasoning, more transparent logic — without requiring API access.
+
+**Reviewing the reasoning chain**
+
+When Claude shows its reasoning, actually read it. This is the primary benefit: you can audit the thinking before accepting the conclusion. Look for:
+
+- Steps that assume something you didn't state
+- Reasoning that reaches a confident conclusion from weak evidence
+- Intermediate conclusions that contradict each other
+
+If you spot a bad step, point to it specifically: "Your second step assumes X, but that's not necessarily true here — how does the answer change if Y is the case?" This targeted challenge is much more effective than asking Claude to redo the whole answer.
+
+## Try It
+
+**Task:** Bring Claude a multi-step problem you're working through — a decision, a planning question, a technical challenge — and instruct it to reason step by step before giving its final recommendation.
+
+**Starter prompt:**
+> I'm trying to [describe the decision or problem in 2–3 sentences].
+>
+> Relevant context: [any facts or constraints that affect the answer]
+>
+> Before giving me your recommendation, reason through this step by step. Show me each step of your thinking, then give me your final recommendation at the end.
+
+**What to expect:**
+- Claude should produce numbered or labeled reasoning steps before its final answer — if it jumps straight to a conclusion without visible steps, add "Do not answer until you have written at least 4 reasoning steps"
+- Read each step before the conclusion — look for any step that makes an assumption you didn't provide or that seems to reach a conclusion prematurely
+- The final recommendation should feel more grounded and defensible than what you'd get without the step-by-step instruction

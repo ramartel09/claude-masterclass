@@ -1,0 +1,116 @@
+export const metadata = {
+  title: "Iteration and Debugging at Product Scale",
+  module: "idea-to-product",
+  order: 8,
+  estimatedMinutes: 13,
+  challengeTitle: "Break Down Complexity",
+}
+
+## Learn
+
+Single-feature iteration is straightforward: something doesn't work, you describe the problem, Claude Code fixes it. Product-scale iteration is more complex. You're managing multiple features, interconnected components, a growing codebase, and a context window that gets diluted as the project grows.
+
+This lesson covers the strategies that keep product builds moving efficiently across multiple sessions and phases.
+
+**Small files, small changes, frequent commits**
+
+The most important habit in managing complexity with Claude Code: keep each file as small and focused as possible, make changes in small increments, and commit after every successful change.
+
+Why small files: Claude Code's ability to reason about a file degrades as the file grows. A 2,000-line component file is hard for Claude Code to modify correctly without unintended side effects. A 100-line component with clear responsibility is easy to modify precisely. When you structure your project with small, focused files, Claude Code can make precise changes without touching things it shouldn't.
+
+Why small changes: small changes are easier to verify, easier to roll back, and easier to describe to Claude Code. "Add a loading state to the HospitalCard component" is a small change. "Overhaul the entire hospital display system" is a large change that's hard to verify and risky to implement in one session.
+
+Why frequent commits: git commits are your rollback points. A commit before each Claude Code session creates a clean rollback to the last known-good state. A commit after each successful change creates fine-grained history you can use to identify exactly when something broke.
+
+**Managing context across long-running projects**
+
+Claude Code's context window has limits. On a long-running project, each new session starts fresh — Claude Code doesn't remember previous sessions. You have to re-establish context.
+
+The wrong way: paste in the entire codebase and say "remember all of this."
+
+The right way: use CLAUDE.md (which Claude Code reads automatically) plus a brief session-start summary:
+
+```
+We're continuing work on the hospital tracker. Here's where we left off:
+- Phase 1 is complete: home page with hardcoded hospital data is deployed
+- Current task: add filtering by distance from user's location
+- The HospitalList component (components/HospitalList.tsx) is where the filtering logic will go
+- Don't touch the data layer (lib/hospitals.ts) in this session
+
+Start by reading components/HospitalList.tsx and describing what currently exists.
+```
+
+This re-establishes the relevant context without re-sending code Claude Code can read itself.
+
+**Debugging a multi-file project**
+
+In single-file projects, debugging is simple: something broke, and there's only one file to look at. In multi-file projects, bugs can originate anywhere and propagate through multiple layers.
+
+The isolation strategy: narrow the scope before debugging.
+
+1. Identify which feature is broken
+2. Identify which component or function that feature belongs to
+3. Give Claude Code a precise scope: "The bug is in the filtering logic in HospitalList.tsx. The hospital data in lib/hospitals.ts is correct. Please focus only on the filtering function."
+
+This prevents Claude Code from making unnecessary changes to parts of the codebase that aren't the source of the problem.
+
+**When a feature is "broken beyond repair"**
+
+Some features accumulate so many patches and workarounds that they become unreliable. Adding more fixes makes things worse. This is technical debt at the feature level.
+
+The sign: you've made more than three fix attempts on the same bug, each fix introduces new problems, and the feature's behavior seems inconsistent across different inputs or conditions.
+
+The right response: restart the feature from scratch. Not the whole project — just the feature.
+
+```
+The HospitalFilter component has accumulated too many fixes and is no longer working reliably. I want to start it fresh. Please:
+1. Delete components/HospitalFilter.tsx
+2. Create a new HospitalFilter.tsx from this specification: [describe exactly what the component should do]
+3. Keep everything else in the project unchanged
+
+Here's what the new component must do:
+[your acceptance criteria]
+```
+
+Starting a component fresh is faster than debugging an overly-patched one. Claude Code is fast at creating; use that speed.
+
+**The retrospective habit**
+
+After completing each phase, take 10 minutes to note what worked and what didn't. This doesn't have to be formal — a few bullet points in a document is enough.
+
+Good retrospective questions:
+- What took longer than expected? Why?
+- What did Claude Code struggle with repeatedly?
+- What would I do differently in Phase 2?
+- Are there any constraints I should add to CLAUDE.md based on what I saw?
+
+This habit is where GSD practitioners compound their learning. The insights from Phase 1 make Phase 2 faster. The insights from Phase 2 make Phase 3 faster. The retrospective is how you learn from building, not just while building.
+
+**The start fresh vs. iterate decision at product scale**
+
+The Module 2 lesson on iteration covered when to start fresh for a single feature. At product scale, there's a larger version of the same decision: when to start the whole project fresh.
+
+This happens rarely — most projects can be maintained indefinitely with good habits. But occasionally a project's foundation is wrong in a way that makes every subsequent phase harder. Signs: TypeScript errors that keep compounding, architectural decisions that conflict with what Phase 2 needs, a dependency that has compatibility problems with everything else.
+
+If you hit this situation, the GSD discussion phase for the new version is much faster than the first: you know exactly what the v1 issues were, and you can specify the v2 scaffold to avoid them. The content of v1 (the lesson files, the data, the research) is usually fully reusable. Starting fresh on the code is not starting from scratch on the project.
+
+## Try It
+
+**Task:** Identify the most complex part of your project roadmap and break it down into the smallest independently-testable steps you can build with Claude Code one at a time.
+
+**Starter prompt:**
+> My project's most complex feature is: [describe the feature — what it does, what it depends on, why it's complex]
+>
+> Break this feature down into the smallest independently testable steps. For each step:
+> - What exactly does this step build?
+> - What does it take as input?
+> - What does it produce that I can verify?
+> - What would make this step too large? (What's the line between "one step" and "two steps"?)
+>
+> The goal is steps small enough that I can build and verify each one in a single Claude Code session, with the result committed to git before starting the next step.
+
+**What to expect:**
+- Each step should produce something independently verifiable — not just "we're closer to the goal" but "this specific thing works on its own"
+- If a step can't be verified independently, it needs to be split further
+- The full list of steps shouldn't require more than 3–5 sessions — if it does, the feature might be too large for Phase 1 and should be scoped to a future phase
+- Use this breakdown as your build plan: commit after each step, verify before starting the next

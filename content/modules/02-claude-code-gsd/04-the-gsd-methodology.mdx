@@ -1,0 +1,73 @@
+export const metadata = {
+  title: "The GSD Methodology",
+  module: "claude-code-gsd",
+  order: 4,
+  estimatedMinutes: 13,
+  challengeTitle: "Run Your First GSD Discussion",
+}
+
+## Learn
+
+GSD stands for Get Shit Done. It's a structured workflow for Claude Code projects that keeps builds on track, prevents scope creep, and produces reliable results across multiple sessions. If you've ever had Claude start strong and then go off-script halfway through a project, GSD is the fix.
+
+The core insight is this: Claude Code without structure is reactive. It executes the current prompt without a framework for what the whole project needs to be. It will help you with whatever you ask, but it has no way to say "that's out of scope" or "we agreed not to do that" unless you've defined what's in scope and agreed on it explicitly. GSD provides that framework.
+
+**The five GSD phases**
+
+*Discuss:* Before any code is written, you describe your idea to Claude Code and it asks clarifying questions. You answer them. By the end of the discussion, you've aligned on what you're building, why, who it's for, and what the first version needs to do. This phase produces shared understanding — not just your understanding, but Claude Code's working model of your project.
+
+*Plan:* Claude Code takes the discussion output and creates a phased execution plan. Not one long plan for the whole project — a series of small, independently verifiable milestones. Each milestone delivers something you can see and test. The plan is committed to before any build work starts.
+
+*Build:* Claude Code executes the plan, milestone by milestone. At each checkpoint, it stops and you verify before continuing. This is where the code gets written, the features get built, and the app takes shape.
+
+*Verify:* Each milestone ends with a verification step. Does it do what the plan said it would do? Does the UI match the spec? Do the core features work? Verification is your job — Claude Code built it, but only you can confirm it matches your intent.
+
+*Ship:* When all milestones are verified, you deploy. In most cases, this means running `vercel` to push to production. Ship early, ship often — a live URL is more valuable than a perfect local build.
+
+**The /gsd slash commands**
+
+Claude Code ships with GSD slash commands that activate each phase:
+
+- `/gsd:discuss-phase` — starts a structured discussion about your project idea. Claude Code asks questions; you answer. The discussion ends with a shared understanding document.
+- `/gsd:plan-phase` — creates the execution plan from the discussion. Claude Code proposes milestones; you review and approve.
+- `/gsd:execute-phase` — runs the build for the current milestone, stopping at checkpoints for your verification.
+- `/gsd:verify-work` — structured verification of a completed milestone.
+
+You use these commands at the start of each phase. They're not magic — they're structured prompts that activate the right behavior for each stage. The structure they impose is the value.
+
+**Why structure matters for AI-built projects**
+
+Without structure, Claude Code is susceptible to two problems:
+
+*Drift:* Over a long build session, Claude Code can lose track of earlier decisions and constraints. It might change a design pattern you established early, or introduce a library you explicitly said to avoid. Drift is invisible when it happens and painful to fix after the fact.
+
+*Scope creep:* Claude Code is helpful. If you mention a feature while describing something else, it may build it even if you didn't ask. Without a plan that defines what's in scope, there's no reference point for "we're not building that yet."
+
+The plan phase solves both. When you have an agreed-on plan and Claude Code drifts from it, you can point to the plan: "That's not in the current milestone — put it on the backlog." The plan is the shared source of truth.
+
+**The meta-demonstration**
+
+The masterclass you're reading right now was built using GSD. The discussion phase established what the course needed to be, who it was for, and what modules it would cover. The plan phase created four execution phases with specific deliverables for each. The build phase produced the platform, the content, and the deployment — in sequence, with verification at each milestone.
+
+This isn't a case study from somewhere else. It's the methodology applied to the project you're currently using. That's the most honest endorsement possible: GSD is how this course got built.
+
+**Starting your first GSD project**
+
+The best way to learn GSD is to run it on a real project you want to build. Pick something you've had in the back of your mind — a simple tool, a personal project, something you'd actually use. The discussion phase takes 10–15 minutes. The plan that comes out of it will make the subsequent build faster and more focused than any unstructured approach.
+
+You don't need to have everything figured out going into the discussion. That's what the discussion is for. Describe your idea in a paragraph, and let Claude Code's questions sharpen it.
+
+## Try It
+
+**Task:** Run `/gsd:discuss-phase` on a simple project idea and review the structured output.
+
+**Starter prompt:**
+> /gsd:discuss-phase
+>
+> I want to build a personal daily journal app. Here's my rough idea: I want to be able to write a short entry each day, see my past entries in a timeline, and occasionally search through them. It should work on my laptop. I don't want a server — something that saves locally is fine.
+
+**What to expect:**
+- Claude Code should ask you 3–6 clarifying questions: target device (mobile/desktop/both?), storage preference (localStorage, file-based?), search behavior (full-text? by date?), authentication requirements, specific UI preferences
+- Answer each question honestly — these answers drive the plan that comes next
+- After you've answered the questions, Claude Code should produce a summary of what you're building — a shared understanding document, not a code plan yet
+- Read this summary carefully: does it capture what you actually want? Correct anything that's off before moving to the plan phase

@@ -1,0 +1,95 @@
+export const metadata = {
+  title: "Structured Output: Getting What You Can Use",
+  module: "prompting-mastery",
+  order: 7,
+  estimatedMinutes: 12,
+  challengeTitle: "Ask for a Structured Analysis",
+}
+
+## Learn
+
+Claude defaults to prose. When you give it a task without specifying how the output should look, it writes paragraphs — thoughtful, coherent, well-organized paragraphs that are easy to read but often hard to act on.
+
+Prose is the right format for explanations, narratives, and persuasion. It's the wrong format for decisions, comparisons, data summaries, reference material, and anything you plan to paste into a spreadsheet, database, or another tool.
+
+**Structured output** means asking Claude to return its response in a format that serves the intended use of the output — not just communication for reading, but data for action.
+
+**The formats you should know**
+
+*Markdown tables* are the most versatile structured format. Use them for comparisons, feature matrices, decision frameworks, and any information that has multiple attributes per item. Tables are easy to read in Claude's interface, easy to paste into Notion, and easy to convert to spreadsheets.
+
+```
+| Option | Pros | Cons | Cost |
+|--------|------|------|------|
+| A      | ...  | ...  | $    |
+| B      | ...  | ...  | $$   |
+```
+
+*Numbered lists* are for ordered processes, ranked items, or anything where sequence matters. Step-by-step instructions, prioritized recommendations, ranked risks — if the order is meaningful, number it.
+
+*Bullet lists* are for unordered collections. The items are parallel but not sequential. Good for feature lists, requirements, stakeholder concerns, and things to consider.
+
+*JSON* is for any output you're going to programmatically consume — feeding into an app, storing in a database, processing with code. Ask for JSON when you're using Claude to generate data, not prose.
+
+*Code blocks* are for code, commands, configuration, and anything that needs to be copied and run exactly as written. Always ask for code blocks when requesting code — it preserves formatting and prevents quotation marks from being converted to "smart quotes" that break syntax.
+
+*Hierarchical bullets* (nested indentation) are for information with parent-child relationships: a project broken into phases, phases broken into tasks, tasks broken into steps.
+
+*Labeled sections* are for longer structured documents: reports, briefs, analyses. Use headers to separate distinct sections. Ask Claude to label them exactly what you want: `## Situation`, `## Recommendation`, `## Risks`.
+
+**Output format instructions go at the end**
+
+The conventional wisdom is to put the most important instruction first. For output format, the opposite works better: put format instructions at the end of your prompt, immediately before Claude generates. The reason is that Claude processes the format instruction as it's about to produce output — it's most effective as the last constraint.
+
+Compare:
+
+*Format instruction first:*
+> "Return this as a JSON object. Analyze the following marketing copy and identify: tone, target audience, call to action, and three strengths and three weaknesses."
+
+*Format instruction last:*
+> "Analyze the following marketing copy and identify: tone, target audience, call to action, and three strengths and three weaknesses. Return your analysis as a JSON object with keys: tone, targetAudience, callToAction, strengths (array of 3), weaknesses (array of 3)."
+
+Both will produce JSON, but the second version tends to produce more accurate field naming and more faithful adherence to the structure because Claude knows exactly what it's building toward as it generates.
+
+**The "if and only if" pattern**
+
+For conditional output — where the structure depends on what Claude finds — use explicit if/then instructions. This prevents Claude from improvising a structure when the condition isn't met.
+
+> "If you find more than three issues, return them as a numbered list. If you find three or fewer, return them as a single paragraph."
+
+> "If the query is answerable from the provided text, return the answer. If not, return the single word 'INSUFFICIENT' and nothing else."
+
+The second example is especially useful when Claude's output feeds into automation — you need a predictable format that a downstream process can handle.
+
+**Practical examples**
+
+*Decision matrix:*
+> "I'm choosing between three project management tools: Notion, Linear, and Jira. I care about ease of setup, GitHub integration, price, and mobile app quality. Return a comparison as a Markdown table with those four criteria as columns. After the table, add a single-line recommendation."
+
+*Structured critique:*
+> "Review this product description and return a structured critique in this format:
+> **Strengths:** (bullet list)
+> **Weaknesses:** (bullet list)
+> **Missing elements:** (bullet list)
+> **Rewrite suggestion:** (one improved version, max 50 words)"
+
+*Data extraction:*
+> "Read the following meeting notes and extract: (1) decisions made (numbered list), (2) action items with owner and due date (table with columns: Action, Owner, Due Date), (3) open questions that need follow-up (bullet list)."
+
+In each case, the output format is specified before Claude generates anything. Claude doesn't have to guess what would be most useful — you've told it exactly what you need.
+
+## Try It
+
+**Task:** Ask Claude to analyze something — a piece of writing, a decision you're facing, a set of options — and return the analysis as a Markdown table with clearly specified columns.
+
+**Starter prompt:**
+> Analyze the following [piece of writing / set of options / situation] and return your analysis as a Markdown table.
+>
+> [Paste the content to analyze]
+>
+> The table should have these columns: [Column 1 name] | [Column 2 name] | [Column 3 name]. After the table, add a 1–2 sentence summary of the most important finding.
+
+**What to expect:**
+- Claude should return a properly formatted Markdown table that renders with column dividers, not plain text
+- The columns should match exactly what you specified — if Claude adds or renames columns, it's overriding your format instruction (note this and try adding "Exactly these columns — no others" to the next prompt)
+- The post-table summary should be brief and actionable, not a repetition of the table contents

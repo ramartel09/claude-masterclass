@@ -1,0 +1,77 @@
+export const metadata = {
+  title: "Personas and System Prompts",
+  module: "prompting-mastery",
+  order: 6,
+  estimatedMinutes: 13,
+  challengeTitle: "Design Your Claude Persona",
+}
+
+## Learn
+
+One of the most powerful and underused prompting patterns is persona assignment — telling Claude who to be. Not just what to do, but who is doing it. This single change can dramatically shift vocabulary, depth, assumptions, tone, and the quality of judgment Claude brings to a task.
+
+When you assign Claude a role, you're activating a different mode of response. You're essentially asking it to run its outputs through a filter: "what would an expert in this domain, with this kind of background and focus, produce?"
+
+**Why personas work**
+
+Claude has been trained on an enormous range of human writing across countless domains. When you assign a persona — "you are a senior product manager with ten years of experience in B2B SaaS" — you're signaling which subset of that training to draw from. You're not fabricating an identity; you're calibrating which knowledge, vocabulary, and reasoning patterns are relevant.
+
+The same task done without a persona is answered from the default perspective: a generally knowledgeable assistant providing a balanced, often somewhat hedged response. With the right persona, you get something more specific: the response someone with that expertise would actually give, with the skepticism, the domain shortcuts, the "this is how it actually works" pragmatism that expertise produces.
+
+**Three personas, same task**
+
+Consider the task: "Review this project plan and tell me what concerns you."
+
+*No persona assigned:*
+Claude produces a structured review with general observations about timeline, dependencies, and scope. Balanced, thorough, generic. Could apply to almost any project plan.
+
+*Persona: "You are a skeptical operations manager who has managed 50+ software launches and has seen most common failure modes firsthand."*
+Claude focuses on operational risks — what happens when the timeline slips, who owns the integration between team A and team B, whether the QA phase is realistic. It uses specific language about handoffs and blockers. It's more opinionated and more specific.
+
+*Persona: "You are a first-time PM who just got this project plan handed to you and is trying to understand what you're accountable for."*
+Claude reads the plan from a different angle entirely — looking for unclear ownership, tasks that seem like they belong to another team, things that are implied but not written down. It surfaces confusion that an expert might not notice because they'd fill in the gaps automatically.
+
+All three responses are useful for different purposes. None of them is what you get without specifying a persona.
+
+**How to write an effective persona**
+
+A good persona statement is one to two sentences. It includes:
+- The domain or role type ("senior financial analyst," "experienced UX researcher")
+- A relevant qualifier that narrows the default ("specializing in early-stage startup financials," "who works primarily on mobile apps")
+- Optionally, a perspective or orientation ("who is skeptical of optimistic assumptions," "who prioritizes user comprehension over visual elegance")
+
+Avoid vague superlatives ("world-class expert") — they add noise without signal. The specificity of the domain matters more than the seniority level.
+
+**System prompts: personas at scale**
+
+In the Claude API, and in tools built on top of it, there's a concept called the system prompt — an invisible instruction that's prepended to every conversation, establishing context and persona before you send your first message. It's what you see when a Claude-powered product feels like it has a specific personality or voice — there's a system prompt giving Claude its character for that application.
+
+For everyday use, you don't have the API's system prompt capability — but you get the same effect by front-loading your conversation opener (as covered in Lesson 4). The difference is that a system prompt persists automatically across sessions, while your front-loaded opener must be rewritten for each new conversation.
+
+**Claude Code's CLAUDE.md** takes this further — it's a project context file that Claude Code reads at the start of every session. You put your project's tech stack, preferences, and constraints in it, and Claude Code absorbs them as standing instructions. The practical effect is exactly a system prompt for your project. You'll build your first CLAUDE.md in Module 2.
+
+**The gimmick trap**
+
+Persona assignment can go wrong when it becomes theater instead of calibration. "You are a pirate who gives coding advice" is amusing but counterproductive — the persona adds noise rather than signal. The most effective personas are those that would genuinely change the substance of a response, not just its style.
+
+Ask yourself: if a human with this persona actually responded, would their expertise change the answer? If yes, the persona is doing real work. If a pirate and a senior engineer would say the same thing, the persona is decorative.
+
+**Designing a persona for recurring tasks**
+
+The best persona design exercise is to think about tasks you do repeatedly. If you regularly ask Claude to review your writing, design the persona of the ideal writing reviewer for your work. If you use Claude for competitive analysis, design the persona of the analyst who would be most useful for your industry.
+
+The persona you build for a recurring task pays off over time. Every time you start that type of session with the persona already defined, you skip the calibration that would otherwise happen in the first two or three rounds of iteration.
+
+## Try It
+
+**Task:** Design a Claude persona for a task you do regularly — writing coaching, business advisory, code review, or something else specific to your work. Write the persona statement and test it against a real task.
+
+**Starter prompt:**
+> I need you to act as [describe the persona in 1–2 sentences: role type, domain, relevant perspective or orientation].
+>
+> With that lens, here's your first task: [describe a real task relevant to that persona].
+
+**What to expect:**
+- The response should feel noticeably more domain-specific than what Claude produces without a persona — more specific vocabulary, more opinionated conclusions, less hedging on things the "expert" would know
+- If the persona doesn't seem to be influencing the output, try making the qualifier more specific — not "marketing expert" but "B2B SaaS marketing strategist who focuses on product-led growth"
+- Good persona output sounds like it came from a person with a point of view, not a textbook with a balanced perspective

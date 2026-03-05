@@ -1,0 +1,91 @@
+export const metadata = {
+  title: "When Agents Go Wrong: Failure Modes",
+  module: "ai-agents-automation",
+  order: 8,
+  estimatedMinutes: 13,
+  challengeTitle: "Add a Failure Safeguard",
+}
+
+## Learn
+
+Agents fail. Not because they're bad at what they do — modern AI agents are remarkably capable — but because they operate in complex environments, make dozens of decisions per run, and encounter situations their instructions didn't anticipate. Understanding how agents fail is the foundation of designing agents that fail gracefully.
+
+There are five common agent failure modes. Each has a distinct signature, a detection method, and a mitigation strategy.
+
+**Failure Mode 1: Context Drift**
+
+*What it is:* The agent gradually loses focus on the original goal and starts optimizing for something else — usually the most recent instruction or the most locally compelling action, rather than the overall goal.
+
+*How it manifests:* An agent asked to "research competitors and summarize their pricing" starts producing detailed product comparisons instead of pricing summaries. An agent asked to "fix the failing tests" starts refactoring code that wasn't mentioned in the task.
+
+*Detection:* The output doesn't match the goal state you specified. Not "it's bad" — it's misaligned with what you asked for, even if it's well-executed work on a different task.
+
+*Mitigation:* Include a goal reminder in the stopping conditions: "Before generating your final output, confirm that it addresses the original goal: [restate goal]." Use structured stopping conditions that reference the goal explicitly. For long agent runs, consider adding intermediate goal-confirmation steps.
+
+**Failure Mode 2: Tool Misuse**
+
+*What it is:* The agent uses a tool incorrectly — misinterprets its output, applies it to the wrong input, or misunderstands its scope.
+
+*How it manifests:* An agent treats a file-not-found error from a read tool as success and proceeds with empty data. An agent interprets search results that contradict its prior understanding as confirmation of that understanding. An agent runs a command that affects more files than intended because it misread the tool's documentation.
+
+*Detection:* The output is based on incorrect information that the agent treated as correct. In code, this often shows up as logic that would only make sense if the input data were different from what it actually was.
+
+*Mitigation:* Include explicit observation-checking steps: "After each search, verify that the results are relevant to the query before using them." "After reading a file, confirm the expected content is present before proceeding." Make tool outputs explicit in the reasoning chain.
+
+**Failure Mode 3: Hallucination**
+
+*What it is:* The agent confidently produces information that is false. Unlike conversational hallucination (which you might catch by reading carefully), agent hallucination can be propagated through multiple steps before it's visible in the final output.
+
+*How it manifests:* Research reports citing sources that don't exist or don't say what the agent claimed. Code that references functions or APIs that don't exist in the specified libraries. Data extraction that fills in values it couldn't find with plausible-looking invented values.
+
+*Detection:* Spot-check a sample of factual claims in the output against the sources. For code, test the actual behavior rather than trusting the implementation description.
+
+*Mitigation:* Require citations: "For every factual claim, note the source and the specific passage that supports it." For code, always run it — hallucinated APIs produce immediate runtime errors. Use retrieval-grounded prompts: "Answer only from the provided source material, not from your training data."
+
+**Failure Mode 4: Scope Creep**
+
+*What it is:* The agent does more than you asked, often because it's trying to be helpful — fixing adjacent problems, adding features you didn't request, or extending its work into areas that weren't part of the task.
+
+*How it manifests:* You ask Claude Code to fix one bug and it refactors the entire file. You ask for a summary of three competitors and it produces a full market analysis for ten.
+
+*Detection:* The output is larger or different in scope than what you specified. Often noticed only after review — the extra work looks like a good thing until you realize it wasn't asked for and may have introduced changes you didn't want.
+
+*Mitigation:* Explicit scope constraints in instructions: "Fix only the specific bug described. Do not modify any other code." "Analyze exactly the three competitors listed. Do not include additional competitors." Add scope confirmation to stopping conditions: "Before completing, verify that your output addresses exactly what was asked and nothing more."
+
+**Failure Mode 5: Loop Failure**
+
+*What it is:* The agent gets stuck repeating the same action because it cannot recognize that the action is failing or that progress is not being made.
+
+*How it manifests:* An agent repeatedly tries to install a dependency that keeps failing, with the same command, without trying an alternative. An agent keeps running a test that keeps failing without escalating or trying a different fix. An agent searches for information it won't find with progressively similar queries.
+
+*Detection:* The agent has made N+ attempts at the same sub-task without success or meaningful variation in approach.
+
+*Mitigation:* Maximum-retry constraints: "If an action fails three times, stop and report the failure." Variation requirements: "If an approach doesn't work after two attempts, try a different approach rather than repeating." Progress indicators: "After every 3 steps, confirm that progress has been made toward the goal — if not, explain why and propose a different approach."
+
+**Designing for failure: assume something will go wrong**
+
+The practical implication of understanding these failure modes is to design agent instructions that anticipate them. For every failure mode, ask: "How would this agent fail in this way, and what instruction would prevent that failure or catch it early?"
+
+Good agent instructions always include: stopping conditions for the no-progress case, verification steps at critical decision points, explicit scope constraints, and a failure reporting format so you know what happened when things go wrong.
+
+## Try It
+
+**Task:** For a specific agent task you plan to run, identify the most likely failure mode and add a specific mitigation to the agent's instructions.
+
+**Starter prompt:**
+> I'm designing an agent that will: [describe what the agent does]
+>
+> Review this task through the lens of the five agent failure modes:
+> 1. Context drift — could the agent lose focus on the goal?
+> 2. Tool misuse — could it misinterpret tool output?
+> 3. Hallucination — could it produce confident but false information?
+> 4. Scope creep — could it do more than asked?
+> 5. Loop failure — could it get stuck repeating failed actions?
+>
+> For each failure mode: (1) rate its likelihood for my specific task (high/medium/low), (2) describe how it would manifest for this task specifically, and (3) suggest one specific instruction to add to the agent's system prompt to mitigate it.
+
+**What to expect:**
+- Claude should produce specific, task-relevant failure modes — not generic descriptions of each mode
+- The mitigation suggestions should be specific enough to include verbatim in an agent system prompt
+- The highest-rated failure modes are where you should focus — add those mitigations to your agent's instructions before running it
+- If Claude rates all failure modes as low, push back: "Which one is most likely if I had to pick? What would that look like for this specific task?"

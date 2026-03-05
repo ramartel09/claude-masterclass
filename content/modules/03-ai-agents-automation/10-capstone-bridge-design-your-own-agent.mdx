@@ -1,0 +1,84 @@
+export const metadata = {
+  title: "Capstone Bridge: Design Your Own Agent",
+  module: "ai-agents-automation",
+  order: 10,
+  estimatedMinutes: 15,
+  challengeTitle: "Draft Your Agent Spec",
+}
+
+## Learn
+
+You've completed Module 3. In nine lessons, you've built a complete mental model for understanding, directing, and evaluating AI agents — and for Claude Code in particular.
+
+Here's a summary of what you can now do.
+
+**Define agents correctly.** You understand the distinction between conversational AI and agentic AI, and you can identify when a task calls for an agent vs. a prompt. You know the four agent components: perception, reasoning, action, memory.
+
+**Map the agent loop.** You can trace the Think → Act → Observe → Repeat cycle for any agent task, identify where decisions happen, and design verification steps at critical points.
+
+**Specify tools precisely.** You know the major tool categories (file system, code execution, web retrieval, API calls, search) and can apply the least-privilege principle: give an agent exactly what it needs, nothing more.
+
+**Write agent system prompts.** You know the difference between step-by-step instructions (brittle) and goal-state + constraints (robust). You can write system prompts that include: goal statement, tool reminders, decision rules for edge cases, stopping conditions, and output format.
+
+**Use Claude Code as an agent.** You know when to supervise closely and when to let it run, how to set up verification checkpoints in GSD plans, how to read Claude Code's narration for warning signs, and how to intervene effectively mid-run.
+
+**Verify agent output.** You know why verification is non-negotiable, how to write acceptance checklists before running an agent, how to spot plausible-but-wrong output, and how to distinguish what Claude Code checks from what you need to check.
+
+**Design multi-step workflows.** You can map a workflow with explicit input/output formats at each handoff, identify the most likely failure points, and choose the right granularity: single run vs. chained steps.
+
+**Anticipate failure.** You can identify the five failure modes (context drift, tool misuse, hallucination, scope creep, loop failure) and add specific mitigations to agent instructions before running.
+
+**Apply proven patterns.** You know three production-ready archetypes — research assistant, content pipeline, data extractor — and how to adapt them to your specific needs.
+
+---
+
+**The module capstone: Design Your Own Agent**
+
+The module project asks you to design a complete agent specification for a personal automation task — system prompt, tool list, evaluation rubric, and failure handling — and then test it with Claude Code.
+
+"Design" here means produce a specification complete enough that the agent could be built by someone else from your document alone. The specification should include:
+
+1. **Agent purpose and goal state:** What the agent does and what "done" looks like
+2. **Tool specification:** Which tools are needed and their exact scope
+3. **System prompt:** Full agent instructions including goal, decision rules, stopping conditions, output format
+4. **Acceptance checklist:** 5–8 specific, verifiable criteria for evaluating the output
+5. **Failure mode analysis:** The most likely failure for each relevant failure mode and the mitigations included in the system prompt
+
+**Choosing your capstone task**
+
+Choose something you'll actually run. A theoretical agent spec for a task you'll never run teaches you less than a working agent for a task you run once. Good candidates:
+
+- Weekly research on a topic you follow (market trends, technology news, competitive analysis)
+- Processing a recurring set of files (meeting notes → action items, invoices → expense log)
+- Content production you do regularly (social media posts from a brief, email drafts from bullet points)
+- Data gathering for a personal project (collecting data for a decision, tracking something over time)
+
+The task should be multi-step (otherwise it's a prompt, not an agent) and recurring (otherwise the agent is overkill).
+
+---
+
+**Preview of Module 4: The Idea-to-Product Pipeline**
+
+Module 4 is where all three previous modules converge. You'll apply prompting skills (Module 1), Claude Code and GSD (Module 2), and agent design (Module 3) to a single goal: taking a product idea from concept to a live, deployed web application.
+
+The final module is the most applied. Less conceptual groundwork, more direct application of everything you've learned to a real product build. The module project is a web tool you define, build, and deploy — using Claude as your entire development team.
+
+## Try It
+
+**Task:** Sketch the system prompt for your module capstone agent — the automation task you'll actually run. Write 2–3 paragraphs covering: what the agent does, what tools it uses, and what the key decision rules are.
+
+**Starter prompt:**
+> I'm designing my Module 3 capstone agent. Here's the task I want to automate: [describe the recurring task you want the agent to handle — what it processes, what it produces, how often you'd run it].
+>
+> Help me draft the system prompt for this agent in 2–3 paragraphs. The draft should include:
+> - What the agent's goal is (what "done" looks like)
+> - What tools it needs and their scope
+> - At least 3 specific decision rules for situations it might encounter
+> - Stopping conditions for completion and failure
+>
+> After the draft, identify the one failure mode I should be most worried about for this specific agent and suggest the mitigation to add.
+
+**What to expect:**
+- The system prompt draft should read as agent instructions, not a description of what the agent will do — write it in the imperative voice, as if addressing the agent directly ("Search for..." not "The agent will search for...")
+- The failure mode identification should be specific to your task — not a generic warning, but a description of how the specific failure mode would manifest in your specific agent
+- Save this draft — it becomes the foundation of your full capstone spec when you complete the module project

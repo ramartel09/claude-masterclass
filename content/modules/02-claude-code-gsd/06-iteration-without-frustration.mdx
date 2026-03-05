@@ -1,0 +1,88 @@
+export const metadata = {
+  title: "Iteration Without Frustration",
+  module: "claude-code-gsd",
+  order: 6,
+  estimatedMinutes: 12,
+  challengeTitle: "Direct a Fix",
+}
+
+## Learn
+
+Here's the thing about AI-built software that takes some time to accept: it is not one-shot. The first version Claude Code produces is a starting point, not a finished product. Mastery of Claude Code is, in large part, mastery of iteration — knowing how to guide Claude Code from a working-but-imperfect first draft to something that does exactly what you need.
+
+Most frustration with Claude Code comes from one of two failure modes: giving feedback that's too vague for Claude Code to act on, or iterating on the wrong level (sending Claude Code back to start when you should be giving a targeted fix).
+
+**Why "it doesn't work" is not useful feedback**
+
+The most common feedback pattern is "it doesn't work." This is almost never enough information for Claude Code to fix anything. "It doesn't work" covers everything from "the page is blank" to "the button color is slightly off" to "it crashes my browser when I add the tenth item." Claude Code has no way to distinguish between these from your description.
+
+Effective feedback is: **specific**, **observable**, and **reproducible**.
+
+- *Specific:* "The Add button" not "the button." "The list on the dashboard page" not "the list." "The number in the top-right corner" not "the number."
+- *Observable:* Describe what you see, not what you think is wrong internally. "Nothing happens when I click Submit" not "the onClick handler isn't firing." You don't know why — you only know what you see.
+- *Reproducible:* Tell Claude Code the exact sequence of steps that produces the problem. "When I type a book title, click Add, and then refresh the page, the book disappears." That's reproducible. Claude Code can simulate that sequence and find the bug.
+
+**The "show me / fix this" loop**
+
+The most productive iteration pattern is simple:
+
+1. Claude Code produces output
+2. You test it and find one specific thing that's wrong
+3. You describe that one thing specifically: "X doesn't work — when I do Y, Z happens instead of what I expected"
+4. Claude Code fixes it
+5. Repeat
+
+The key discipline: fix one thing at a time. Don't pile ten complaints into one message. When you send ten issues at once, Claude Code has to triage them, may prioritize them differently than you would, and may fix some by breaking others. Send one issue, get a fix, verify the fix, move to the next issue.
+
+This is slower in the short term. It's faster overall because you don't end up with a pile of partially-fixed issues that interact in confusing ways.
+
+**Managing expectations: Claude Code is very good but not perfect**
+
+Claude Code will make mistakes. Not because it's bad at what it does — it's remarkably capable — but because building software involves thousands of decisions, and some of those decisions will be wrong for your specific situation. Your job is not to judge Claude Code by whether its first attempt is perfect. Your job is to guide it from first attempt to correct outcome.
+
+Think of it as directing a very talented contractor who is fast and skilled but unfamiliar with your specific preferences and constraints. The contractor will do good work, but they'll make reasonable decisions that aren't your decisions. The iteration cycle is how you teach them what you actually want.
+
+**When to iterate vs. when to restart**
+
+Iteration works when the core structure is right and specific things need adjustment. Restart when the core structure is wrong.
+
+Signs that iteration is the right move:
+- The app loads and the basic flow works
+- The issue is in a specific feature or component
+- The problem is behavioral (a button does the wrong thing) rather than structural (the wrong pages exist)
+
+Signs that restarting the current feature is better:
+- The same bug keeps coming back after Claude Code claims to fix it
+- Fixes are making other things break
+- The feature feels fundamentally off, not just slightly off
+
+When you need to restart a feature, don't restart the whole project. Ask Claude Code to delete and recreate only the problematic component: "Delete the AddItemForm component and start it fresh from this spec: [description]." This preserves everything else while giving you a clean slate for the broken part.
+
+**Avoiding context-wasting feedback loops**
+
+Each round of Claude Code interaction consumes context. If you're iterating on the same bug for five rounds without progress, you're burning context on a problem that isn't getting solved. After three rounds on the same issue without resolution:
+
+- Step back and describe the problem differently — your original description may have been misleading
+- Ask Claude Code what it thinks the problem is — sometimes it knows what's wrong but is fixing the wrong layer
+- Consider whether the architecture is the problem rather than the implementation — ask Claude Code if there's a fundamentally different approach
+
+The worst pattern is sending the same message repeatedly, hoping for a different result. It won't work. If Claude Code fixed X in a way that didn't solve Y, and you report Y again with no new information, Claude Code will fix X again. New information produces new results; repeated information produces repeated results.
+
+## Try It
+
+**Task:** Find something in your Claude Code-built app that isn't quite right — a visual issue, a behavior that doesn't work as expected, or a missing feature — and provide a specific fix request using the observable, reproducible format.
+
+**Starter prompt:**
+> I found an issue with the app. Here's what's happening:
+>
+> Steps to reproduce: [exact sequence of actions that shows the problem]
+> What I see: [exactly what happens — describe what's visible, not what you think the code is doing]
+> What I expected: [what should have happened instead]
+>
+> Please fix this specific issue. Don't change anything else in the app while fixing this.
+
+**What to expect:**
+- Claude Code should confirm it understands the issue before attempting a fix — if it doesn't confirm, it may have misunderstood
+- The fix should be targeted — only the behavior you described should change, nothing else
+- After the fix, repeat the exact reproduction steps to verify it works
+- If the fix introduced a new problem, report that new problem with the same specificity

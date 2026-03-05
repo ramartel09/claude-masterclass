@@ -1,0 +1,133 @@
+export const metadata = {
+  title: "Prompts for Different Task Types",
+  module: "prompting-mastery",
+  order: 9,
+  estimatedMinutes: 14,
+  challengeTitle: "Four-Task Prompt Set",
+}
+
+## Learn
+
+One prompting style does not fit all tasks. The techniques that produce excellent creative writing produce mediocre analytical output. The precision that makes a coding prompt work brilliantly makes a brainstorming prompt sterile. Understanding which approach fits which task type is the difference between consistent results and hit-or-miss performance.
+
+There are four fundamental task types, each with its own prompting patterns.
+
+---
+
+**Task Type 1: Creative Tasks**
+
+Creative tasks include writing, ideation, brainstorming, content creation, and any task where the value is in originality and voice rather than correctness.
+
+*The prompting principle:* Give Claude creative latitude with clear constraints. Unlike analytical tasks, creative tasks benefit from room to surprise you — but without guardrails, you get generic output.
+
+The two levers are constraints and inspiration. Constraints define the space Claude works within (format, length, tone, audience, what to avoid). Inspiration seeds the creative direction without specifying an outcome (reference points, mood words, examples of what you like).
+
+*What works:*
+- "Write in the style of [specific reference] but applied to [new subject]"
+- "The tone should feel like [concrete comparison], not like [contrast]"
+- Specific constraints on form (word count, structure, line length) while leaving content open
+- "I want this to feel [adjective] — lean into that" rather than "make it good"
+
+*What doesn't work:*
+- Over-specifying the outcome ("make it inspiring and also practical and also concise and also comprehensive")
+- Using chain-of-thought — asking creative output to show its reasoning produces mechanical, self-conscious writing
+- Vague quality descriptors without reference points ("make it better," "make it more engaging")
+
+*Example prompt pattern:*
+> "Write a [format] for [audience] about [subject]. The tone should feel like [specific reference or comparison]. Constraints: [length, what to avoid, required elements]. Don't explain your choices — just write it."
+
+---
+
+**Task Type 2: Analytical Tasks**
+
+Analytical tasks include research synthesis, data interpretation, option evaluation, risk assessment, and any task where the value is in structured reasoning over a set of facts.
+
+*The prompting principle:* Ask for a structured breakdown with evidence. Claude should be showing its work (chain-of-thought is appropriate here) and grounding its conclusions in the material you provide.
+
+*What works:*
+- Specifying what to analyze for: not "analyze this" but "analyze this for [dimension 1], [dimension 2], and [dimension 3]"
+- Requesting evidence or citations: "for each point, reference specific evidence from the provided material"
+- Structured output (tables, numbered lists, labeled sections) so the analysis is easy to audit
+- Separating analysis from recommendation: "first analyze the situation, then give me your recommendation"
+
+*What doesn't work:*
+- Prose output for analysis — paragraphs obscure whether the reasoning is sound
+- Asking for analysis without specifying what dimension or standard to analyze against
+- Letting Claude inject opinion in what should be a factual analysis
+
+*Example prompt pattern:*
+> "Review the following [material] and analyze it for [specific dimensions or criteria]. Return a structured analysis: for each dimension, state your finding and the specific evidence that supports it. After the analysis, give me your top-line recommendation in one sentence."
+
+---
+
+**Task Type 3: Coding Tasks**
+
+Coding tasks include writing new code, debugging existing code, refactoring, explaining code, generating tests, and creating configuration.
+
+*The prompting principle:* Specify language and behavior, not implementation. Tell Claude what the code should do (input, output, edge cases, constraints), not how to do it. Claude is better at implementation than you are — don't prescribe the internals. Do prescribe the contract.
+
+*What works:*
+- Language specification: always state the programming language explicitly
+- Behavior description: "a function that takes X as input and returns Y, handling Z edge case"
+- Style and comment requirements: "include inline comments explaining each section"
+- Error handling specification: "raise a ValueError with an informative message if the input is not a string"
+- Asking for tests: "after the function, write 3 unit tests that cover the happy path and the Z edge case"
+
+*What doesn't work:*
+- Describing how to implement rather than what to implement
+- Not specifying language (Claude defaults to whatever seems most likely, which may not be right)
+- Asking Claude to "fix" code without describing the expected behavior or the specific failure
+- Getting code without asking for comments — undocumented AI-generated code is hard to maintain
+
+*Example prompt pattern:*
+> "Write a [language] function that [behavior description: input, output, what it does]. Handle these edge cases: [list]. Include inline comments. After the function, write [N] unit tests covering [scenarios]."
+
+---
+
+**Task Type 4: Editing Tasks**
+
+Editing tasks include proofreading, restructuring, rewriting for tone, making text more concise, adapting content for a new audience, and any task where you start with existing text and want it improved.
+
+*The prompting principle:* Distinguish "polish" from "restructure" from "rewrite" and ask Claude to explain changes. These three operations are fundamentally different and produce very different results.
+
+- **Polish:** Fix grammar, spelling, awkward phrasing, punctuation. Keep structure and content intact. "Copyedit this — fix any errors but don't change the wording unless it's clearly wrong."
+- **Restructure:** Reorganize without significantly changing words. Move sections, change order, add or remove headings. "Restructure this so the recommendation comes first, then the supporting evidence."
+- **Rewrite:** Start from the content but change the expression significantly. New voice, new tone, simplified language, adapted for a different audience. "Rewrite this for a non-technical audience — preserve the key points but assume no domain knowledge."
+
+Asking for explanation of changes is often worth the extra tokens. "After editing, briefly note what you changed and why" gives you a way to check whether Claude's judgment matched your intent and reverse specific changes you disagree with.
+
+*What doesn't work:*
+- Conflating all three operations: "edit this" produces some combination of all three, usually suboptimal for any specific goal
+- Not providing the target (audience, tone, length) for rewrites
+- Asking Claude to "improve" without specifying what improvement means in this context
+
+*Example prompt pattern:*
+> "[Polish / Restructure / Rewrite] the following text. Target: [tone, audience, length]. [Specific constraint or requirement]. After editing, briefly note the 2–3 most significant changes you made and why."
+
+---
+
+**Quick reference table**
+
+| Task Type | Prompting Pattern | Use CoT? | Output Format |
+|-----------|------------------|----------|---------------|
+| Creative | Constraints + inspiration, leave content open | No | Prose (the creative artifact itself) |
+| Analytical | Specify dimensions, ask for evidence, separate analysis from recommendation | Yes | Structured (table, numbered list, labeled sections) |
+| Coding | Language + behavior + edge cases + comment requirement | Yes (for planning) | Code block + tests |
+| Editing | Distinguish polish/restructure/rewrite, specify target, ask for change notes | No | Edited text + change summary |
+
+## Try It
+
+**Task:** Write one prompt from each of the four categories for real tasks you'll actually use this week. Make each prompt specific enough that you'd send it to Claude right now.
+
+**Starter prompt:**
+> I'm going to write four prompts, one for each task type. After I write them, review each one and tell me: (1) whether it follows the pattern for its task type, (2) one thing I could add to make it more precise, and (3) a likely failure mode to watch for in Claude's response.
+>
+> Creative prompt: [your creative task]
+> Analytical prompt: [your analytical task]
+> Coding prompt: [your coding task]
+> Editing prompt: [your editing task]
+
+**What to expect:**
+- Claude should give specific, actionable feedback on each prompt — not generic advice
+- The pattern feedback should reference specific elements (missing output format, absent language specification, unclear edit type)
+- The failure mode predictions should be specific to your prompts, not generic cautions
