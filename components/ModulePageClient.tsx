@@ -19,6 +19,8 @@ export function ModulePageClient({ moduleSlug, moduleMeta, lessons }: ModulePage
     ? lessons.filter((l) => completed.has(`${moduleSlug}/${l.lesson}`)).length
     : 0
 
+  const allComplete = hydrated && lessons.every((l) => completed.has(`${moduleSlug}/${l.lesson}`))
+
   return (
     <main className="max-w-2xl mx-auto px-6 py-10">
       {/* Module header */}
@@ -55,6 +57,17 @@ export function ModulePageClient({ moduleSlug, moduleMeta, lessons }: ModulePage
           )
         })}
       </ul>
+
+      {allComplete && (
+        <div className="mt-8">
+          <Link
+            href={`/modules/${moduleSlug}/quiz`}
+            className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm"
+          >
+            Take Quiz →
+          </Link>
+        </div>
+      )}
     </main>
   )
 }

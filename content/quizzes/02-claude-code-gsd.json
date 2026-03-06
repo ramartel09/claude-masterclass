@@ -1,0 +1,112 @@
+[
+  {
+    "question": "What is the correct order of GSD workflow phases?",
+    "options": [
+      "Plan → Research → Discuss → Execute → Verify",
+      "Discuss → Research → Plan → Execute → Verify",
+      "Research → Discuss → Plan → Verify → Execute",
+      "Discuss → Plan → Execute → Research → Verify"
+    ],
+    "correctIndex": 1,
+    "explanation": "The GSD phases run: Discuss (align on scope and requirements), Research (explore technical approach), Plan (create PLAN.md with tasks), Execute (run tasks with commits), Verify (confirm success criteria met). You front-load thinking so execution is nearly mechanical."
+  },
+  {
+    "question": "The 15–60 minute rule for task sizing means:",
+    "options": [
+      "Each planning session should be 15–60 minutes",
+      "Each task in a PLAN.md should represent 15–60 minutes of implementation work",
+      "Claude should respond within 60 minutes",
+      "You should take a break every 15 minutes"
+    ],
+    "correctIndex": 1,
+    "explanation": "Tasks in a PLAN.md are sized so each takes roughly 15–60 minutes to implement and verify. Too small means excessive commit overhead; too large means long debugging sessions if something goes wrong. This sizing also aligns with Claude's context window sweet spot."
+  },
+  {
+    "question": "What is a 'wave' in GSD plan execution?",
+    "options": [
+      "A hand gesture to indicate you want Claude to proceed",
+      "A group of plans within a phase that can execute in parallel because they have no dependencies on each other",
+      "A failed execution attempt that must be retried",
+      "A checkpoint requiring human verification"
+    ],
+    "correctIndex": 1,
+    "explanation": "Waves group independent plans that can run concurrently. Wave 1 plans have no dependencies; Wave 2 plans depend on Wave 1 outputs; and so on. This enables parallel execution when you have multiple Claude agents working simultaneously."
+  },
+  {
+    "question": "When should you use a `checkpoint:human-verify` in a PLAN.md?",
+    "options": [
+      "After every single task to ensure correctness",
+      "When a task produces visual or functional output that requires human eyes or interaction to validate",
+      "Whenever you're unsure if the code will work",
+      "Only at the very end of a phase"
+    ],
+    "correctIndex": 1,
+    "explanation": "Human-verify checkpoints are for validating things Claude can't verify itself — does the UI look right, does the flow feel correct, is the output actually useful? Automated tests can verify logic; humans verify experience. Use sparingly — every checkpoint breaks the automation chain."
+  },
+  {
+    "question": "How does GSD handle context window degradation during long execution sessions?",
+    "options": [
+      "It automatically summarizes the conversation",
+      "Each plan execution is atomic — a fresh agent reads only PLAN.md and SUMMARY.md outputs, not the full conversation history",
+      "Claude keeps all context in memory permanently",
+      "You must restart the entire workflow"
+    ],
+    "correctIndex": 1,
+    "explanation": "GSD is designed around context degradation. Plans are executed atomically: each executor agent reads the plan file and previous SUMMARY.md files — not the conversation history. This means execution quality doesn't degrade as the project grows."
+  },
+  {
+    "question": "What belongs in a PLAN.md's `<context>` section?",
+    "options": [
+      "Full source code of every file in the project",
+      "The entire conversation history with Claude",
+      "Targeted @-references to existing files, types, and interfaces the executor needs — not raw code",
+      "Marketing copy about the feature being built"
+    ],
+    "correctIndex": 2,
+    "explanation": "The context section uses @-file references to pull in exactly what the executor needs — relevant interfaces, existing patterns to replicate, constraints. Dumping full source files wastes tokens; omitting context causes the executor to guess. Targeted references are the discipline."
+  },
+  {
+    "question": "The dependency graph in STATE.md tracks:",
+    "options": [
+      "Which npm packages are installed",
+      "Which plans must complete before other plans can begin",
+      "The order in which files were created",
+      "Claude's response latency over time"
+    ],
+    "correctIndex": 1,
+    "explanation": "The dependency graph captures the `depends_on` relationships between plans — which plans must be complete before subsequent plans can safely execute. This graph drives wave assignment and prevents executing plans before their prerequisites exist."
+  },
+  {
+    "question": "When should you split a feature into two plans rather than keeping it as one large plan?",
+    "options": [
+      "Never — always keep features in a single plan for simplicity",
+      "When the plan would exceed 3 tasks",
+      "When part of the feature can be verified and committed independently, and later tasks depend on the earlier ones",
+      "When you want to work on it over two days"
+    ],
+    "correctIndex": 2,
+    "explanation": "Split plans when they have a natural seam — a stable intermediate state that can be committed, verified, and built upon. A single 8-task plan with tight dependencies means if Task 5 fails, you've lost all earlier work. Two 4-task plans with a SUMMARY between them are more resilient."
+  },
+  {
+    "question": "What is the role of SUMMARY.md files in GSD?",
+    "options": [
+      "Marketing documentation for stakeholders",
+      "A record of decisions made, files created/modified, and technical context that future agents need to continue correctly",
+      "A list of bugs that were discovered",
+      "A personal journal of the development session"
+    ],
+    "correctIndex": 1,
+    "explanation": "SUMMARY.md files are the memory bridge between execution agents. They capture what was built, key decisions made, deviation from plan, and the exact state of the codebase. The next executor reads SUMMARYs — not conversation history — to understand where things stand."
+  },
+  {
+    "question": "The human-in-the-loop pattern in GSD refers to:",
+    "options": [
+      "Having a human write all the code alongside Claude",
+      "Structuring checkpoints so humans verify key outputs, approve decisions, and handle auth gates — while Claude does all implementation work",
+      "Requiring human approval before every git commit",
+      "Replacing Claude with a human developer for complex tasks"
+    ],
+    "correctIndex": 1,
+    "explanation": "GSD keeps humans in the loop at decision points and verification moments — not implementation steps. Humans approve architecture choices, verify UX, handle auth credentials. Claude handles all code, file creation, git operations, and build verification. The split is judgment vs. execution."
+  }
+]

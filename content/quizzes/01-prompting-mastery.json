@@ -1,0 +1,112 @@
+[
+  {
+    "question": "What is the primary purpose of a system prompt when working with Claude?",
+    "options": [
+      "To provide Claude with internet access",
+      "To establish persistent context, persona, and behavioral guidelines for the conversation",
+      "To increase Claude's token limit",
+      "To enable Claude to remember previous conversations"
+    ],
+    "correctIndex": 1,
+    "explanation": "A system prompt sets the stage for Claude's behavior throughout a conversation — defining its role, tone, format expectations, and any constraints. It's context and instruction that persists across the whole session."
+  },
+  {
+    "question": "When Claude gives you a vague or overly broad response, the most effective first fix is to:",
+    "options": [
+      "Switch to a different AI model",
+      "Add more context about why you need the information and what you'll do with it",
+      "Ask Claude to 'try harder'",
+      "Repeat the exact same prompt"
+    ],
+    "correctIndex": 1,
+    "explanation": "Claude calibrates specificity and depth based on context. Adding 'why' — the use case, the audience, the goal — signals what kind of response is actually useful. 'Try harder' gives Claude nothing new to work with."
+  },
+  {
+    "question": "Role prompting ('You are a senior software engineer...') works best when:",
+    "options": [
+      "You want Claude to pretend it has real-world experience it doesn't have",
+      "The role provides a coherent mental model for tone, vocabulary, and priorities",
+      "You need Claude to bypass its safety guidelines",
+      "The task is simple enough that framing doesn't matter"
+    ],
+    "correctIndex": 1,
+    "explanation": "Role prompts work by activating a coherent frame — a senior engineer weighs trade-offs differently than a junior one. The value is in the priorities and vocabulary the role implies, not in pretending Claude has lived experience."
+  },
+  {
+    "question": "Which output format specification is most likely to produce consistently structured responses across multiple runs?",
+    "options": [
+      "\"Give me a nice organized response\"",
+      "\"Use markdown with headers\"",
+      "\"Return a JSON object with exactly these keys: title, summary, action_items (array of strings)\"",
+      "\"Format it however you think is best\""
+    ],
+    "correctIndex": 2,
+    "explanation": "The more precisely you specify structure — field names, types, nesting — the more consistently Claude can reproduce it. Vague instructions like 'organized' leave too much to interpretation."
+  },
+  {
+    "question": "Few-shot examples in a prompt are most valuable when:",
+    "options": [
+      "The task can be described fully in plain language",
+      "The desired output format or style is hard to describe but easy to demonstrate",
+      "You want to save tokens",
+      "Claude has been trained on similar tasks"
+    ],
+    "correctIndex": 1,
+    "explanation": "Few-shot examples excel at demonstrating patterns that are hard to articulate — a specific writing tone, an unusual output format, a classification scheme. If you can describe it clearly in words, examples add cost without much benefit."
+  },
+  {
+    "question": "What is prompt chaining, and when is it most useful?",
+    "options": [
+      "Sending the same prompt multiple times until you get a good answer",
+      "Breaking a complex task into sequential steps where each output feeds the next prompt",
+      "Linking Claude to external APIs automatically",
+      "Using multiple AI models simultaneously"
+    ],
+    "correctIndex": 1,
+    "explanation": "Prompt chaining decomposes a complex task into stages — research, outline, draft, critique, revise — where each step's output becomes the next step's input. This preserves quality across long workflows that would otherwise suffer from context compression."
+  },
+  {
+    "question": "When Claude declines a request, the most constructive response is to:",
+    "options": [
+      "Give up and assume the task is impossible",
+      "Immediately accuse Claude of being overly cautious",
+      "Reframe the request with more context about the legitimate use case and intended audience",
+      "Try to trick Claude with wordplay"
+    ],
+    "correctIndex": 2,
+    "explanation": "Claude's refusals are often context-dependent. Adding legitimate framing — 'I'm a nurse explaining medication interactions to patients' — frequently resolves the issue. Reframing is a skill, not a workaround."
+  },
+  {
+    "question": "How do you evaluate whether a Claude response is high quality?",
+    "options": [
+      "Check if it's long enough",
+      "See if it matches the tone you expected",
+      "Verify it against the specific criteria you defined in your prompt — accuracy, format, completeness, tone",
+      "Ask Claude to rate its own response"
+    ],
+    "correctIndex": 2,
+    "explanation": "Quality is relative to your stated requirements. The best prompts include explicit success criteria — length, format, what to include/exclude, who the audience is — so you can verify the output matches those criteria rather than judging by feel."
+  },
+  {
+    "question": "Specificity in prompts primarily helps because:",
+    "options": [
+      "Claude is faster when given more specific instructions",
+      "Specific constraints reduce the solution space and increase the probability of relevant output",
+      "Claude needs very long prompts to function well",
+      "Specificity unlocks Claude's premium features"
+    ],
+    "correctIndex": 1,
+    "explanation": "Every constraint you add — audience, length, format, perspective, what to exclude — narrows the space of valid responses. A narrower solution space means Claude can allocate its full reasoning to finding the best answer within it, rather than guessing what you want."
+  },
+  {
+    "question": "Which iterative prompting strategy produces the best results over multiple turns?",
+    "options": [
+      "Start fresh with a completely new prompt each time",
+      "Always ask Claude to regenerate with more creativity",
+      "Identify the specific aspect that's wrong, and provide targeted feedback on only that element",
+      "Copy the response into a new chat and ask for improvements"
+    ],
+    "correctIndex": 2,
+    "explanation": "Targeted feedback — 'the tone is too formal, everything else is great' or 'the third point doesn't apply to my use case, replace it with X' — is far more efficient than starting over. You preserve what worked and fix only what didn't."
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "title": "Hands-On Challenge: Design a Multi-Turn Prompt Sequence",
+  "taskDescription": "Choose a professional use case you actually face — writing performance reviews, drafting client proposals, analyzing competitors, generating meeting summaries, or similar. Design a complete multi-turn prompt sequence that takes raw input (notes, data, context) and produces polished output. Your sequence should include at least 3 turns with a system prompt, an initial request, and at least one refinement step.",
+  "starterPrompt": "I'm designing a prompt sequence for [describe your use case].\n\nMy audience is: [who will read or use the output]\nMy raw input is usually: [describe the messy input you typically start with]\nMy desired output is: [describe the ideal final artifact]\n\nPlease help me design a 3-turn prompt sequence:\n1. Turn 1: System prompt that establishes Claude's role and constraints\n2. Turn 2: Initial request that passes in the raw input\n3. Turn 3: A refinement prompt that improves a specific aspect\n\nFor each turn, show the exact prompt text I should use.",
+  "rubric": [
+    "Your system prompt defines a clear role, output format, and at least one explicit constraint (e.g., audience reading level, length limit, what to exclude)",
+    "Your initial request includes a concrete example of the raw input Claude would receive, not just a description of it",
+    "Your refinement turn targets one specific aspect to improve (tone, structure, length, or detail level) rather than asking Claude to 'make it better'",
+    "The sequence includes at least one few-shot example or explicit format specification to ensure consistent output structure",
+    "You've tested the sequence with real input and iterated based on the output — the final version reflects what you actually learned from running it"
+  ]
+}

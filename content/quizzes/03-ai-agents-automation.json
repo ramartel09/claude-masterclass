@@ -1,0 +1,112 @@
+[
+  {
+    "question": "What distinguishes an 'agentic' workflow from a standard single-turn Claude interaction?",
+    "options": [
+      "Agentic workflows use a different AI model",
+      "Agentic workflows involve Claude taking sequences of actions, using tools, and making decisions over multiple steps to complete a long-horizon task",
+      "Agentic workflows are faster because they run in parallel",
+      "Agentic workflows don't require a human prompt"
+    ],
+    "correctIndex": 1,
+    "explanation": "Agentic workflows involve an AI taking a series of actions — searching, writing files, calling APIs, making decisions — toward a goal that unfolds over time. The key difference is multi-step autonomy with tool use, not just a single question-and-answer exchange."
+  },
+  {
+    "question": "The orchestrator/subagent pattern in multi-agent systems means:",
+    "options": [
+      "One AI controls all other AIs permanently",
+      "An orchestrator agent decomposes goals and directs specialized subagents to execute specific tasks, then aggregates their outputs",
+      "Subagents work independently without any coordination",
+      "The user acts as the orchestrator and Claude is the subagent"
+    ],
+    "correctIndex": 1,
+    "explanation": "In orchestrator/subagent architectures, the orchestrator holds the plan and decomposes it into tasks; subagents execute those tasks (web search, code execution, file writing, etc.) and return results. This enables parallelization and specialization at the cost of coordination complexity."
+  },
+  {
+    "question": "What is the most common failure mode in long-running agentic workflows?",
+    "options": [
+      "Claude running out of battery",
+      "Error propagation — a mistake in an early step compounds through subsequent steps, making final output silently wrong",
+      "Claude becoming bored and stopping",
+      "Too many API calls causing rate limiting"
+    ],
+    "correctIndex": 1,
+    "explanation": "Error propagation is the primary risk. When an agent makes a wrong assumption or incorrect lookup in step 3 of a 15-step workflow, every downstream step builds on that error. The final output looks plausible but is subtly wrong. This is why verification gates and human checkpoints matter."
+  },
+  {
+    "question": "When is prompt chaining preferable to parallelization?",
+    "options": [
+      "When you want the workflow to finish faster",
+      "When each step's output is the required input for the next step — the tasks are sequentially dependent",
+      "When you have unlimited API credits",
+      "When the tasks are completely independent"
+    ],
+    "correctIndex": 1,
+    "explanation": "Prompt chaining (sequential) is required when tasks have hard dependencies — you can't summarize a document before you've retrieved it, you can't critique a draft before it's written. Parallelization works when tasks are independent — retrieving 5 different documents, running sentiment analysis on 10 reviews simultaneously."
+  },
+  {
+    "question": "Which type of agent memory allows knowledge to persist across completely separate conversation sessions?",
+    "options": [
+      "In-context memory (text in the current conversation window)",
+      "External storage (databases, files, vector stores written and read by the agent)",
+      "Model weights (the AI's trained knowledge)",
+      "Cached conversation history"
+    ],
+    "correctIndex": 1,
+    "explanation": "External storage (databases, files, vector embeddings) is the only memory type that persists beyond a single context window. In-context memory disappears when the conversation ends. Model weights contain training knowledge but can't be updated at runtime. External storage is how agents 'remember' across sessions."
+  },
+  {
+    "question": "What does MCP (Model Context Protocol) enable?",
+    "options": [
+      "A way to increase Claude's context window size",
+      "A standardized protocol allowing Claude to connect to tools, APIs, and data sources through a consistent interface",
+      "A method for training custom Claude models",
+      "A billing system for API usage"
+    ],
+    "correctIndex": 1,
+    "explanation": "MCP provides a standardized way to expose tools and data sources to AI models. Instead of each tool requiring custom integration code, MCP servers expose capabilities through a consistent interface that Claude (and other MCP-compatible models) can discover and use."
+  },
+  {
+    "question": "When should you NOT use an agentic approach?",
+    "options": [
+      "When the task requires more than one step",
+      "When the task has low reversibility (mistakes are hard to undo), unclear requirements, or requires frequent human judgment",
+      "When you want consistent results",
+      "When working with sensitive data"
+    ],
+    "correctIndex": 1,
+    "explanation": "Avoid agents when mistakes are expensive to reverse (deleting files, sending emails, making purchases), when requirements are ambiguous, or when each step requires human judgment to proceed correctly. Agentic workflows excel at well-defined, reversible, high-volume tasks."
+  },
+  {
+    "question": "Human-in-the-loop checkpoints in automation workflows serve to:",
+    "options": [
+      "Slow down the automation to make humans feel included",
+      "Gate high-stakes or irreversible actions behind human approval, and verify outputs at points where AI errors are most likely or most costly",
+      "Replace the AI when it gets confused",
+      "Document that a human was involved for compliance"
+    ],
+    "correctIndex": 1,
+    "explanation": "Checkpoints catch errors before they propagate and prevent irreversible mistakes. Well-placed checkpoints balance automation speed with error containment — you don't gate every step (that defeats automation), you gate the transitions where errors would be most costly or hardest to detect."
+  },
+  {
+    "question": "How do you evaluate whether an automated workflow is reliable enough to run without supervision?",
+    "options": [
+      "Run it once and if it works, it's reliable",
+      "Measure error rate across many runs on representative inputs, verify outputs independently, and test edge cases and failure modes",
+      "Ask Claude if it's confident in its answers",
+      "Count the number of steps in the workflow"
+    ],
+    "correctIndex": 1,
+    "explanation": "Reliability requires statistical evidence, not anecdote. Run the workflow on a diverse sample of real inputs, measure where and how often it fails, verify outputs against ground truth independently. A workflow that works 90% of the time with catastrophic failures in the other 10% is not reliable enough for unsupervised operation."
+  },
+  {
+    "question": "What is the key risk of giving an AI agent broad, unrestricted tool access?",
+    "options": [
+      "The agent will refuse to use the tools",
+      "The agent may take unintended actions with real-world consequences — sending emails, deleting data, making purchases — based on misunderstanding or ambiguous instructions",
+      "Tool access slows the agent down",
+      "The agent will only use its favorite tools"
+    ],
+    "correctIndex": 1,
+    "explanation": "Broad tool access means broad blast radius. A misunderstood instruction could result in emails sent to the wrong recipients, files permanently deleted, or API calls that cost money. The principle of minimal privilege applies to AI agents just as it does to software systems — grant only the access the task requires."
+  }
+]

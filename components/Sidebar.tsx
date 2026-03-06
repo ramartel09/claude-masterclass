@@ -74,6 +74,20 @@ export function Sidebar({ lessons, onClose }: SidebarProps) {
                 </li>
               )
             })}
+            <li>
+              <Link
+                href={`/modules/${moduleName}/quiz`}
+                onClick={onClose}
+                className={[
+                  'flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-colors',
+                  pathname.startsWith(`/modules/${moduleName}/quiz`)
+                    ? 'bg-indigo-900/40 text-indigo-100 font-medium'
+                    : 'text-zinc-500 hover:text-zinc-300',
+                ].join(' ')}
+              >
+                <span className="text-indigo-400">→</span> Module Quiz
+              </Link>
+            </li>
           </ul>
         </div>
       ))}

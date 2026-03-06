@@ -1,0 +1,112 @@
+[
+  {
+    "question": "What is the most important validation step before writing a single line of code for a new product idea?",
+    "options": [
+      "Registering a domain name",
+      "Talking to at least 5–10 potential users to understand if they actually have the problem you're solving and would pay to fix it",
+      "Building a complete prototype to show investors",
+      "Choosing the tech stack"
+    ],
+    "correctIndex": 1,
+    "explanation": "Building before validating is the most common and costly mistake. Talking to real potential users — not friends, not hypothetical personas — reveals whether the problem is real, how people currently solve it, and what they'd actually pay. This conversation takes days; building the wrong thing takes months."
+  },
+  {
+    "question": "MVP scoping discipline means:",
+    "options": [
+      "Building as many features as possible in version 1",
+      "Shipping the smallest possible version that delivers the core value proposition and lets real users test the fundamental assumption",
+      "Making the product look as polished as a funded startup's product",
+      "Copying competitor features to avoid missing anything"
+    ],
+    "correctIndex": 1,
+    "explanation": "An MVP tests the riskiest assumption — does this solve the problem? — with the minimum investment. Every feature beyond the core value test is waste until you've validated the core. MVP discipline is saying 'not yet' to real features, repeatedly, until you have evidence they're needed."
+  },
+  {
+    "question": "When building with Claude as your dev team, when should you use Claude Code (agentic) vs Claude chat (conversational)?",
+    "options": [
+      "Claude Code for everything — it's always better",
+      "Claude chat for everything — it's safer",
+      "Claude Code for multi-file implementation tasks with clear specs; Claude chat for design exploration, problem analysis, and decisions that need back-and-forth",
+      "It doesn't matter — they produce identical results"
+    ],
+    "correctIndex": 2,
+    "explanation": "Claude Code excels at executing well-defined implementation tasks across multiple files with commits and verification. Claude chat excels at exploring ambiguous problems, making architectural decisions, and iterating on ideas. Using Code for vague tasks produces wrong code; using chat for clear implementation tasks is slow and inconsistent."
+  },
+  {
+    "question": "The 'ship then iterate' principle means:",
+    "options": [
+      "Deploy broken software and fix it in production",
+      "Release the working core to real users as soon as possible, then improve based on actual usage data rather than hypotheses",
+      "Build for 6 months, then launch to everyone simultaneously",
+      "Ship every commit directly to production without testing"
+    ],
+    "correctIndex": 1,
+    "explanation": "Ship then iterate compresses the feedback loop. Real users do things you didn't predict; real usage patterns reveal what actually matters vs. what you thought mattered. Every week before launch is a week of building based on assumptions instead of data. 'Good enough to learn from' is the bar, not 'perfect'."
+  },
+  {
+    "question": "How do you prevent scope creep when building with Claude Code?",
+    "options": [
+      "Limit Claude to a fixed number of tokens per session",
+      "Define explicit out-of-scope items in your planning phase and defer all new ideas to a backlog rather than adding them mid-execution",
+      "Only build features you can implement in one day",
+      "Never add new features after launch"
+    ],
+    "correctIndex": 1,
+    "explanation": "Scope creep is a planning failure, not an execution failure. The fix is explicit scope documentation upfront — 'v1 does NOT include X, Y, Z' — and a cultural habit of adding new ideas to a backlog rather than the current sprint. Without this, Claude will happily implement every new idea as you think of it, indefinitely."
+  },
+  {
+    "question": "When should a solo developer with Claude as their dev team consider adding a database vs. using a simpler data layer?",
+    "options": [
+      "Always use a database — it's the professional choice",
+      "When data requirements (multi-user sync, complex queries, data persistence beyond a single device) genuinely can't be met by localStorage, files, or a simple JSON store",
+      "Never use a database — they're too complex",
+      "When the VC investors require it"
+    ],
+    "correctIndex": 1,
+    "explanation": "Database complexity is often added prematurely. For v1 single-user tools, localStorage or JSON files are often sufficient. Add a database when you have a concrete requirement it solves — multi-device sync, user accounts, complex queries, team collaboration. The cost of a database is not just setup; it's ongoing ops, migrations, and debugging."
+  },
+  {
+    "question": "When is the right time to think about monetization for a new product?",
+    "options": [
+      "After you have 10,000 users",
+      "Before building — validate the pricing model with potential users at the same time you validate the problem",
+      "Only after the product is fully polished",
+      "Never — monetization ruins products"
+    ],
+    "correctIndex": 1,
+    "explanation": "Monetization validation should happen during user research, not after launch. Asking 'would you pay for this?' is different from 'what would you pay for this?' and 'would you pay $X/month?' Getting pricing signal early shapes your MVP scope and prevents building a product people love but won't pay for."
+  },
+  {
+    "question": "What does deployment decision-making look like for a solo developer building with AI?",
+    "options": [
+      "Always self-host for maximum control",
+      "Always use managed services to avoid infrastructure complexity, unless there's a specific cost or compliance reason to self-host",
+      "Build your own servers from scratch for the learning experience",
+      "Deploy to every cloud provider simultaneously for redundancy"
+    ],
+    "correctIndex": 1,
+    "explanation": "For a solo developer, infrastructure management time is product development time lost. Managed services (Vercel, Railway, Fly.io, Supabase) handle the ops complexity so you can focus on the product. Self-hosting makes sense when costs at scale justify it or compliance requires it — not as a default."
+  },
+  {
+    "question": "How should you integrate user feedback after your first launch?",
+    "options": [
+      "Implement every feature request as quickly as possible",
+      "Ignore feedback until you have more users",
+      "Identify patterns across multiple users, prioritize feedback that aligns with your core use case, and test solutions with the users who raised them before shipping widely",
+      "Only listen to paying customers, ignore free users entirely"
+    ],
+    "correctIndex": 2,
+    "explanation": "Individual feedback is noise; patterns across multiple users are signal. A feature requested by one user might be a workaround for a problem you should fix differently. Validate solutions with the users who raised problems before shipping broadly. This prevents building features that fix the wrong problem."
+  },
+  {
+    "question": "What is the most reliable measure of product success in the early stages?",
+    "options": [
+      "Total number of sign-ups",
+      "Number of press mentions",
+      "Retention — do users come back? Do they complete the core action? Do they tell others?",
+      "The number of features shipped per month"
+    ],
+    "correctIndex": 2,
+    "explanation": "Vanity metrics (sign-ups, page views, installs) are easy to get and mean nothing alone. Retention measures whether the product delivers real value — if users don't come back, the product failed regardless of how many signed up. Product-market fit is felt in retention curves, not acquisition numbers."
+  }
+]

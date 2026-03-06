@@ -1,0 +1,12 @@
+{
+  "title": "Hands-On Challenge: Design an Automation Workflow",
+  "taskDescription": "Choose a multi-step business process you currently do manually — lead qualification, invoice processing, content publishing, customer onboarding, data reporting, or similar. Design a complete automation workflow using the principles from this module. Your workflow should handle the happy path AND at least one failure scenario, and include human approval gates at the right points.",
+  "starterPrompt": "I want to automate: [describe the process in 2-3 sentences]\n\nCurrent manual steps:\n1. [Step 1]\n2. [Step 2]\n3. [Step 3]\n... (list all steps)\n\nPlease help me design an agentic workflow for this:\n\n1. STEP DECOMPOSITION: Break it into atomic agent actions (each action should be independently executable and verifiable)\n\n2. TOOL REQUIREMENTS: What tools/APIs does each step need? (web search, file read/write, email, database, etc.)\n\n3. ERROR HANDLING: For each step, what could go wrong and how should the workflow handle it?\n\n4. HUMAN APPROVAL GATES: Which steps should pause for human review before proceeding? Why?\n\n5. RELIABILITY CHECK: How would I verify this workflow is working correctly at scale?",
+  "rubric": [
+    "Your step decomposition produces atomic actions where each step has a clear input, a clear output, and a verifiable success condition — not vague stages like 'process the data'",
+    "You've identified at least one failure mode per step and specified whether the workflow should retry, skip, escalate to human, or abort when that failure occurs",
+    "Your human approval gates are placed at irreversible or high-stakes transitions — not at every step (that's not automation) and not at zero steps (that's reckless)",
+    "You've specified what tools each step requires and acknowledged at least one tool that doesn't exist yet or would require custom integration",
+    "You've defined a concrete method for measuring whether the workflow is reliable — specific metrics, sample size, and what failure rate is acceptable for unsupervised operation"
+  ]
+}

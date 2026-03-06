@@ -2,8 +2,10 @@
 
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import { ModuleProgressBar } from '@/components/ModuleProgressBar'
 import { useProgress } from '@/lib/useProgress'
+import { useQuiz } from '@/lib/useQuiz'
 
 const MODULES = [
   {
@@ -40,6 +42,7 @@ const TOTAL_LESSONS = 40
 
 export default function Dashboard() {
   const { completed, lastVisited, hydrated } = useProgress()
+  const { mcq, challenge: quizChallenge, hydrated: quizHydrated } = useQuiz()
 
   // Build resume href from lastVisited lessonId (format: "module-slug/lesson-slug")
   const resumeHref = lastVisited ? `/modules/${lastVisited}` : '/modules/01-prompting-mastery/01-what-is-a-prompt'
@@ -69,6 +72,11 @@ export default function Dashboard() {
         ) : (
           <p className="text-zinc-600 text-sm">Loading progress...</p>
         )}
+        {quizHydrated ? (
+          <p className="text-zinc-400 text-sm mt-1">
+            Quizzes: {Object.values(mcq).filter((r) => r.completed).length}/4 MCQ &middot; {Object.values(quizChallenge).filter((r) => r.completed).length}/4 Challenge
+          </p>
+        ) : null}
       </div>
 
       {/* Section 3: Module cards — full-width list, one per row */}
@@ -95,6 +103,28 @@ export default function Dashboard() {
                     completedCount={completedInModule}
                     total={mod.total}
                   />
+                  <div className="flex gap-2 mt-3">
+                    <Badge
+                      variant="outline"
+                      className={
+                        mcq[mod.slug]?.completed && quizHydrated
+                          ? 'border-indigo-500 text-indigo-300 text-xs'
+                          : 'border-zinc-700 text-zinc-600 text-xs'
+                      }
+                    >
+                      Quiz {mcq[mod.slug]?.completed && quizHydrated ? '✓' : '○'}
+                    </Badge>
+                    <Badge
+                      variant="outline"
+                      className={
+                        quizChallenge[mod.slug]?.completed && quizHydrated
+                          ? 'border-indigo-500 text-indigo-300 text-xs'
+                          : 'border-zinc-700 text-zinc-600 text-xs'
+                      }
+                    >
+                      Challenge {quizChallenge[mod.slug]?.completed && quizHydrated ? '✓' : '○'}
+                    </Badge>
+                  </div>
                 </CardContent>
               </Card>
             </Link>

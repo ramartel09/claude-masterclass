@@ -1,0 +1,12 @@
+{
+  "title": "Hands-On Challenge: Plan a Feature Using the GSD Workflow",
+  "taskDescription": "Take a real feature you want to build — something with 3–5 distinct implementation steps. Walk it through the full GSD workflow from Discuss through Plan, producing a PLAN.md-style breakdown with tasks, dependencies, verification criteria, and at least one checkpoint. The goal is to practice decomposing a real problem into atomic, verifiable tasks before touching any code.",
+  "starterPrompt": "I want to build: [describe your feature in 1-2 sentences]\n\nFor the Discuss phase:\n- What is the scope boundary? (What is explicitly OUT of scope for v1?)\n- What existing code or patterns does this feature depend on?\n- What are the acceptance criteria? (How will I know it's done?)\n\nFor the Research phase:\n- What technical approach makes sense given the existing codebase?\n- Are there any unknowns that need investigation before planning?\n\nFor the Plan phase:\nCreate a PLAN.md outline with:\n- 3–5 tasks, each 15–60 min of work\n- Dependencies between tasks (which tasks must run first?)\n- Verification criteria for each task\n- At least one checkpoint:human-verify placement with justification\n- The wave assignment for each task",
+  "rubric": [
+    "Your scope definition explicitly names at least 2 things that are OUT of scope for v1 — scope creep prevention is the hardest discipline in shipping",
+    "Each task in your plan is verifiable independently — you can confirm it's done without completing the entire feature",
+    "You've identified at least one dependency relationship between tasks (Task N cannot start until Task M is complete) and explained why",
+    "Your checkpoint:human-verify placement targets something Claude genuinely cannot verify — visual output, user experience, or business logic judgment",
+    "Your success criteria are specific enough that a different developer (or a fresh Claude agent) could read them and know definitively whether the plan succeeded"
+  ]
+}
