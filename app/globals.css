@@ -124,3 +124,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Try It section panel — wraps everything from .try-it-heading onwards in a tinted card */
+.lesson-body .try-it-heading {
+  border-radius: 0.5rem 0.5rem 0 0;
+  background: rgb(24 24 27 / 0.5);
+  border: 1px solid rgb(63 63 70 / 1);
+  padding: 1.25rem 1.5rem 0.5rem;
+  margin-top: 2.5rem;
+  border-bottom: none;
+}
+
+.lesson-body .try-it-heading ~ * {
+  background: rgb(24 24 27 / 0.5);
+  border-left: 1px solid rgb(63 63 70 / 1);
+  border-right: 1px solid rgb(63 63 70 / 1);
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.lesson-body .try-it-heading ~ *:last-child {
+  border-radius: 0 0 0.5rem 0.5rem;
+  border-bottom: 1px solid rgb(63 63 70 / 1);
+  padding-bottom: 1.5rem;
+}
