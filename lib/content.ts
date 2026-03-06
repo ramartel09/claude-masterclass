@@ -34,3 +34,38 @@ export async function getLessonsByModule(moduleSlug: string): Promise<LessonPath
   const all = await getAllLessonPaths()
   return all.filter((p) => p.module === moduleSlug)
 }
+
+export interface LessonWithMeta extends LessonPath, LessonMeta {}
+
+export async function getLessonMeta(module: string, lesson: string): Promise<LessonMeta> {
+  try {
+    const mod = await import(`@/content/modules/${module}/${lesson}.mdx`)
+    const meta = mod.metadata as LessonMeta
+    return {
+      title: meta?.title ?? lesson,
+      module: meta?.module ?? module,
+      order: meta?.order ?? 0,
+      estimatedMinutes: meta?.estimatedMinutes ?? 5,
+      challengeTitle: meta?.challengeTitle ?? '',
+    }
+  } catch {
+    return {
+      title: lesson,
+      module,
+      order: 0,
+      estimatedMinutes: 5,
+      challengeTitle: '',
+    }
+  }
+}
+
+export async function getAllLessonsWithMeta(): Promise<LessonWithMeta[]> {
+  const paths = await getAllLessonPaths()
+  const lessons = await Promise.all(
+    paths.map(async (p) => {
+      const meta = await getLessonMeta(p.module, p.lesson)
+      return { ...p, ...meta }
+    })
+  )
+  return lessons
+}
