@@ -1,4 +1,5 @@
-import { getAllLessonPaths } from '@/lib/content'
+import { getAllLessonPaths, getAllLessonsWithMeta } from '@/lib/content'
+import LessonViewer from '@/components/LessonViewer'
 
 export async function generateStaticParams() {
   // Returns empty array if no .mdx files exist yet — build still succeeds
@@ -33,17 +34,22 @@ export default async function LessonPage({
     )
   }
 
+  const allLessons = await getAllLessonsWithMeta()
+  const currentIndex = allLessons.findIndex((l) => l.module === module && l.lesson === lesson)
+  const prev = currentIndex > 0 ? allLessons[currentIndex - 1] : null
+  const next = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null
+
   return (
-    <main className="max-w-3xl mx-auto px-6 py-12">
-      <div className="mb-8">
-        <p className="text-sm text-zinc-400 uppercase tracking-wide mb-2">
-          Lesson {String(metadata.order ?? '')} · {String(metadata.estimatedMinutes ?? '')} min
-        </p>
-        <h1 className="text-3xl font-bold text-white">{String(metadata.title ?? lesson)}</h1>
-      </div>
-      <article className="prose prose-invert max-w-none">
-        <LessonContent />
-      </article>
-    </main>
+    <LessonViewer
+      module={module}
+      lesson={lesson}
+      title={String(metadata.title ?? lesson)}
+      order={Number(metadata.order ?? 0)}
+      estimatedMinutes={Number(metadata.estimatedMinutes ?? 0)}
+      prev={prev ? { module: prev.module, lesson: prev.lesson, title: prev.title } : null}
+      next={next ? { module: next.module, lesson: next.lesson, title: next.title } : null}
+    >
+      <LessonContent />
+    </LessonViewer>
   )
 }
