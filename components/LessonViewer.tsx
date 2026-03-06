@@ -1,9 +1,10 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { CheckCircle2, Circle, ChevronLeft, ChevronRight } from 'lucide-react'
+import { CheckCircle2, Circle, ChevronLeft, ChevronRight, StickyNote } from 'lucide-react'
 import { useProgress } from '@/lib/useProgress'
+import { NotesPanel } from '@/components/NotesPanel'
 
 interface LessonViewerProps {
   module: string
@@ -27,6 +28,7 @@ export default function LessonViewer({
   children,
 }: LessonViewerProps) {
   const { completed, hydrated, toggleLesson, recordVisit } = useProgress()
+  const [notesOpen, setNotesOpen] = useState(false)
   const lessonId = `${module}/${lesson}`
   const isComplete = hydrated ? completed.has(lessonId) : false
   const bodyRef = useRef<HTMLDivElement>(null)
@@ -136,6 +138,23 @@ export default function LessonViewer({
           <div />
         )}
       </div>
+
+      {/* Notes trigger button — fixed bottom-right */}
+      <button
+        onClick={() => setNotesOpen(true)}
+        aria-label="Open notes"
+        className="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-3 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium shadow-lg transition-colors"
+      >
+        <StickyNote size={16} />
+        Notes
+      </button>
+
+      {/* Notes panel */}
+      <NotesPanel
+        lessonId={lessonId}
+        isOpen={notesOpen}
+        onClose={() => setNotesOpen(false)}
+      />
     </div>
   )
 }
