@@ -1,7 +1,5 @@
-import { readFileSync } from 'fs'
-import { join } from 'path'
 import { QuizEngine } from '@/components/QuizEngine'
-import type { QuizQuestion, ChallengeData } from '@/lib/quiz'
+import { quizData } from '@/lib/quiz-data'
 
 export async function generateStaticParams() {
   return [
@@ -20,16 +18,9 @@ export default async function QuizPage({
   params: Promise<{ module: string }>
 }) {
   const { module: moduleSlug } = await params
+  const data = quizData[moduleSlug]
 
-  let questions: QuizQuestion[]
-  let challenge: ChallengeData
-
-  try {
-    const mcqPath = join(process.cwd(), 'content', 'quizzes', `${moduleSlug}.json`)
-    const challengePath = join(process.cwd(), 'content', 'quizzes', `${moduleSlug}-challenge.json`)
-    questions = JSON.parse(readFileSync(mcqPath, 'utf-8')) as QuizQuestion[]
-    challenge = JSON.parse(readFileSync(challengePath, 'utf-8')) as ChallengeData
-  } catch {
+  if (!data) {
     return (
       <main className="max-w-2xl mx-auto px-6 py-10">
         <p className="text-zinc-400 p-12">Quiz not available yet.</p>
@@ -39,7 +30,7 @@ export default async function QuizPage({
 
   return (
     <main className="max-w-2xl mx-auto px-6 py-10">
-      <QuizEngine moduleSlug={moduleSlug} questions={questions} challenge={challenge} />
+      <QuizEngine moduleSlug={moduleSlug} questions={data.questions} challenge={data.challenge} />
     </main>
   )
 }
