@@ -36,7 +36,7 @@ export function useMDXComponents(): MDXComponents {
           data-section={isTryIt ? 'try-it' : 'learn'}
           className={
             isTryIt
-              ? 'text-xl font-semibold text-white mt-10 mb-4 pb-2 border-b border-zinc-700 try-it-heading'
+              ? 'text-xl font-semibold text-white mb-0 try-it-heading'
               : 'text-xl font-semibold text-white mt-10 mb-4 pb-2 border-b border-zinc-700'
           }
         >

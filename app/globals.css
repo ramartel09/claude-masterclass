@@ -125,26 +125,37 @@
   }
 }
 
-/* Try It section panel — wraps everything from .try-it-heading onwards in a tinted card */
-.lesson-body .try-it-heading {
-  border-radius: 0.5rem 0.5rem 0 0;
-  background: rgb(24 24 27 / 0.5);
-  border: 1px solid rgb(63 63 70 / 1);
-  padding: 1.25rem 1.5rem 0.5rem;
+/* Try It section — JS wraps elements in .try-it-wrapper, flex gap separates them */
+.try-it-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   margin-top: 2.5rem;
-  border-bottom: none;
 }
 
-.lesson-body .try-it-heading ~ * {
-  background: rgb(24 24 27 / 0.5);
-  border-left: 1px solid rgb(63 63 70 / 1);
-  border-right: 1px solid rgb(63 63 70 / 1);
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+.try-it-item {
+  background: rgb(19 78 74 / 0.3);
+  border: 1px solid rgb(20 184 166 / 0.4);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
 }
 
-.lesson-body .try-it-heading ~ *:last-child {
-  border-radius: 0 0 0.5rem 0.5rem;
-  border-bottom: 1px solid rgb(63 63 70 / 1);
-  padding-bottom: 1.5rem;
+.try-it-item > * {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.try-it-item > *:first-child {
+  margin-top: 0 !important;
+}
+
+.try-it-item > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Nested blockquote inside Try It gets teal accent */
+.try-it-item blockquote {
+  border-left-color: rgb(45 212 191 / 0.6);
+  background: rgb(19 78 74 / 0.2);
+  margin: 0 !important;
 }

@@ -43,7 +43,7 @@ export default function Dashboard() {
 
   // Build resume href from lastVisited lessonId (format: "module-slug/lesson-slug")
   const resumeHref = lastVisited ? `/modules/${lastVisited}` : '/modules/01-prompting-mastery/01-what-is-a-prompt'
-  const isResuming = hydrated && lastVisited !== null
+  const isResuming = hydrated && completed.size > 0 && lastVisited !== null
 
   const overallCount = hydrated ? completed.size : 0
   const overallPercent = TOTAL_LESSONS > 0 ? Math.round((overallCount / TOTAL_LESSONS) * 100) : 0

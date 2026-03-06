@@ -64,7 +64,7 @@ export async function getAllLessonsWithMeta(): Promise<LessonWithMeta[]> {
   const lessons = await Promise.all(
     paths.map(async (p) => {
       const meta = await getLessonMeta(p.module, p.lesson)
-      return { ...p, ...meta }
+      return { ...meta, ...p }
     })
   )
   return lessons

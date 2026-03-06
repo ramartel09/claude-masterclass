@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { CheckCircle2, Circle, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useProgress } from '@/lib/useProgress'
@@ -29,10 +29,54 @@ export default function LessonViewer({
   const { completed, hydrated, toggleLesson, recordVisit } = useProgress()
   const lessonId = `${module}/${lesson}`
   const isComplete = hydrated ? completed.has(lessonId) : false
+  const bodyRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     recordVisit(lessonId)
   }, [lessonId, recordVisit])
+
+  useEffect(() => {
+    const body = bodyRef.current
+    if (!body) return
+    const heading = body.querySelector<HTMLElement>('.try-it-heading')
+    if (!heading || heading.closest('.try-it-wrapper')) return
+
+    const wrapper = document.createElement('div')
+    wrapper.className = 'try-it-wrapper'
+    heading.parentNode!.insertBefore(wrapper, heading)
+
+    // Collect heading + all subsequent siblings
+    const elements: Element[] = [heading]
+    let sib = heading.nextElementSibling
+    while (sib) {
+      elements.push(sib)
+      sib = sib.nextElementSibling
+    }
+
+    // Group: h2 pairs with next element; label-only <p> pairs with next element
+    let i = 0
+    while (i < elements.length) {
+      const el = elements[i]
+      const nextEl = elements[i + 1]
+      const isH2 = el.tagName === 'H2'
+      const isLabelOnly =
+        el.tagName === 'P' &&
+        el.children.length === 1 &&
+        el.children[0].tagName === 'STRONG' &&
+        (el.textContent ?? '').trim() === (el.children[0].textContent ?? '').trim()
+
+      const item = document.createElement('div')
+      item.className = 'try-it-item'
+      item.appendChild(el)
+      if ((isH2 || isLabelOnly) && nextEl) {
+        item.appendChild(nextEl)
+        i += 2
+      } else {
+        i += 1
+      }
+      wrapper.appendChild(item)
+    }
+  }, [lesson])
 
   return (
     <div className="max-w-[700px] mx-auto px-6 py-12">
@@ -46,7 +90,7 @@ export default function LessonViewer({
 
       {/* MDX content */}
       <article className="prose prose-invert max-w-none">
-        <div className="lesson-body">
+        <div className="lesson-body" ref={bodyRef}>
           {children}
         </div>
       </article>
