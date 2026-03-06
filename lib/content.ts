@@ -1,4 +1,6 @@
 // lib/content.ts — server-side only, do not import in client components
+import { readFileSync } from 'fs'
+import { join } from 'path'
 import { globby as glob } from 'globby'
 
 export interface LessonMeta {
@@ -37,16 +39,22 @@ export async function getLessonsByModule(moduleSlug: string): Promise<LessonPath
 
 export interface LessonWithMeta extends LessonPath, LessonMeta {}
 
-export async function getLessonMeta(module: string, lesson: string): Promise<LessonMeta> {
+export function getLessonMeta(module: string, lesson: string): LessonMeta {
   try {
-    const mod = await import(`@/content/modules/${module}/${lesson}.mdx`)
-    const meta = mod.metadata as LessonMeta
+    const filePath = join(process.cwd(), 'content', 'modules', module, `${lesson}.mdx`)
+    const content = readFileSync(filePath, 'utf-8')
+    // Extract the metadata object literal from `export const metadata = { ... }`
+    const match = content.match(/export const metadata\s*=\s*(\{[\s\S]*?\})\s*(?:export|$)/)
+    if (!match) throw new Error('no metadata')
+    // Evaluate safely — this is a trusted local file with a known shape
+    // eslint-disable-next-line no-new-func
+    const meta = new Function(`return ${match[1]}`)() as Partial<LessonMeta>
     return {
-      title: meta?.title ?? lesson,
-      module: meta?.module ?? module,
-      order: meta?.order ?? 0,
-      estimatedMinutes: meta?.estimatedMinutes ?? 5,
-      challengeTitle: meta?.challengeTitle ?? '',
+      title: meta.title ?? lesson,
+      module: meta.module ?? module,
+      order: meta.order ?? 0,
+      estimatedMinutes: meta.estimatedMinutes ?? 5,
+      challengeTitle: meta.challengeTitle ?? '',
     }
   } catch {
     return {
@@ -61,11 +69,5 @@ export async function getLessonMeta(module: string, lesson: string): Promise<Les
 
 export async function getAllLessonsWithMeta(): Promise<LessonWithMeta[]> {
   const paths = await getAllLessonPaths()
-  const lessons = await Promise.all(
-    paths.map(async (p) => {
-      const meta = await getLessonMeta(p.module, p.lesson)
-      return { ...meta, ...p }
-    })
-  )
-  return lessons
+  return paths.map((p) => ({ ...getLessonMeta(p.module, p.lesson), ...p }))
 }
