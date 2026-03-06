@@ -1,83 +1,106 @@
-import Link from "next/link";
+'use client'
 
-export default function Home() {
+import Link from 'next/link'
+import { Card, CardContent } from '@/components/ui/card'
+import { ModuleProgressBar } from '@/components/ModuleProgressBar'
+import { useProgress } from '@/lib/useProgress'
+
+const MODULES = [
+  {
+    slug: '01-prompting-mastery',
+    number: 1,
+    name: 'Prompting Mastery',
+    description: 'Reliably produce high-quality results from Claude on the first or second attempt.',
+    total: 10,
+  },
+  {
+    slug: '02-claude-code-gsd',
+    number: 2,
+    name: 'Claude Code & GSD',
+    description: 'Build and deploy real software projects without writing a single line of code.',
+    total: 10,
+  },
+  {
+    slug: '03-ai-agents-automation',
+    number: 3,
+    name: 'AI Agents & Automation',
+    description: 'Design and run multi-step AI workflows that work without constant manual input.',
+    total: 10,
+  },
+  {
+    slug: '04-idea-to-product',
+    number: 4,
+    name: 'Idea-to-Product Pipeline',
+    description: 'Take any idea from concept to a live, usable product — with Claude as your entire dev team.',
+    total: 10,
+  },
+]
+
+const TOTAL_LESSONS = 40
+
+export default function Dashboard() {
+  const { completed, lastVisited, hydrated } = useProgress()
+
+  // Build resume href from lastVisited lessonId (format: "module-slug/lesson-slug")
+  const resumeHref = lastVisited ? `/modules/${lastVisited}` : '/modules/01-prompting-mastery/01-what-is-a-prompt'
+  const isResuming = hydrated && lastVisited !== null
+
+  const overallCount = hydrated ? completed.size : 0
+  const overallPercent = TOTAL_LESSONS > 0 ? Math.round((overallCount / TOTAL_LESSONS) * 100) : 0
+
   return (
-    <main className="max-w-3xl mx-auto px-6 py-20">
-      <div className="mb-12">
-        <h1 className="text-4xl font-bold text-white mb-4">
-          Claude Masterclass
-        </h1>
-        <p className="text-lg text-zinc-400 leading-relaxed max-w-2xl">
-          Go from casual Claude user to someone who can repeatedly turn ideas into
-          shipped, sellable products — without ever writing code yourself.
-        </p>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
+    <main className="max-w-2xl mx-auto px-6 py-10">
+      {/* Section 1: Resume / Start hero button — first visible element */}
+      <div className="mb-8">
         <Link
-          href="/modules/01-prompting-mastery"
-          className="group block p-6 rounded-xl border border-zinc-800 bg-zinc-900 hover:border-indigo-500 hover:bg-zinc-800/80 transition-all"
+          href={resumeHref}
+          className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
         >
-          <div className="text-xs font-medium text-indigo-400 uppercase tracking-wide mb-2">
-            Module 1
-          </div>
-          <h2 className="text-lg font-semibold text-white mb-2 group-hover:text-indigo-100">
-            Prompting Mastery
-          </h2>
-          <p className="text-sm text-zinc-400">
-            Reliably produce high-quality results from Claude on the first or second attempt.
-          </p>
-        </Link>
-
-        <Link
-          href="/modules/02-claude-code-gsd"
-          className="group block p-6 rounded-xl border border-zinc-800 bg-zinc-900 hover:border-indigo-500 hover:bg-zinc-800/80 transition-all"
-        >
-          <div className="text-xs font-medium text-indigo-400 uppercase tracking-wide mb-2">
-            Module 2
-          </div>
-          <h2 className="text-lg font-semibold text-white mb-2 group-hover:text-indigo-100">
-            Claude Code &amp; GSD
-          </h2>
-          <p className="text-sm text-zinc-400">
-            Build and deploy real software projects without writing a single line of code.
-          </p>
-        </Link>
-
-        <Link
-          href="/modules/03-ai-agents-automation"
-          className="group block p-6 rounded-xl border border-zinc-800 bg-zinc-900 hover:border-indigo-500 hover:bg-zinc-800/80 transition-all"
-        >
-          <div className="text-xs font-medium text-indigo-400 uppercase tracking-wide mb-2">
-            Module 3
-          </div>
-          <h2 className="text-lg font-semibold text-white mb-2 group-hover:text-indigo-100">
-            AI Agents &amp; Automation
-          </h2>
-          <p className="text-sm text-zinc-400">
-            Design and run multi-step AI workflows that work without constant manual input.
-          </p>
-        </Link>
-
-        <Link
-          href="/modules/04-idea-to-product"
-          className="group block p-6 rounded-xl border border-zinc-800 bg-zinc-900 hover:border-indigo-500 hover:bg-zinc-800/80 transition-all"
-        >
-          <div className="text-xs font-medium text-indigo-400 uppercase tracking-wide mb-2">
-            Module 4
-          </div>
-          <h2 className="text-lg font-semibold text-white mb-2 group-hover:text-indigo-100">
-            Idea-to-Product Pipeline
-          </h2>
-          <p className="text-sm text-zinc-400">
-            Take any idea from concept to a live, usable product — with Claude as your entire dev team.
-          </p>
+          {isResuming ? 'Resume where you left off \u2192' : 'Start: What Is a Prompt? \u2192'}
         </Link>
       </div>
 
-      <div className="mt-12 text-sm text-zinc-500">
-        40 lessons across 4 modules &middot; Each with hands-on challenges &middot; Learn at your own pace
+      {/* Section 2: Overall progress summary */}
+      <div className="mb-8">
+        {hydrated ? (
+          <p className="text-zinc-400 text-sm">
+            {overallCount} of {TOTAL_LESSONS} lessons complete &mdash; {overallPercent}%
+          </p>
+        ) : (
+          <p className="text-zinc-600 text-sm">Loading progress...</p>
+        )}
+      </div>
+
+      {/* Section 3: Module cards — full-width list, one per row */}
+      <div className="flex flex-col gap-4">
+        {MODULES.map((mod) => {
+          const completedInModule = hydrated
+            ? Array.from(completed).filter((id) => id.startsWith(`${mod.slug}/`)).length
+            : 0
+
+          return (
+            <Link key={mod.slug} href={`/modules/${mod.slug}`} className="block group">
+              <Card className="border-zinc-800 bg-zinc-900 hover:border-indigo-500 transition-colors py-0">
+                <CardContent className="px-6 py-5">
+                  <div className="text-xs font-medium text-indigo-400 uppercase tracking-wide mb-1">
+                    Module {mod.number}
+                  </div>
+                  <h2 className="text-lg font-semibold text-white mb-1 group-hover:text-indigo-100 transition-colors">
+                    {mod.name}
+                  </h2>
+                  <p className="text-sm text-zinc-400 mb-4">
+                    {mod.description}
+                  </p>
+                  <ModuleProgressBar
+                    completedCount={completedInModule}
+                    total={mod.total}
+                  />
+                </CardContent>
+              </Card>
+            </Link>
+          )
+        })}
       </div>
     </main>
-  );
+  )
 }
