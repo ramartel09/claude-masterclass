@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import type { QuizQuestion, ChallengeData } from '@/lib/quiz'
 import { initQueue, requeueWrong } from '@/lib/quiz'
 import { useQuiz } from '@/lib/useQuiz'
@@ -21,7 +21,8 @@ export function QuizEngine({ moduleSlug, questions, challenge }: QuizEngineProps
   const [showFeedback, setShowFeedback] = useState(false)
   const [incorrectOnce, setIncorrectOnce] = useState<Set<number>>(new Set())
   const [attemptCount, setAttemptCount] = useState(0)
-  const [questionNumber, setQuestionNumber] = useState(1)
+  const seenQuestions = useRef(new Set<number>([0]))
+  const [seenCount, setSeenCount] = useState(1)
   const [done, setDone] = useState(false)
 
   const currentQuestionIndex = queue[currentPos]
@@ -47,27 +48,31 @@ export function QuizEngine({ moduleSlug, questions, challenge }: QuizEngineProps
       const newQueue = requeueWrong(queue, currentQuestionIndex)
       setQueue(newQueue)
       setAttemptCount((prev) => prev + 1)
-      // Advance position (the queue grew, currentPos still valid)
       const nextPos = currentPos + 1
       if (nextPos >= newQueue.length) {
         saveMCQResult(moduleSlug, attemptCount + 1)
         setDone(true)
       } else {
+        const nextIdx = newQueue[nextPos]
+        if (!seenQuestions.current.has(nextIdx)) {
+          seenQuestions.current.add(nextIdx)
+          setSeenCount((prev) => prev + 1)
+        }
         setCurrentPos(nextPos)
       }
     } else {
-      // Remove current from queue by slicing it out
       const newQueue = [...queue.slice(0, currentPos), ...queue.slice(currentPos + 1)]
       const nextPos = currentPos
-      if (newQueue.length === 0) {
-        saveMCQResult(moduleSlug, attemptCount)
-        setDone(true)
-        setQueue(newQueue)
-      } else if (nextPos >= newQueue.length) {
+      if (newQueue.length === 0 || nextPos >= newQueue.length) {
         saveMCQResult(moduleSlug, attemptCount)
         setDone(true)
         setQueue(newQueue)
       } else {
+        const nextIdx = newQueue[nextPos]
+        if (!seenQuestions.current.has(nextIdx)) {
+          seenQuestions.current.add(nextIdx)
+          setSeenCount((prev) => prev + 1)
+        }
         setQueue(newQueue)
         setCurrentPos(nextPos)
       }
@@ -75,7 +80,6 @@ export function QuizEngine({ moduleSlug, questions, challenge }: QuizEngineProps
 
     setSelectedIndex(null)
     setShowFeedback(false)
-    setQuestionNumber((prev) => prev + 1)
   }, [selectedIndex, currentQuestion, currentQuestionIndex, queue, currentPos, attemptCount, moduleSlug, saveMCQResult])
 
   const handleRetake = useCallback(() => {
@@ -85,7 +89,8 @@ export function QuizEngine({ moduleSlug, questions, challenge }: QuizEngineProps
     setShowFeedback(false)
     setIncorrectOnce(new Set())
     setAttemptCount(0)
-    setQuestionNumber(1)
+    seenQuestions.current = new Set<number>([0])
+    setSeenCount(1)
     setDone(false)
   }, [questions.length])
 
@@ -138,7 +143,7 @@ export function QuizEngine({ moduleSlug, questions, challenge }: QuizEngineProps
       <div className="max-w-2xl mx-auto px-6 py-10">
         {/* Progress indicator */}
         <div className="text-xs text-zinc-500 mb-6">
-          Question {questionNumber} of {questions.length}
+          Question {seenCount} of {questions.length}
         </div>
 
         {/* Question */}

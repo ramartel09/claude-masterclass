@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { CheckCircle2, Circle } from 'lucide-react'
 import { ModuleProgressBar } from '@/components/ModuleProgressBar'
 import { useProgress } from '@/lib/useProgress'
+import { useQuiz } from '@/lib/useQuiz'
 import type { LessonWithMeta } from '@/lib/content'
 
 interface ModulePageClientProps {
@@ -14,6 +15,8 @@ interface ModulePageClientProps {
 
 export function ModulePageClient({ moduleSlug, moduleMeta, lessons }: ModulePageClientProps) {
   const { completed, hydrated } = useProgress()
+  const { mcq, hydrated: quizHydrated } = useQuiz()
+  const quizComplete = quizHydrated && mcq[moduleSlug]?.completed === true
 
   const completedCount = hydrated
     ? lessons.filter((l) => completed.has(`${moduleSlug}/${l.lesson}`)).length
@@ -58,14 +61,24 @@ export function ModulePageClient({ moduleSlug, moduleMeta, lessons }: ModulePage
         })}
       </ul>
 
-      {allComplete && (
-        <div className="mt-8">
-          <Link
-            href={`/modules/${moduleSlug}/quiz`}
-            className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm"
-          >
-            Take Quiz →
-          </Link>
+      {(allComplete || quizComplete) && (
+        <div className="mt-8 flex flex-wrap gap-3">
+          {allComplete && (
+            <Link
+              href={`/modules/${moduleSlug}/quiz`}
+              className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm"
+            >
+              Take Quiz →
+            </Link>
+          )}
+          {quizComplete && (
+            <Link
+              href={`/modules/${moduleSlug}/quiz#challenge`}
+              className="inline-flex items-center gap-2 border border-indigo-500 text-indigo-300 hover:bg-indigo-900/30 font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm"
+            >
+              Take Challenge →
+            </Link>
+          )}
         </div>
       )}
     </main>

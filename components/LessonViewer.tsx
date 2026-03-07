@@ -82,6 +82,15 @@ export default function LessonViewer({
 
   return (
     <div className="max-w-[700px] mx-auto px-6 py-12">
+      {/* Back to module */}
+      <Link
+        href={`/modules/${module}`}
+        className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-300 transition-colors mb-6"
+      >
+        <ChevronLeft size={14} />
+        Module overview
+      </Link>
+
       {/* Lesson header */}
       <div className="mb-8">
         <p className="text-sm text-zinc-400 uppercase tracking-wide mb-2">
