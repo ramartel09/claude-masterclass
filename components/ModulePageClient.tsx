@@ -73,7 +73,7 @@ export function ModulePageClient({ moduleSlug, moduleMeta, lessons }: ModulePage
           )}
           {quizComplete && (
             <Link
-              href={`/modules/${moduleSlug}/quiz#challenge`}
+              href={`/modules/${moduleSlug}/challenge`}
               className="inline-flex items-center gap-2 border border-indigo-500 text-indigo-300 hover:bg-indigo-900/30 font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm"
             >
               Take Challenge →

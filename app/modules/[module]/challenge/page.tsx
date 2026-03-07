@@ -1,4 +1,4 @@
-import { QuizEngine } from '@/components/QuizEngine'
+import { ChallengeSection } from '@/components/ChallengeSection'
 import { quizData } from '@/lib/quiz-data'
 
 export async function generateStaticParams() {
@@ -12,7 +12,7 @@ export async function generateStaticParams() {
 
 export const dynamicParams = false
 
-export default async function QuizPage({
+export default async function ChallengePage({
   params,
 }: {
   params: Promise<{ module: string }>
@@ -23,14 +23,14 @@ export default async function QuizPage({
   if (!data) {
     return (
       <main className="max-w-2xl mx-auto px-6 py-10">
-        <p className="text-zinc-400 p-12">Quiz not available yet.</p>
+        <p className="text-zinc-400">Challenge not available yet.</p>
       </main>
     )
   }
 
   return (
     <main className="max-w-2xl mx-auto px-6 py-10">
-      <QuizEngine moduleSlug={moduleSlug} questions={data.questions} />
+      <ChallengeSection moduleSlug={moduleSlug} challenge={data.challenge} />
     </main>
   )
 }

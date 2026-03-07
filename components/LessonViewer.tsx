@@ -122,12 +122,12 @@ export default function LessonViewer({
         </button>
       </div>
 
-      {/* Prev/Next navigation */}
+      {/* Prev/Module/Next navigation */}
       <div className="mt-8 flex items-center justify-between gap-4">
         {prev ? (
           <Link
             href={`/modules/${prev.module}/${prev.lesson}`}
-            className="flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors max-w-[45%]"
+            className="flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors max-w-[35%]"
           >
             <ChevronLeft size={16} className="flex-shrink-0" />
             <span className="truncate">{prev.title}</span>
@@ -135,10 +135,16 @@ export default function LessonViewer({
         ) : (
           <div />
         )}
+        <Link
+          href={`/modules/${module}`}
+          className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors whitespace-nowrap"
+        >
+          Module overview
+        </Link>
         {next ? (
           <Link
             href={`/modules/${next.module}/${next.lesson}`}
-            className="flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors text-right max-w-[45%]"
+            className="flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-200 transition-colors text-right max-w-[35%]"
           >
             <span className="truncate">{next.title}</span>
             <ChevronRight size={16} className="flex-shrink-0" />

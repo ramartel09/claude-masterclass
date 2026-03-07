@@ -1,18 +1,17 @@
 'use client'
 
 import { useState, useCallback, useRef } from 'react'
-import type { QuizQuestion, ChallengeData } from '@/lib/quiz'
+import Link from 'next/link'
+import type { QuizQuestion } from '@/lib/quiz'
 import { initQueue, requeueWrong } from '@/lib/quiz'
 import { useQuiz } from '@/lib/useQuiz'
-import { ChallengeSection } from '@/components/ChallengeSection'
 
 interface QuizEngineProps {
   moduleSlug: string
   questions: QuizQuestion[]
-  challenge: ChallengeData
 }
 
-export function QuizEngine({ moduleSlug, questions, challenge }: QuizEngineProps) {
+export function QuizEngine({ moduleSlug, questions }: QuizEngineProps) {
   const { saveMCQResult } = useQuiz()
 
   const [queue, setQueue] = useState<number[]>(() => initQueue(questions.length))
@@ -132,7 +131,15 @@ export function QuizEngine({ moduleSlug, questions, challenge }: QuizEngineProps
             Retake Quiz
           </button>
 
-          <ChallengeSection moduleSlug={moduleSlug} challenge={challenge} />
+          <div className="border-t border-zinc-800 pt-10 text-center">
+            <p className="text-zinc-400 text-sm mb-6">Ready for the module challenge?</p>
+            <Link
+              href={`/modules/${moduleSlug}/challenge`}
+              className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors text-sm"
+            >
+              Take the Challenge →
+            </Link>
+          </div>
         </div>
       </div>
     )
