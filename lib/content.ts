@@ -44,7 +44,8 @@ export function getLessonMeta(module: string, lesson: string): LessonMeta {
     const filePath = join(process.cwd(), 'content', 'modules', module, `${lesson}.mdx`)
     const content = readFileSync(filePath, 'utf-8')
     // Extract the metadata object literal from `export const metadata = { ... }`
-    const match = content.match(/export const metadata\s*=\s*(\{[\s\S]*?\})\s*(?:export|$)/)
+    // The closing } is always at the start of a line in our MDX files
+    const match = content.match(/export const metadata\s*=\s*(\{[\s\S]*?\n\})/)
     if (!match) throw new Error('no metadata')
     // Evaluate safely — this is a trusted local file with a known shape
     // eslint-disable-next-line no-new-func

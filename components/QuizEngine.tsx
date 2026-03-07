@@ -21,6 +21,7 @@ export function QuizEngine({ moduleSlug, questions, challenge }: QuizEngineProps
   const [showFeedback, setShowFeedback] = useState(false)
   const [incorrectOnce, setIncorrectOnce] = useState<Set<number>>(new Set())
   const [attemptCount, setAttemptCount] = useState(0)
+  const [questionNumber, setQuestionNumber] = useState(1)
   const [done, setDone] = useState(false)
 
   const currentQuestionIndex = queue[currentPos]
@@ -74,6 +75,7 @@ export function QuizEngine({ moduleSlug, questions, challenge }: QuizEngineProps
 
     setSelectedIndex(null)
     setShowFeedback(false)
+    setQuestionNumber((prev) => prev + 1)
   }, [selectedIndex, currentQuestion, currentQuestionIndex, queue, currentPos, attemptCount, moduleSlug, saveMCQResult])
 
   const handleRetake = useCallback(() => {
@@ -83,6 +85,7 @@ export function QuizEngine({ moduleSlug, questions, challenge }: QuizEngineProps
     setShowFeedback(false)
     setIncorrectOnce(new Set())
     setAttemptCount(0)
+    setQuestionNumber(1)
     setDone(false)
   }, [questions.length])
 
@@ -135,7 +138,7 @@ export function QuizEngine({ moduleSlug, questions, challenge }: QuizEngineProps
       <div className="max-w-2xl mx-auto px-6 py-10">
         {/* Progress indicator */}
         <div className="text-xs text-zinc-500 mb-6">
-          Question {currentPos + 1} of {queue.length}
+          Question {questionNumber} of {questions.length}
         </div>
 
         {/* Question */}
