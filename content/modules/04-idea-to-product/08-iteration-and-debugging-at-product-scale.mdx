@@ -18,7 +18,7 @@ The most important habit in managing complexity with Claude Code: keep each file
 
 Why small files: Claude Code's ability to reason about a file degrades as the file grows. A 2,000-line component file is hard for Claude Code to modify correctly without unintended side effects. A 100-line component with clear responsibility is easy to modify precisely. When you structure your project with small, focused files, Claude Code can make precise changes without touching things it shouldn't.
 
-Why small changes: small changes are easier to verify, easier to roll back, and easier to describe to Claude Code. "Add a loading state to the HospitalCard component" is a small change. "Overhaul the entire hospital display system" is a large change that's hard to verify and risky to implement in one session.
+Why small changes: small changes are easier to verify, easier to roll back, and easier to describe to Claude Code. "Add a loading skeleton to the search results grid" is a small change. "Overhaul the entire search and results system" is a large change that's hard to verify and risky to implement in one session.
 
 Why frequent commits: git commits are your rollback points. A commit before each Claude Code session creates a clean rollback to the last known-good state. A commit after each successful change creates fine-grained history you can use to identify exactly when something broke.
 
@@ -31,13 +31,13 @@ The wrong way: paste in the entire codebase and say "remember all of this."
 The right way: use CLAUDE.md (which Claude Code reads automatically) plus a brief session-start summary:
 
 ```
-We're continuing work on the hospital tracker. Here's where we left off:
-- Phase 1 is complete: home page with hardcoded hospital data is deployed
-- Current task: add filtering by distance from user's location
-- The HospitalList component (components/HospitalList.tsx) is where the filtering logic will go
-- Don't touch the data layer (lib/hospitals.ts) in this session
+We're continuing work on the OMDb Movie Explorer. Here's where we left off:
+- Phase 1 is complete: search, detail modal, and watchlist are deployed
+- Current task: add a user rating field to watchlist entries
+- The watchlist hook is at lib/useWatchlist.ts and the watchlist page is at app/watchlist/page.tsx
+- Don't touch the API routes (app/api/) in this session
 
-Start by reading components/HospitalList.tsx and describing what currently exists.
+Start by reading lib/useWatchlist.ts and describing the current data structure.
 ```
 
 This re-establishes the relevant context without re-sending code Claude Code can read itself.
@@ -50,7 +50,7 @@ The isolation strategy: narrow the scope before debugging.
 
 1. Identify which feature is broken
 2. Identify which component or function that feature belongs to
-3. Give Claude Code a precise scope: "The bug is in the filtering logic in HospitalList.tsx. The hospital data in lib/hospitals.ts is correct. Please focus only on the filtering function."
+3. Give Claude Code a precise scope: "The bug is in the watchlist persistence in lib/useWatchlist.ts. The search and detail features work correctly. Please focus only on the localStorage read/write logic."
 
 This prevents Claude Code from making unnecessary changes to parts of the codebase that aren't the source of the problem.
 
@@ -63,9 +63,9 @@ The sign: you've made more than three fix attempts on the same bug, each fix int
 The right response: restart the feature from scratch. Not the whole project — just the feature.
 
 ```
-The HospitalFilter component has accumulated too many fixes and is no longer working reliably. I want to start it fresh. Please:
-1. Delete components/HospitalFilter.tsx
-2. Create a new HospitalFilter.tsx from this specification: [describe exactly what the component should do]
+The DetailModal component has accumulated too many fixes and is no longer working reliably. I want to start it fresh. Please:
+1. Delete components/DetailModal.tsx
+2. Create a new DetailModal.tsx from this specification: [describe exactly what the component should do]
 3. Keep everything else in the project unchanged
 
 Here's what the new component must do:

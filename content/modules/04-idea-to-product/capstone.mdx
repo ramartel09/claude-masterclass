@@ -1,60 +1,83 @@
 export const metadata = {
-  title: "Capstone: GTA Hospital Wait Time Tracker",
+  title: "Capstone: OMDb Movie & Show Explorer",
   module: "idea-to-product",
   type: "capstone",
-  estimatedHours: 8,
-  skills: ["claude-code", "gsd-workflow", "product-thinking", "data-sourcing", "deployment"],
+  estimatedHours: 4,
+  skills: ["claude-code", "gsd-workflow", "product-thinking", "api-integration", "deployment"],
 }
 
 ## The Project
 
-The GTA Hospital Wait Time Tracker is a real, deployed web app showing current emergency department wait times at Greater Toronto Area hospitals. When someone in the GTA needs urgent care, they can open this app, see which hospitals have shorter waits, and make an informed decision about where to go. This is the proof-of-mastery project — every skill from every module is used to build it. It's built the same way this masterclass was built: Claude Code + GSD workflow + zero manual coding.
+The OMDb Movie Explorer is a real, deployed web app for discovering and tracking movies and TV shows. Search any title, view full details, add titles to a watchlist with "To Watch" and "Watched" sections, and get AI-powered summaries. It was built using Claude Code and the GSD workflow — zero manual code written. This is the proof-of-mastery project: every skill from every module is applied to ship something real.
 
-## What You'll Build
+**Live app:** [https://omdb-explorer-theta.vercel.app](https://omdb-explorer-theta.vercel.app)
 
-- A live web app at a Vercel URL showing ER wait time data for GTA hospitals
-- Data sourced from Ontario's public health aggregate data (verify source availability before Phase 4 begins — see Phase 4, Plan 04-01)
-- A clean table or card layout showing: hospital name, location (borough/area), estimated wait time, and last updated timestamp
-- Mobile-responsive design (readable on a phone while you're deciding where to go)
+## What Was Built
+
+- A live web app at [https://omdb-explorer-theta.vercel.app](https://omdb-explorer-theta.vercel.app) with full movie and show search
+- Search powered by the OMDb API (Open Movie Database) — hundreds of thousands of titles
+- Detail modal with director, cast, plot, runtime, genre, and IMDb rating (raw "N/A" fields hidden via omdbVal() guard pattern)
+- Watchlist with "To Watch" / "Watched" sections persisted in localStorage with hydration guard
+- Dark cinematic theme (zinc-950 background, amber accent) using shadcn/ui and Tailwind v4
+- Server-side API key proxying via Next.js API routes — API key never exposed to the browser
+- Deployed to Vercel with OMDB_API_KEY configured in production environment variables
 - A GitHub repo with a clean commit history built via the GSD workflow
-- A link from this capstone page to the live deployed tracker (added in Phase 4, Plan 04-03)
 
 ## The Problem Being Solved
 
-GTA emergency departments have dramatically different wait times — 1 hour at one hospital, 6 hours at another, at the same moment. This information exists but is buried in provincial health system pages that are hard to navigate on a phone in an emergency. The tracker surfaces it in a single, fast-loading, mobile-first view. Real value, real user, real problem. This is exactly the kind of tool the masterclass teaches you to build.
+Finding and tracking movies and shows requires juggling multiple apps: one for search, one to check ratings, another to save your list. The OMDb Movie Explorer combines search, detail lookup, and watchlist tracking in a single fast-loading, dark-mode interface. No accounts required. No subscription. Opens in 2 seconds and remembers your watchlist across sessions via localStorage. Real value for anyone who watches movies and wants a personal tracking tool they actually built themselves.
 
-## Skills You'll Use
+## Skills Demonstrated
 
-- Module 1 (Prompting): Scoping the project, writing the REQUIREMENTS.md, prompting for data structure decisions
-- Module 2 (Claude Code & GSD): Running the full GSD workflow — discuss → plan → build → verify → ship
-- Module 3 (Agents): Claude Code operates as an agent for the build — reading files, writing code, running commands
-- Module 4 (Idea-to-Product): The entire pipeline — triage, requirements, roadmap, scaffold, build, ship
+- **Module 1 (Prompting):** Scoping the project, writing precise feature specifications for Claude Code, iterating on UI descriptions to get the right visual result
+- **Module 2 (Claude Code and GSD):** Running the full GSD workflow across three Phase 4 plans — discuss, plan, build, verify, ship
+- **Module 3 (Agents):** Claude Code operating as an agent to read files, write components, run builds, and iterate across sessions
+- **Module 4 (Idea-to-Product):** The complete pipeline — triage, requirements, roadmap, scaffold, build, design, testing, deployment
+
+## Tech Stack
+
+- **Framework:** Next.js 16 with TypeScript (strict mode), App Router
+- **Styling:** Tailwind CSS v4, shadcn/ui components (Card, Dialog, Button, Badge, Input, Tabs)
+- **API integration:** OMDb API via server-side Next.js API routes (`/api/search`, `/api/detail`)
+- **Persistence:** localStorage with hydration guard pattern (useWatchlist hook)
+- **Deployment:** Vercel (production), OMDB_API_KEY in production environment variables
 
 ## Phase 4 Build Plan
 
-This capstone is built in Phase 4 of the masterclass, which has three plans:
+This capstone was built in Phase 4, which had three plans:
 
-1. **Plan 04-01**: Verify the Ontario hospital wait time data source — confirm public availability and PHIPA compliance before writing any code. If the original data source isn't available, identify the best alternative (representative data, scraped public pages, or static demo data with a clear disclaimer).
-2. **Plan 04-02**: Build the tracker using Claude Code + GSD workflow, starting from the verified data source.
-3. **Plan 04-03**: Deploy to Vercel, add the live link to this capstone page, and write the final retrospective.
-
-## Getting Started
-
-1. Read Phase 4, Plan 04-01 — do not skip the data source verification step. Building a tracker without a data source is building a shell. The data is what makes it real.
-2. Once data source is confirmed, write the REQUIREMENTS.md for the tracker using the format from Module 4, Lesson 3. Keep it tight: the MVP shows current wait times for 5–10 GTA hospitals and nothing else.
-3. Start Claude Code, run /gsd:discuss-phase with the REQUIREMENTS.md, and follow the GSD workflow through to deployment.
+1. **Plan 04-01**: Scaffold the Next.js 16 project with TypeScript, Tailwind v4, shadcn/ui. Establish project structure, configure OMDB_API_KEY in .env.local, verify dev server runs. CLAUDE.md written immediately after scaffold verification.
+2. **Plan 04-02**: Build all features — API routes (search, detail), search UI with Card grid, detail Dialog modal, watchlist hook with localStorage persistence, watchlist page with Tabs (To Watch / Watched). Smoke test: search works, modal opens, watchlist persists across page reload.
+3. **Plan 04-03**: Deploy to Vercel as new project. Set OMDB_API_KEY in production environment variables. Verify HTTP 200 and search API returns results. Update all masterclass Module 4 lessons to reference the OMDb Explorer instead of the earlier capstone placeholder.
 
 ## Success Criteria
 
-- [ ] A live Vercel URL exists for the tracker and loads without errors
-- [ ] The tracker shows ER wait time data for at least 5 GTA hospitals
-- [ ] The data displayed is current or clearly timestamped (not static fake data without a disclaimer)
-- [ ] The layout is readable on a mobile device (test on a real phone)
-- [ ] The capstone brief page (this page) has been updated with the live tracker URL
-- [ ] A one-paragraph retrospective is written reflecting on how the masterclass skills enabled this build
+- [x] Live Vercel URL exists and loads without errors (HTTP 200)
+- [x] Search returns results for any movie or show title
+- [x] Detail modal opens with full data; no raw "N/A" text visible
+- [x] Watchlist persists across browser sessions (localStorage)
+- [x] "To Watch" and "Watched" sections toggle correctly
+- [x] Dark cinematic theme — no white flash on load
+- [x] Capstone page updated with live URL
 
-## Stretch Goals
+## Extension Ideas (Deferred from v1)
 
-- Add sorting by wait time (shortest first) so the best option is always at the top
-- Add a "last updated" indicator with auto-refresh every 15 minutes
-- Add a map view showing hospital locations alongside wait times
+These were explicitly out of scope for v1 and saved for a potential v2:
+
+- **User ratings:** 1–5 star field on each watchlist entry, stored in localStorage
+- **Genre browsing:** Browse by genre category instead of title search
+- **Similar titles:** TMDB recommendation API integration for "More like this"
+- **Watchlist sharing:** Export watchlist as a shareable link or JSON file
+- **Search history:** Recently searched titles saved locally
+
+## Retrospective
+
+The OMDb Movie Explorer demonstrated three things clearly:
+
+First, the GSD methodology works for real products. Breaking the build into three plans — scaffold, features, deploy — meant each phase had a clear done condition. No phase was "done when it feels complete." The done condition was defined before building.
+
+Second, server-side API key proxying is a pattern worth knowing by default. Every app that uses a third-party API with a secret key should proxy through an API route. Claude Code implemented this correctly the first time when given the explicit constraint.
+
+Third, localStorage with a hydration guard is the right persistence approach for personal tools that don't need user accounts. The pattern (read in useEffect, not at render time, with a `hydrated` flag) prevented SSR hydration mismatches and produced a working implementation on the first build.
+
+The meta-lesson: constraints produce better software. Specifying "no database, no accounts, no NEXT_PUBLIC_ prefix for the API key" resulted in a simpler, more correct architecture than leaving those decisions open.

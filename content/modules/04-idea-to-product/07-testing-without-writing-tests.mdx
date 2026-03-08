@@ -21,18 +21,18 @@ The pattern is:
 
 The key word is "before." Writing acceptance criteria before building keeps you honest. It's easy to retroactively decide that whatever Claude Code built is acceptable — especially if it looks good. Pre-written criteria are more objective: either the item appears in the list after adding it, or it doesn't.
 
-For the hospital tracker, the acceptance criteria for "display hospital wait times":
+For the OMDb Movie Explorer, the acceptance criteria for "search and display results":
 ```
 □ Home page loads within 3 seconds
-□ Six major GTA hospitals are displayed (list their names)
-□ Each hospital shows: name, current wait time in hours/minutes, and last-updated timestamp
-□ Wait times are color-coded: green (<1 hour), yellow (1-2 hours), red (>2 hours)
-□ The display is readable on my phone (test at iPhone-sized viewport)
-□ No hospital shows "undefined" or "null" as the wait time
-□ If a hospital's data is unavailable, it shows a "Data unavailable" state, not an error
+□ Typing "Inception" in the search bar returns results within 2 seconds
+□ Each result card shows: poster image, title, year, and media type badge (movie/series)
+□ Broken poster images show a placeholder, not a broken image icon
+□ The results grid is readable on my phone (test at iPhone-sized viewport)
+□ No result shows raw "N/A" text for any field
+□ Searching for a nonsense string (e.g., "xyzxyzxyz") shows an empty state, not an error
 ```
 
-Each criterion is specific and testable. You either see the six hospitals or you don't. You either see color coding or you don't. There's no judgment required — it's binary.
+Each criterion is specific and testable. You either see the results grid or you don't. You either see a placeholder for missing posters or you don't. There's no judgment required — it's binary.
 
 **Vercel preview deploys: a real device test URL for every change**
 
@@ -75,7 +75,7 @@ For personal projects in Phase 1, manual acceptance testing is usually sufficien
 
 For simple personal tools, the time to write good automated tests often exceeds the time spent manually testing. For complex or frequently-changing products, automated tests pay for themselves quickly.
 
-When you do want automated tests, ask Claude Code to write them — don't write them yourself. Describe the behaviors you want tested: "Write tests that verify: the wait time display renders for each hospital, the color coding is applied correctly based on wait time values, and the 'Data unavailable' state renders when data is missing."
+When you do want automated tests, ask Claude Code to write them — don't write them yourself. Describe the behaviors you want tested: "Write tests that verify: the search results grid renders cards for each result, the omdbVal() guard hides N/A fields correctly, and the empty state renders when the search returns no results."
 
 ## Try It
 

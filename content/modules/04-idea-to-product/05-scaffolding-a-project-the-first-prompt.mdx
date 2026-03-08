@@ -36,33 +36,32 @@ Verification means:
 
 If the scaffold doesn't verify, fix it before moving on. Building features on a broken scaffold is building on sand.
 
-**Example: hospital tracker scaffold prompt**
+**Example: OMDb Movie Explorer scaffold prompt**
 
 ```
-Create the scaffold for a Next.js 16 web app called "GTA Hospital Wait Times".
+Create the scaffold for a Next.js 16 web app called "OMDb Movie Explorer".
 
 Tech stack:
 - Next.js 16 with TypeScript (strict mode)
 - Tailwind CSS v4
 - shadcn/ui for UI components (init with defaults)
-- No database, no auth, no external APIs for now (we'll add data in a later session)
+- No database, no auth — we'll add the OMDb API integration in a later session
 
 Project structure:
 - app/ for all pages (App Router)
 - components/ for reusable UI components (shadcn/ui components go in components/ui/)
-- lib/ for utility functions
-- data/ for static JSON data we'll create later
+- lib/ for utility functions and hooks
 
 What to build:
 - The project scaffold and file structure
-- A root layout with a simple dark-mode header showing "GTA Hospital Wait Times"
-- A home page that says "Hospital wait times will be shown here" as a placeholder
+- A root layout with a simple dark-mode header showing "OMDb Movie Explorer"
+- A home page that says "Movie search will go here" as a placeholder
 - Install and configure shadcn/ui
 
 What NOT to build yet:
-- No actual hospital data
-- No hospital list or wait time display logic
-- No filtering or sorting features
+- No OMDb API calls
+- No search input or results grid
+- No watchlist logic
 
 After creating the scaffold, run `npm run dev` and confirm the dev server starts and the home page renders without errors.
 
@@ -80,7 +79,7 @@ After running this prompt, you should have:
 - A clean file structure with the directories specified
 - A CLAUDE.md capturing the decisions made (create this yourself after the scaffold, or ask Claude Code to create it)
 
-You should NOT have: any actual feature code, any hardcoded data arrays, any complex business logic. Those come in Phase 1 execution, not in the scaffold.
+You should NOT have: any actual feature code, any API calls, any complex business logic. Those come in Phase 1 execution, not in the scaffold.
 
 **After the scaffold: write CLAUDE.md immediately**
 

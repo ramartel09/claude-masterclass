@@ -24,29 +24,30 @@ It's not a technical document. It's written in plain English, in terms of what u
 These are the things the product must do for v1 to be worth using. They're written as "User can [action]" statements. Each requirement is a testable behavior: you can determine whether the product satisfies it by using it.
 
 Examples:
-- User can view current estimated wait time for each hospital
-- User can filter the list to show only hospitals within 10km of their location
-- User can see when wait time data was last updated
-- User can share a link to the current wait times
+- User can search for any movie or TV show by title
+- User can view full details for a search result (director, cast, plot, rating)
+- User can add a title to their watchlist with one click
+- User can toggle a watchlist item between "To Watch" and "Watched"
+- User can reload the page and see their watchlist still intact
 
 *Section 2: Out of scope (won't-build in v1)*
 This section is as important as the active requirements. It explicitly defines what you're NOT building. Scope creep is the number-one reason personal projects stall and fail — you add one feature, then another, and suddenly a weekend project is a six-month project.
 
 Out-of-scope items come from two sources: features that would add complexity beyond the proportional effort, and features that would be nice-to-have but aren't required for the core value to exist.
 
-Examples of out-of-scope for the hospital tracker:
-- User accounts or saved preferences — v2
-- Historical wait time data or trend graphs — v2
-- Push notifications when wait times change — v2
+Examples of out-of-scope for the OMDb Movie Explorer:
+- User accounts or synced watchlists — v2 (localStorage is sufficient for v1)
+- User ratings or reviews on watchlist entries — v2
+- Similar movie recommendations — v2
 - Native mobile app — v2, or never (web app is sufficient)
-- Real-time updates (auto-refresh) — v1 uses manual refresh
+- Real-time "now playing" data — out of scope entirely for v1
 
 *Section 3: v2 (future — explicitly deferred)*
 This section is optional but valuable. It captures the features you thought of during requirements writing that you deliberately decided to defer. It prevents them from becoming scope creep while preserving the ideas for future consideration.
 
 **Why "user can" format matters**
 
-Requirements written as user behaviors are testable. "The system will display hospital wait times" is ambiguous — how? What format? From where? "User can see the current estimated wait time for each of the 6 major GTA hospitals on the home page" is specific and testable. You can either see it or you can't.
+Requirements written as user behaviors are testable. "The system will display movie data" is ambiguous — how? What format? From where? "User can search for any movie or TV show title and see a grid of results with poster, title, and year on the home page" is specific and testable. You can either see the grid or you can't.
 
 This format also keeps focus on value. The product exists to enable users to do things. Every requirement should answer: what can the user do with this? If a requirement is about what the system does internally rather than what the user can do, it's probably not a user requirement — it's an implementation detail.
 

@@ -1,9 +1,9 @@
 export const metadata = {
-  title: "Capstone Bridge: Build the Hospital Tracker",
+  title: "Capstone Bridge: Build the OMDb Movie Explorer",
   module: "idea-to-product",
   order: 10,
   estimatedMinutes: 15,
-  challengeTitle: "Map the Capstone to Your Skills",
+  challengeTitle: "Extend the OMDb Movie Explorer",
 }
 
 ## Learn
@@ -24,75 +24,90 @@ These are not theoretical skills. They're a complete toolkit for building real, 
 
 ---
 
-**The final capstone: GTA Hospital Wait Time Tracker**
+**The capstone project: OMDb Movie Explorer**
 
-The capstone project for the entire course is the tool we've been building toward through Module 4: a web app that shows current estimated emergency room wait times at major GTA hospitals.
+The capstone project for this course is the tool we built through Phase 4: the OMDb Movie Explorer — a fully deployed, personal movie and TV show search tool with search, a watchlist, and AI-powered summaries.
 
-**Why this project**
+**What was built**
 
-The hospital tracker was chosen as the capstone for three reasons:
+The OMDb Movie Explorer is a Next.js web application that does three things well:
 
-*It's a real problem.* Anyone who has needed emergency care in the GTA has experienced the uncertainty of not knowing which hospital has a shorter wait. The product solves this — or it tries to, which is the right ambition for a solo builder.
+*Search:* Type any movie or TV show title into the search bar and get a grid of results with poster images, titles, years, and media types. Results come from the OMDb API (the Open Movie Database), which has data on hundreds of thousands of titles. The search is debounced so it doesn't fire on every keystroke — it waits for you to pause.
 
-*It tests all four modules.* Prompting skills (writing clear specifications for Claude Code), Claude Code and GSD (the build methodology), agent design (the data-gathering component), and the idea-to-product pipeline (requirements, roadmap, scaffold, design, deploy). Every lesson shows up in this project.
+*Detail modal:* Click any result card and a modal opens with the full details: director, cast, plot summary, runtime, genre, IMDb rating, and a higher-resolution poster. Fields that aren't available are gracefully hidden rather than showing raw "N/A" text — a small detail that makes the app feel polished.
 
-*It has real constraints.* Public health data availability in Ontario is a genuine uncertainty. The PHIPA (Personal Health Information Protection Act) implications of health data are real. The data sources are real and imperfect. These constraints make it a better learning experience than a project with perfectly clean, freely available data.
+*Watchlist with persistence:* Add any title to your watchlist with one click. The watchlist has two sections: "To Watch" and "Watched." Toggle a title between the two sections as you work through your backlog. Everything persists in localStorage — close the tab, come back a week later, your watchlist is still there.
 
-**What Phase 4 will build**
+**How it was built**
 
-Phase 4 (the final phase of the masterclass) builds the hospital tracker. Specifically:
+The OMDb Movie Explorer was built using exactly the methodology this course teaches:
 
-- A Next.js web app deployed to Vercel with a live public URL
-- Displays current estimated wait times for the six largest GTA emergency departments
-- Color-coded wait status (green/yellow/red) based on wait time ranges
-- Mobile-responsive layout readable on a phone
-- Data source: Ontario's publicly available health data (CIHI, Ontario Health, or similar aggregate sources)
-- Static data updated manually or on a schedule (no real-time API in v1)
+Phase 4 Plan 01 scaffolded the Next.js 16 project with TypeScript, Tailwind CSS v4, and shadcn/ui. The scaffold included the basic project structure — app directory, components, lib utilities — but no features yet. The scaffold was verified running before any feature code was written.
 
-**What "mastery" looks like when this is done**
+Phase 4 Plan 02 built all the features: the search API route that proxies the OMDb API (keeping the API key server-side, never exposed to the browser), the detail API route for individual title lookups, the search results grid using shadcn/ui Card components, the detail Dialog modal, and the watchlist page with localStorage persistence. Every component was built from a plain-English description of what it should look like and what data it should show.
 
-When Phase 4 is complete and the hospital tracker is live, you'll have built a real web application that:
-- Solves a real problem for a real user
-- Was built in days, not months
-- Required no writing of code by you
-- Was deployed to the internet, accessible from any device
-- Used the exact methodology this course teaches — the meta-demonstration completed
+Phase 4 Plan 03 (this plan) deployed the application to Vercel, set the OMDB_API_KEY in production environment variables, and verified the full feature set works on the live URL.
 
-That's mastery. Not an abstract credential — a concrete artifact that demonstrates capability. You have the URL. The app works. You built it.
+**The key technical decisions and why they matter**
+
+*Server-side API key proxying:* The OMDb API requires an API key. Instead of putting that key in the browser (where anyone could see it in the network tab), the app has two API routes — `/api/search` and `/api/detail` — that make the OMDb requests server-side and return the results to the browser. The key never leaves the server. This is the right pattern for any app that uses a third-party API with a secret key.
+
+*localStorage persistence with a hydration guard:* The watchlist uses localStorage so it persists across browser sessions without needing a database or user accounts. The tricky part with localStorage in Next.js is that the server doesn't have access to it — attempting to read localStorage during server-side rendering causes a hydration mismatch error. The solution is a `hydrated` state flag: the component renders an empty state on the server, then reads localStorage inside a `useEffect` after the component mounts on the client. This pattern appears throughout the app and is worth understanding — it applies to any client-side persistence with Next.js.
+
+*shadcn/ui component composition:* The entire UI is built from shadcn/ui primitives: Card, Dialog, Button, Badge, Input, Tabs. No custom CSS beyond Tailwind utilities. This is the constraint library approach from Lesson 6: choose a component library, use its vocabulary, and let Claude Code fill in the details within those constraints. The result is consistent, polished, and maintainable.
+
+*omdbVal() guard pattern:* The OMDb API returns "N/A" as a string for missing fields, not null or undefined. A utility function `omdbVal()` checks for this and returns an empty string instead — so conditional rendering (`{omdbVal(movie.Director) && ...}`) works correctly. This is a small pattern that eliminated every instance of raw "N/A" text in the UI.
+
+**What this proves**
+
+The OMDb Movie Explorer was built in three phases, across multiple Claude Code sessions, without a single line of code written manually. The entire codebase — the API routes, the components, the state management, the styling — was produced by Claude Code from plain-English descriptions.
+
+This is the meta-demonstration of the course. Module 1 taught you to prompt effectively. Module 2 showed you how to use Claude Code and GSD. Module 3 explained how agents work. Module 4 taught the product pipeline. The OMDb Movie Explorer is all four modules running simultaneously: precise prompting to specify what to build, Claude Code as the agent executing the GSD workflow, and the full idea-to-product pipeline from scaffold to deployed app.
+
+You now have the URL. The app works. You know exactly how it was built.
 
 ---
 
-**Preview of Phase 4**
+**[Visit the live OMDb Movie Explorer](https://omdb-explorer-theta.vercel.app)**
 
-Phase 4 will pick up from your Phase 1–3 skills and apply them to a defined brief. The Phase 4 PLAN.md will specify exactly what to build in what order. You'll run `/gsd:execute-phase` and watch the tracker come together.
+---
 
-The Phase 4 plan includes: data source research and validation, hospital data model design, wait time display component, filtering and ranking, deployment and testing on real devices.
+**Preview of what's next**
 
-One note of caution from the research phase of this project: the GTA hospital data source is listed as MEDIUM confidence in the project planning. Real-time ER wait data from Ontario public health is not available through a clean public API as of this writing. Phase 4 may use estimated/approximate data, aggregate statistics from CIHI, or simulated data in a format that matches real data structure. The engineering work is the same; the data may be approximated.
+The OMDb Movie Explorer is v1. It solves the core problem: find and track movies and shows without context-switching to five different websites. Everything in the out-of-scope list is a real v2 feature:
+
+- User ratings: Add a 1–5 star field that saves alongside each watchlist entry
+- Genre browsing: Browse by genre instead of searching by title
+- Similar movies: Use TMDB's recommendation API to suggest similar titles
+- Watchlist sharing: Export or share a watchlist via URL
+
+These aren't on the roadmap. They're deferred explicitly — not abandoned, deferred. The discipline to scope v1 correctly is what made v1 shippable.
 
 ## Try It
 
-**Task:** Read the capstone brief (above) and identify which skills from each module you'll use. Map each Phase 4 deliverable to the lesson that taught the relevant skill.
+**Task:** Extend the OMDb Movie Explorer with one new feature. Pick one of the options below, or propose your own.
 
-**Starter prompt:**
-> I'm about to start the Phase 4 hospital tracker capstone. Help me map the project deliverables to the skills I've learned across all four modules.
->
-> Phase 4 deliverables:
-> - Defining the hospital data model
-> - Researching and validating data sources
-> - Building the main wait time display
-> - Implementing color-coded status indicators
-> - Making the layout mobile-responsive
-> - Deploying to Vercel and testing
->
-> For each deliverable, tell me:
-> - Which module (1, 2, 3, or 4) has the most relevant skills
-> - Which specific lesson or concept from that module applies
-> - One potential challenge to watch for
->
-> Format as a table.
+**Option A — Favorites filter:** On the watchlist page, add a "Favorites" section alongside "To Watch" and "Watched." Add a favorites toggle (a star icon) to each watchlist entry. Favorites are stored in the same localStorage structure.
 
-**What to expect:**
-- Each deliverable should map to at least one specific lesson concept — not just a module, but a technique or pattern from a specific lesson
-- The challenges column should be specific to the hospital tracker project — not generic risks, but risks specific to building a health data display app
-- This exercise is a review of the full curriculum — if any deliverable maps to a skill you feel uncertain about, revisit that lesson before starting Phase 4
+**Option B — User ratings:** Add a 1–5 star rating field to each watchlist entry. Display the rating on the watchlist card. Store it in localStorage alongside the other watchlist data.
+
+**Option C — Curated list:** Search the live app for your personal "Best of 2024" picks. Add 10 titles to your watchlist, mark them all as "Watched," and screenshot the result. This is a usage exercise, not a code exercise — but it tests all three features (search, detail, watchlist).
+
+**Explore the live app first:**
+
+> [Visit the OMDb Movie Explorer](https://omdb-explorer-theta.vercel.app)
+
+**Then, if you're building Option A or B, use this starter prompt:**
+
+> I have a Next.js 16 app called OMDb Movie Explorer. The watchlist page is at app/watchlist/page.tsx. The watchlist state is managed by a custom hook at lib/useWatchlist.ts that reads/writes to localStorage.
+>
+> I want to add [Option A: a Favorites section with star toggle / Option B: a 1–5 star rating field].
+>
+> Before making any changes, read app/watchlist/page.tsx and lib/useWatchlist.ts and describe the current data structure and component layout. Then propose the minimal change required to add this feature without breaking the existing "To Watch" / "Watched" sections.
+
+**Reflection questions:**
+
+- What would you add to the app next, if you were building it for your own daily use?
+- What was harder to build than you expected? (Check the Phase 4 plan summaries for what took the most iterations.)
+- What did Claude Code get right on the first try that you thought would require multiple iterations?
+- If you explained the GSD methodology to someone who had never heard of it, what would you say in three sentences?

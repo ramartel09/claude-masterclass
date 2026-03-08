@@ -20,17 +20,17 @@ The second-best source is someone else's direct experience — not "people proba
 
 Ideas fail here when they're solutions in search of a problem — the technology is cool and the product seems clever, but there's no one actively frustrated by the problem it solves.
 
-The hospital tracker: the problem is clearly real. Anyone who has sat in an ER waiting room for four hours only to be told the next hospital has a 45-minute wait has experienced it directly. This isn't a hypothetical frustration.
+The OMDb Movie Explorer: the problem is clearly real. Anyone who has opened four tabs to check what's on their watchlist, look up ratings, read a synopsis, and decide whether to watch something tonight has experienced it directly. This isn't a hypothetical frustration.
 
 **Question 2: Is there a user?**
 
-A user is a specific, identifiable person (or a narrow enough category that you could find several specific people who fit). "Everyone" is not a user. "Young professionals in their 30s" is barely a user. "GTA residents who visit ER departments and would check wait times before choosing a hospital" is a user.
+A user is a specific, identifiable person (or a narrow enough category that you could find several specific people who fit). "Everyone" is not a user. "Young professionals in their 30s" is barely a user. "People who watch movies regularly and want a single app for search, details, and tracking — without creating yet another account" is a user.
 
 The user question matters because everything downstream — what features to build, what the UI should feel like, what counts as "done" — depends on knowing who you're building for. A product for everyone is a product for no one.
 
 For personal tools (things you're building for yourself), you are the user. This is a completely valid category and often produces excellent products. The user is perfectly defined, perfectly accessible for testing, and will give you honest feedback.
 
-The hospital tracker: the user is GTA residents with access to a smartphone or laptop who need emergency care and want to make an informed choice about which hospital to go to. Specific enough to design against.
+The OMDb Movie Explorer: the user is anyone who watches movies or shows and wants a personal, no-account tracking tool they can open on any device. Specific enough to design against.
 
 **Question 3: Is there value?**
 
@@ -38,9 +38,9 @@ Value is what the user gains from your product — specifically, what changes fo
 
 The value doesn't need to be revolutionary. A small, consistent improvement in daily life is real value. But there should be a clear answer to: "After using this product, what is better for the user than it was before?"
 
-If the answer is "it's kind of cool" or "they'd have one more tool," the value case is weak. "They can decide in 2 minutes which hospital to go to instead of driving to the wrong one" is clear value.
+If the answer is "it's kind of cool" or "they'd have one more tool," the value case is weak. "They can find, evaluate, and queue a movie in under 2 minutes without opening a second app" is clear value.
 
-The hospital tracker: save 2–4 hours of waiting by going to the shorter-wait hospital. Potentially get appropriate care faster. Reduce the anxiety of not knowing. These are real, material improvements.
+The OMDb Movie Explorer: find and decide on a movie in under 2 minutes instead of 15. Keep a watchlist that persists without creating an account on yet another service. These are real, everyday improvements.
 
 **Question 4: Is the effort proportional?**
 
@@ -50,16 +50,16 @@ With Claude Code, "effort" means: days, not months. A personal tool that takes a
 
 This question also functions as a scope governor: if an idea would take too long, can it be scoped down to something proportional? The v1 might be 20% of the original idea but 80% of the value — and it can be built in 20% of the time.
 
-**Scoring the hospital tracker**
+**Scoring the OMDb Movie Explorer**
 
 | Question | Score |
 |----------|-------|
 | Is the problem real? | Yes — direct personal experience, clearly articulated pain |
-| Is there a user? | Yes — GTA residents facing ER decisions |
-| Is there value? | Yes — save hours of waiting, better care decisions |
-| Is effort proportional? | Yes — single-phase build, 2–4 Claude Code sessions |
+| Is there a user? | Yes — movie watchers who want a unified search and tracking tool |
+| Is there value? | Yes — faster decisions, persistent watchlist, no account required |
+| Is effort proportional? | Yes — single external API, localStorage persistence, 3 Claude Code sessions |
 
-The hospital tracker passes the filter. That's why it's the capstone project — it's a real, buildable product with clear value.
+The OMDb Movie Explorer passes the filter. That's why it's the capstone project — it's a real, buildable product with clear value.
 
 **The "kill it fast" mindset**
 

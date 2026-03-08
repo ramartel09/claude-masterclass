@@ -32,27 +32,27 @@ The new world: you have an idea. You describe it to Claude Code. In an afternoon
 
 This is not hype — the masterclass you're currently reading was built this way. The platform, the lesson routing, the entire infrastructure, was scaffolded by Claude Code from a plain-English description. The lesson content was written by Claude Code from a curriculum plan. The deployment was done by running a single command.
 
-**The hospital tracker as the running example**
+**The OMDb Movie Explorer as the running example**
 
-Throughout this module, we'll return to one example: a GTA (Greater Toronto Area) hospital wait time tracker. This is a real product idea: a web app that shows current estimated wait times at major GTA emergency rooms, helping people make informed decisions about where to go when they need urgent care.
+Throughout this module, we'll return to one example: the OMDb Movie Explorer. This is a real product that was built as the Phase 4 capstone: a web app for searching movies and TV shows, viewing full details, and tracking a personal watchlist — all in one dark-mode interface with no accounts required.
 
 This example is useful because it's:
-- A real problem (anyone who has waited 5 hours in an ER has experienced it)
-- A realistic scope for a solo builder (data from public sources, a single-page app)
+- A real problem (anyone who uses multiple apps to track what they want to watch has experienced it)
+- A realistic scope for a solo builder (one external API, localStorage for persistence, single-page app)
 - A good test of the full pipeline (idea → requirements → roadmap → scaffold → design → launch)
 
-We'll trace the hospital tracker through each lesson. By the end of the module, you'll have seen a complete product idea go through every stage of the pipeline, from problem definition to launch strategy. This isn't a toy example — the skills used are identical to what you'd use for any product you want to build.
+We'll trace the OMDb Movie Explorer through each lesson. By the end of the module, you'll have seen a complete product idea go through every stage of the pipeline, from problem definition to launch strategy. This isn't a toy example — the skills used are identical to what you'd use for any product you want to build.
 
 **Starting the pipeline**
 
 Every product starts with a problem statement. Not a feature list, not a name, not a tech stack — a problem statement. The problem statement defines what's broken in the world that this product fixes, for whom, and why it matters.
 
 Good problem statements:
-- Focus on the pain, not the solution ("People don't know how long ER waits will be" not "We need a wait time app")
-- Name a specific user ("GTA residents who need emergency care" not "people")
-- Make the stakes clear ("wasted hours in a crowded waiting room" not "an inconvenience")
+- Focus on the pain, not the solution ("People context-switch between five apps to find a movie" not "We need a movie search app")
+- Name a specific user ("People who watch movies and want a personal tracking tool" not "everyone")
+- Make the stakes clear ("lost titles, forgotten watchlists, and decision fatigue" not "a minor inconvenience")
 
-The hospital tracker problem statement: "GTA residents who need emergency care have no reliable way to compare current wait times across hospitals before deciding where to go, resulting in wasted hours in overcrowded waiting rooms and suboptimal care matching."
+The OMDb Movie Explorer problem statement: "Movie watchers have no single tool that combines search, full detail lookup, and watchlist tracking — they juggle multiple apps and lose track of what they wanted to watch, resulting in decision fatigue and abandoned queues."
 
 That's the foundation everything else is built on. When you're three months into building a product and feature creep is threatening to derail you, you come back to the problem statement and ask: does this feature serve this problem, for this user?
 

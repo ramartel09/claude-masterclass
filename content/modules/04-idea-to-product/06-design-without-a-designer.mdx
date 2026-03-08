@@ -40,20 +40,20 @@ Key components to know:
 | `Dialog` | Modal overlay | Confirmations, detailed views, forms |
 | `Separator` | Visual dividing line | Section breaks |
 
-When you describe a UI using these names, Claude Code knows exactly what to build. "A Card with a Badge in the top-right corner, a bold title, and a description" is more precise and actionable than "a box that shows information about the hospital."
+When you describe a UI using these names, Claude Code knows exactly what to build. "A Card with a Badge in the top-right corner, a bold title, and a description" is more precise and actionable than "a box that shows information about the movie."
 
 **How to describe UI to Claude Code**
 
 UI description follows the same specificity principle as all prompting: the more specific you are, the closer the first result will be to what you want.
 
 *Describe layout in terms of structure:*
-- "A two-column layout: 30% for the sidebar (hospital list), 70% for the detail view"
-- "A full-width header, followed by a grid of Cards with 3 columns on desktop, 1 column on mobile"
-- "A fixed bottom navigation bar with three tabs"
+- "A full-width search bar at the top, followed by a grid of result Cards with 3 columns on desktop, 1 column on mobile"
+- "A fixed header with the app name on the left and a 'Watchlist' link on the right"
+- "A Dialog modal that opens when a result Card is clicked, showing full movie details"
 
 *Describe components with their contents:*
-- "Each hospital shows as a Card with: hospital name (h3, white text), a Badge showing the wait category (green for less than 1 hour, yellow for 1–2 hours, red for more than 2 hours), and the exact wait time as a large number (3xl, bold)"
-- "A Button labeled 'Update Wait Time' — primary style (indigo background), full width, below the wait time display"
+- "Each result shows as a Card with: a poster image (full-width, aspect-ratio 2/3), title (h3, white text), year, and a Badge showing the type (movie/series/episode)"
+- "A Button labeled 'Add to Watchlist' — primary style (amber background), full width, at the bottom of the detail modal"
 
 *Describe spacing and hierarchy with Tailwind language:*
 Claude Code understands Tailwind class descriptions. "More padding around the card" or "tighter spacing between list items" works. You can also be specific: "16px gap between cards" maps to `gap-4` in Tailwind.
@@ -67,7 +67,7 @@ The most effective design workflow for non-designers is: choose your accent colo
 
 This works because shadcn/ui components are well-designed by default — they have appropriate spacing, sizing, and interaction states. When you use them and specify the right layout and contents, you get something that looks good without specifying every detail.
 
-For the hospital tracker: dark zinc background, indigo accent color, shadcn/ui Cards for each hospital, Badge components for wait status color-coding, and a clean header. That's enough specification to get a professional-looking result.
+For the OMDb Movie Explorer: dark zinc background, amber accent color, shadcn/ui Cards for each result, Badge components for media type (movie/series/episode), and a clean header with the app name and a Watchlist link. That's enough specification to get a professional-looking result.
 
 **What to specify vs. what to leave to Claude**
 
